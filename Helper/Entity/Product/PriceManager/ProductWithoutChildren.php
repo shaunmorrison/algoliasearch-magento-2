@@ -109,7 +109,7 @@ abstract class ProductWithoutChildren
                 $price = $this->getTaxPrice($product, $price, $withTax);
                 $this->customData[$field][$currencyCode]['default'] = $this->priceCurrency->round($price);
                 $this->customData[$field][$currencyCode]['default_formated'] = $this->formatPrice($price, $currencyCode);
-                $specialPrice = $this->getSpecialPrice($product, $currencyCode, $withTax);
+                $specialPrice = $this->getSpecialPrice($product, $currencyCode, $withTax, $subProducts);
                 if ($this->areCustomersGroupsEnabled) {
                     $this->addCustomerGroupsPrices($product, $currencyCode, $withTax, $field);
                 }
@@ -199,16 +199,17 @@ abstract class ProductWithoutChildren
      * @param Product $product
      * @param $currencyCode
      * @param $withTax
+     * @param $subProducts
      * @return array
      */
-    protected function getSpecialPrice(Product $product, $currencyCode, $withTax): array
+    protected function getSpecialPrice(Product $product, $currencyCode, $withTax, $subProducts): array
     {
         $specialPrice = [];
         /** @var Group $group */
         foreach ($this->groups as $group) {
             $groupId = (int) $group->getData('customer_group_id');
             $specialPrices[$groupId] = [];
-            $specialPrices[$groupId][] = $this->getRulePrice($groupId, $product);
+            $specialPrices[$groupId][] = $this->getRulePrice($groupId, $product, $subProducts);
             // The price with applied catalog rules
             $specialPrices[$groupId][] = $product->getFinalPrice(); // The product's special price
             $specialPrices[$groupId] = array_filter($specialPrices[$groupId], function ($price) {
@@ -232,9 +233,10 @@ abstract class ProductWithoutChildren
     /**
      * @param $groupId
      * @param $product
+     * @param $subProducts
      * @return float
      */
-    protected function getRulePrice($groupId, $product)
+    protected function getRulePrice($groupId, $product, $subProducts)
     {
         return (float) $this->rule->getRulePrice(
             new DateTime(),
