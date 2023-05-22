@@ -25,7 +25,7 @@
                     <label>Application ID</label>
                     <comment>
                         <![CDATA[
-                            You can find your Application ID and API keys in the <a href="https://www.algolia.com/api-keys" target="_blank">Algolia dashboard</a>.
+                            You can find your Application ID and API keys in the <a href="https://www.algolia.com/account/api-keys" target="_blank">Algolia dashboard</a>.
                         ]]>
                     </comment>
                 </field>
@@ -33,7 +33,7 @@
                     <label>Search-only (public) API key</label>
                     <comment>
                         <![CDATA[
-                            You can find your Application ID and API keys in the <a href="https://www.algolia.com/api-keys" target="_blank">Algolia dashboard</a>.
+                            You can find your Application ID and API keys in the <a href="https://www.algolia.com/account/api-keys" target="_blank">Algolia dashboard</a>.
                         ]]>
                     </comment>
                 </field>
@@ -41,7 +41,7 @@
                     <label>Admin API key</label>
                     <comment>
                         <![CDATA[
-                            You can find your Application ID and API keys in the <a href="https://www.algolia.com/api-keys" target="_blank">Algolia dashboard</a>.
+                            You can find your Application ID and API keys in the <a href="https://www.algolia.com/account/api-keys" target="_blank">Algolia dashboard</a>.
                         ]]>
                     </comment>
                 </field>
