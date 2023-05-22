@@ -5,10 +5,9 @@
 ### UPDATES
 - Ensured compatibility of the extension with Magento 2.4.6 with PHP 8.2
 - Addressed dependency when pushing data to Algolia to ensure that the pricing records are in place.
-- Enforce RequireJS for all JavaScript libs to ensure proper dependency loading order
+- Enforce RequireJS for all JavaScript libraries to ensure proper dependency loading order
 - Added support for Algolia Query Suggestions.
 - Added new frontend events for Autocomplete v1 (afterAutocompleteSources and afterAutocompletePlugins)
-- Updated the readme file
 - Removed the indexing of out-of-stock options for configurable products from algolia config and instead utilize Magento's out-of-stock settings to determine how products are displayed and indexed. 
 - Introduced enhanced logging for indexing Queue
 
