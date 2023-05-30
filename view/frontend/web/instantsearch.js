@@ -468,6 +468,9 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 				hierarchicalMenuParams.panelOptions = {
 					templates: {
 						header: '<div class="name">' + (facet.label ? facet.label : facet.attribute) + '</div>',
+					},
+                    hidden: function ({items}) {
+                        return !items.length;
 					}
 				};
 
