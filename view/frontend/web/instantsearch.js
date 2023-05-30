@@ -102,7 +102,7 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 				searchParameters['facetsRefinements']['categories.level' + algoliaConfig.request.level] = [algoliaConfig.request.path];
 			}
 		}
-        
+
         if (algoliaConfig.instant.isVisualMerchEnabled && algoliaConfig.isCategoryPage ) {
             searchParameters.filters = `${algoliaConfig.instant.categoryPageIdAttribute}:'${algoliaConfig.request.path}'`;
         }
@@ -431,29 +431,33 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 					hierarchical_levels.push('categories.level' + l.toString());
 				}
 
+
+                //return array of items starting from root based on category
+                const findRoot = (items) => {
+                    const root = items.find(element => algoliaConfig.request.path.startsWith(element.value));
+
+                    if (!root) {
+                        return items;
+                    }
+                    if (!root.data) {
+                        return [];
+                    }
+
+                    return findRoot(root.data);
+
+                };
 				var hierarchicalMenuParams = {
 					container: facet.wrapper.appendChild(createISWidgetContainer(facet.attribute)),
 					attributes: hierarchical_levels,
 					separator: algoliaConfig.instant.categorySeparator,
 					templates: templates,
-					alwaysGetRootLevel: false,
-					showParentLevel:false,
+                    showParentLevel: true,
 					limit: algoliaConfig.maxValuesPerFacet,
 					sortBy: ['name:asc'],
                     transformItems(items) {
-                    	if(algoliaConfig.isCategoryPage) {
-                            var filteredData = [];
-                            items.forEach(element => {
-                                if (element.label == algoliaConfig.request.parentCategory) {
-                                    filteredData.push(element);
-                                };
-                            });
-                            items = filteredData;
-                        }
-                        return items.map(item => ({
-                            ...item,
-                            label: item.label,
-                        }));
+                        return (algoliaConfig.isCategoryPage)
+                            ? findRoot(items)
+                            : items;
                     },
 				};
 
