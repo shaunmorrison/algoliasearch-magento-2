@@ -261,26 +261,35 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 				templates: {
 					item: $('#current-refinements-template').html()
 				},
-				includedAttributes: attributes.map(function (attribute) {
-                    if (!(algoliaConfig.isCategoryPage && attribute.name.indexOf('categories') > -1)) {
+				includedAttributes: attributes.map(attribute => {
+                    console.warn("Refinement:", attribute);
+                    if (attribute.name.indexOf('categories') === -1
+                        || algoliaConfig.instant.isVisualMerchEnabled
+                        || !algoliaConfig.isCategoryPage)
                         return attribute.name;
-                    }
 				}),
-				transformItems: function (items) {
-					return items.map(function (item) {
-						var attribute = attributes.filter(function (_attribute) {
-							return item.attribute === _attribute.name
-						})[0];
-						if (!attribute) return item;
-						item.label = attribute.label;
-						item.refinements.forEach(function (refinement) {
-							if (refinement.type !== 'hierarchical') return refinement;
-							var levels = refinement.label.split(algoliaConfig.instant.categorySeparator);
-							var lastLevel = levels[levels.length - 1];
-							refinement.label = lastLevel;
-						});
-						return item;
-					})
+				transformItems: items => {
+                    console.log("%cRefinement transform:%o", 'color:green;background:yellow', items);
+					return items
+                        .filter(item => {
+                            return !algoliaConfig.isCategoryPage
+                                || item.refinements.filter(refinement => refinement.value !== algoliaConfig.request.path).length; // do not expose the category root
+                        })
+                        .map(item => {
+                            const attribute = attributes.filter(_attribute => {
+                                return item.attribute === _attribute.name
+                            })[0];
+                            if (!attribute) return item;
+                            item.label = attribute.label;
+                            item.refinements.forEach(function (refinement) {
+                                if (refinement.type !== 'hierarchical') return refinement;
+
+                                const levels = refinement.label.split(algoliaConfig.instant.categorySeparator);
+                                const lastLevel = levels[levels.length - 1];
+                                refinement.label = lastLevel;
+                            });
+                            return item;
+					    })
 				}
 			},
 
