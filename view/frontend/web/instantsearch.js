@@ -463,13 +463,21 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 					sortBy: ['name:asc'],
                     transformItems(items) {
                         return (algoliaConfig.isCategoryPage)
-                            ? findRoot(items)
+                            ? findRoot(items).map(
+                                item => {
+                                    if (true) {
+                                        item.categoryUrl = algoliaConfig.request.childCategories[item.value]['url'];
+                                    }
+                                    console.log('item:', item);
+                                    return item;
+                                }
+                            )
                             : items;
                     },
 				};
 
 				hierarchicalMenuParams.templates.item = '' +
-					'<a class="{{cssClasses.link}} {{#isRefined}}{{cssClasses.link}}--selected{{/isRefined}}" href="{{url}}">{{label}}' + ' ' +
+					'<a class="{{cssClasses.link}} {{#isRefined}}{{cssClasses.link}}--selected{{/isRefined}}" href="{{categoryUrl}}">{{label}}' + ' ' +
 					'<span class="{{cssClasses.count}}">{{#helpers.formatNumber}}{{count}}{{/helpers.formatNumber}}</span>' +
 					'</a>';
 				hierarchicalMenuParams.panelOptions = {

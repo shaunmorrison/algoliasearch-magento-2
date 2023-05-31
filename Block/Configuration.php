@@ -30,6 +30,40 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
         return false;
     }
 
+    /**
+     * @param \Magento\Catalog\Model\Category $cat
+     * @return string
+     */
+    protected function initCategoryParentPath(\Magento\Catalog\Model\Category $cat): string {
+        $path = '';
+        foreach ($cat->getPathIds() as $treeCategoryId) {
+            if ($path) {
+                $path .= $this->getConfigHelper()->getCategorySeparator($this->getStoreId());
+            }
+            $path .= $this->getCategoryHelper()->getCategoryName($treeCategoryId, $this->getStoreId());
+        }
+        return $path;
+    }
+
+    /**
+     * @param \Magento\Catalog\Model\Category $cat
+     * @param string $parent
+     * @param array $arr
+     * @return array
+     */
+    protected function getChildCategoryUrls(\Magento\Catalog\Model\Category $cat, string $parent = '', array $arr = array()): array {
+        if (!$parent) {
+            $parent = $this->initCategoryParentPath($cat);
+        }
+
+        foreach ($cat->getChildrenCategories() as $child) {
+            $key = $parent ? $parent . $this->getConfigHelper()->getCategorySeparator() . $child->getName() : $child ->getName();
+            $arr[$key]['url'] = $child->getUrl();
+            $arr = array_merge($arr, $this->getChildCategoryUrls($child, $key, $arr));
+        }
+        return $arr;
+    }
+
     public function getConfiguration()
     {
         $config = $this->getConfigHelper();
@@ -70,6 +104,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
         $level = '';
         $categoryId = '';
         $parentCategoryName = '';
+        $childCategories = [];
 
         $addToCartParams = $this->getAddToCartParams();
 
@@ -88,6 +123,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
 
             if ($category && $category->getDisplayMode() !== 'PAGE') {
                 $category->getUrlInstance()->setStore($this->getStoreId());
+                $childCategories = $this->getChildCategoryUrls($category);
 
                 $categoryId = $category->getId();
 
@@ -236,6 +272,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'path' => $path,
                 'level' => $level,
                 'parentCategory' => $parentCategoryName,
+                'childCategories' => $childCategories
             ],
             'showCatsNotIncludedInNavigation' => $config->showCatsNotIncludedInNavigation(),
             'showSuggestionsOnNoResultsPage' => $config->showSuggestionsOnNoResultsPage(),
