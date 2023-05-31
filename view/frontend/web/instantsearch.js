@@ -262,15 +262,13 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 					item: $('#current-refinements-template').html()
 				},
 				includedAttributes: attributes.map(attribute => {
-                    console.warn("Refinement:", attribute);
                     if (attribute.name.indexOf('categories') === -1
-                        || algoliaConfig.instant.isVisualMerchEnabled
-                        || !algoliaConfig.isCategoryPage)
+                        || !algoliaConfig.isCategoryPage) // For category browse, requires a custom renderer to prevent removal of the root node from hierarchicalMenu widget
                         return attribute.name;
 				}),
 				transformItems: items => {
-                    console.log("%cRefinement transform:%o", 'color:green;background:yellow', items);
 					return items
+                        // This filter is only applicable if categories facet is included as an attribute
                         .filter(item => {
                             return !algoliaConfig.isCategoryPage
                                 || item.refinements.filter(refinement => refinement.value !== algoliaConfig.request.path).length; // do not expose the category root
