@@ -258,6 +258,7 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
 			 **/
 			currentRefinements: {
 				container: '#current-refinements',
+                // TODO: Remove this - it does nothing
 				templates: {
 					item: $('#current-refinements-template').html()
 				},
@@ -464,12 +465,12 @@ requirejs(['algoliaBundle', 'Magento_Catalog/js/price-utils'], function (algolia
                     transformItems(items) {
                         return (algoliaConfig.isCategoryPage)
                             ? findRoot(items).map(
+                                // TODO: Make recursive and implement custom renderer
                                 item => {
-                                    if (true) {
-                                        item.categoryUrl = algoliaConfig.request.childCategories[item.value]['url'];
-                                    }
-                                    console.log('item:', item);
-                                    return item;
+                                    return {
+                                        ...item,
+                                        categoryUrl: algoliaConfig.instant.isCategoryNavigationEnabled ? algoliaConfig.request.childCategories[item.value]['url'] : ''
+                                    };
                                 }
                             )
                             : items;

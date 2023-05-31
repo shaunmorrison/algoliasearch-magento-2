@@ -9,6 +9,9 @@ use Magento\Framework\DataObject;
 
 class Configuration extends Algolia implements CollectionDataSourceInterface
 {
+    //Placeholder for future implementation (requires customer renderer for hierarchicalMenu widget)
+    private const IS_CATEGORY_NAVIGATION_ENABLED = false;
+
     public function isSearchPage()
     {
         if ($this->getConfigHelper()->isInstantEnabled()) {
@@ -57,7 +60,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
         }
 
         foreach ($cat->getChildrenCategories() as $child) {
-            $key = $parent ? $parent . $this->getConfigHelper()->getCategorySeparator() . $child->getName() : $child ->getName();
+            $key = $parent ? $parent . $this->getConfigHelper()->getCategorySeparator($this->getStoreId()) . $child->getName() : $child ->getName();
             $arr[$key]['url'] = $child->getUrl();
             $arr = array_merge($arr, $this->getChildCategoryUrls($child, $key, $arr));
         }
@@ -123,7 +126,9 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
 
             if ($category && $category->getDisplayMode() !== 'PAGE') {
                 $category->getUrlInstance()->setStore($this->getStoreId());
-                $childCategories = $this->getChildCategoryUrls($category);
+                if (self::IS_CATEGORY_NAVIGATION_ENABLED) {
+                    $childCategories = $this->getChildCategoryUrls($category);
+                }
 
                 $categoryId = $category->getId();
 
@@ -180,7 +185,6 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
         }
 
         $attributesToFilter = $config->getAttributesToFilter($customerGroupId);
-
         $algoliaJsConfig = [
             'instant' => [
                 'enabled' => $config->isInstantEnabled(),
@@ -192,7 +196,8 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'isSearchBoxEnabled' => $config->isInstantSearchBoxEnabled(),
                 'isVisualMerchEnabled' => $config->isVisualMerchEnabled(),
                 'categorySeparator' => $config->getCategorySeparator(),
-                'categoryPageIdAttribute' => $config->getCategoryPageIdAttributeName()
+                'categoryPageIdAttribute' => $config->getCategoryPageIdAttributeName(),
+                'isCategoryNavigationEnabled' => self::IS_CATEGORY_NAVIGATION_ENABLED
             ],
             'autocomplete' => [
                 'enabled' => $config->isAutoCompleteEnabled(),
