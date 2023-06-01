@@ -111,7 +111,11 @@ define(
 							}
 					}
 
-					instantsearchOptions = algolia.triggerHooks('beforeInstantsearchInit', instantsearchOptions, algoliaBundle);
+                    if (algoliaConfig.instant.isVisualMerchEnabled && algoliaConfig.isCategoryPage ) {
+                        searchParameters.filters = `${algoliaConfig.instant.categoryPageIdAttribute}:'${algoliaConfig.request.path}'`;
+                    }
+
+                    instantsearchOptions = algolia.triggerHooks('beforeInstantsearchInit', instantsearchOptions, algoliaBundle);
 
 					var search = algoliaBundle.instantsearch(instantsearchOptions);
 
@@ -143,192 +147,201 @@ define(
 					});
 
 					var allWidgetConfiguration = {
-							infiniteHits: {},
-							hits:         {},
-							configure:    searchParameters,
-							custom:       [
-									/**
-									 * Custom widget - this widget is used to refine results for search page or catalog page
-									 * Docs: https://www.algolia.com/doc/guides/building-search-ui/widgets/create-your-own-widgets/js/
-									 **/
-									{
-											getWidgetSearchParameters: function (searchParameters) {
-													if (algoliaConfig.request.query.length > 0 && location.hash.length < 1) {
-															return searchParameters.setQuery(algoliaConfig.request.query)
-													}
-													return searchParameters;
-											},
-											init:                      function (data) {
-													var page = data.helper.state.page;
+                        infiniteHits: {},
+                        hits        : {},
+                        configure   : searchParameters,
+                        custom      : [
+                            /**
+                             * Custom widget - this widget is used to refine results for search page or catalog page
+                             * Docs: https://www.algolia.com/doc/guides/building-search-ui/widgets/create-your-own-widgets/js/
+                             **/
+                            {
+                                getWidgetSearchParameters: function (searchParameters) {
+                                    if (algoliaConfig.request.query.length > 0 && location.hash.length < 1) {
+                                        return searchParameters.setQuery(algoliaConfig.request.query)
+                                    }
+                                    return searchParameters;
+                                },
+                                init                     : function (data) {
+                                    var page = data.helper.state.page;
 
-													if (algoliaConfig.request.refinementKey.length > 0) {
-															data.helper.toggleRefine(algoliaConfig.request.refinementKey, algoliaConfig.request.refinementValue);
-													}
+                                    if (algoliaConfig.request.refinementKey.length > 0) {
+                                        data.helper.toggleRefine(algoliaConfig.request.refinementKey, algoliaConfig.request.refinementValue);
+                                    }
 
-													if (algoliaConfig.isCategoryPage) {
-															data.helper.addNumericRefinement('visibility_catalog', '=', 1);
-													} else {
-															data.helper.addNumericRefinement('visibility_search', '=', 1);
-													}
+                                    if (algoliaConfig.isCategoryPage) {
+                                        data.helper.addNumericRefinement('visibility_catalog', '=', 1);
+                                    } else {
+                                        data.helper.addNumericRefinement('visibility_search', '=', 1);
+                                    }
 
-													data.helper.setPage(page);
-											},
-											render:                    function (data) {
-													if (!algoliaConfig.isSearchPage) {
-															if (data.results.query.length === 0 && data.results.nbHits === 0) {
-																	$('.algolia-instant-replaced-content').show();
-																	$('.algolia-instant-selector-results').hide();
-															} else {
-																	$('.algolia-instant-replaced-content').hide();
-																	$('.algolia-instant-selector-results').show();
-															}
-													}
-											}
-									},
-									/**
-									 * Custom widget - Suggestions
-									 * This widget renders suggestion queries which might be interesting for your customer
-									 * Docs: https://www.algolia.com/doc/guides/building-search-ui/widgets/create-your-own-widgets/js/
-									 **/
-									{
-											suggestions: [],
-											init:        function () {
-													if (algoliaConfig.showSuggestionsOnNoResultsPage) {
-															var $this = this;
-															$.each(algoliaConfig.popularQueries.slice(0, Math.min(4, algoliaConfig.popularQueries.length)), function (i, query) {
-																	query = $('<div>').html(query).text(); //xss
-																	$this.suggestions.push('<a href="' + algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(query) + '">' + query + '</a>');
-															});
-													}
-											},
-											render:      function (data) {
-													if (data.results.hits.length === 0) {
-															var content = '<div class="no-results">';
-															content += '<div><b>' + algoliaConfig.translations.noProducts + ' "' + $("<div>").text(data.results.query).html() + '</b>"</div>';
-															content += '<div class="popular-searches">';
+                                    data.helper.setPage(page);
+                                },
+                                render                   : function (data) {
+                                    if (!algoliaConfig.isSearchPage) {
+                                        if (data.results.query.length === 0 && data.results.nbHits === 0) {
+                                            $('.algolia-instant-replaced-content').show();
+                                            $('.algolia-instant-selector-results').hide();
+                                        } else {
+                                            $('.algolia-instant-replaced-content').hide();
+                                            $('.algolia-instant-selector-results').show();
+                                        }
+                                    }
+                                }
+                            },
+                            /**
+                             * Custom widget - Suggestions
+                             * This widget renders suggestion queries which might be interesting for your customer
+                             * Docs: https://www.algolia.com/doc/guides/building-search-ui/widgets/create-your-own-widgets/js/
+                             **/
+                            {
+                                suggestions: [],
+                                init       : function () {
+                                    if (algoliaConfig.showSuggestionsOnNoResultsPage) {
+                                        var $this = this;
+                                        $.each(algoliaConfig.popularQueries.slice(0, Math.min(4, algoliaConfig.popularQueries.length)), function (i, query) {
+                                            query = $('<div>').html(query).text(); //xss
+                                            $this.suggestions.push('<a href="' + algoliaConfig.baseUrl + '/catalogsearch/result/?q=' + encodeURIComponent(query) + '">' + query + '</a>');
+                                        });
+                                    }
+                                },
+                                render     : function (data) {
+                                    if (data.results.hits.length === 0) {
+                                        var content = '<div class="no-results">';
+                                        content += '<div><b>' + algoliaConfig.translations.noProducts + ' "' + $("<div>").text(data.results.query).html() + '</b>"</div>';
+                                        content += '<div class="popular-searches">';
 
-															if (algoliaConfig.showSuggestionsOnNoResultsPage && this.suggestions.length > 0) {
-																	content += '<div>' + algoliaConfig.translations.popularQueries + '</div>' + this.suggestions.join(', ');
-															}
+                                        if (algoliaConfig.showSuggestionsOnNoResultsPage && this.suggestions.length > 0) {
+                                            content += '<div>' + algoliaConfig.translations.popularQueries + '</div>' + this.suggestions.join(', ');
+                                        }
 
-															content += '</div>';
-															content += algoliaConfig.translations.or + ' <a href="' + algoliaConfig.baseUrl + '/catalogsearch/result/?q=__empty__">' + algoliaConfig.translations.seeAll + '</a>'
+                                        content += '</div>';
+                                        content += algoliaConfig.translations.or + ' <a href="' + algoliaConfig.baseUrl + '/catalogsearch/result/?q=__empty__">' + algoliaConfig.translations.seeAll + '</a>'
 
-															content += '</div>';
+                                        content += '</div>';
 
-															$('#instant-empty-results-container').html(content);
-													} else {
-															$('#instant-empty-results-container').html('');
-													}
-											}
-									}
-							],
-							/**
-							 * stats
-							 * Docs: https://www.algolia.com/doc/api-reference/widgets/stats/js/
-							 **/
-							stats: {
-									container: '#algolia-stats',
-									templates: {
-											text: function (data) {
-													var hoganTemplate = algoliaBundle.Hogan.compile($('#instant-stats-template').html());
+                                        $('#instant-empty-results-container').html(content);
+                                    } else {
+                                        $('#instant-empty-results-container').html('');
+                                    }
+                                }
+                            }
+                        ],
+                        /**
+                         * stats
+                         * Docs: https://www.algolia.com/doc/api-reference/widgets/stats/js/
+                         **/
+                        stats: {
+                            container: '#algolia-stats',
+                            templates: {
+                                text: function (data) {
+                                    var hoganTemplate = algoliaBundle.Hogan.compile($('#instant-stats-template').html());
 
-													data.first = data.page * data.hitsPerPage + 1;
-													data.last = Math.min(data.page * data.hitsPerPage + data.hitsPerPage, data.nbHits);
-													data.seconds = data.processingTimeMS / 1000;
-													data.translations = window.algoliaConfig.translations;
+                                    data.first = data.page * data.hitsPerPage + 1;
+                                    data.last = Math.min(data.page * data.hitsPerPage + data.hitsPerPage, data.nbHits);
+                                    data.seconds = data.processingTimeMS / 1000;
+                                    data.translations = window.algoliaConfig.translations;
 
-													return hoganTemplate.render(data)
-											}
-									}
-							},
-							/**
-							 * sortBy
-							 * Docs: https://www.algolia.com/doc/api-reference/widgets/sort-by/js/
-							 **/
-							sortBy: {
-									container: '#algolia-sorts',
-									items:     algoliaConfig.sortingIndices.map(function (sortingIndice) {
-											return {
-													label: sortingIndice.label,
-													value: sortingIndice.name,
-											}
-									})
-							},
-							/**
-							 * currentRefinements
-							 * Widget displays all filters and refinements applied on query. It also let your customer to clear them one by one
-							 * Docs: https://www.algolia.com/doc/api-reference/widgets/current-refinements/js/
-							 **/
-							currentRefinements: {
-									container:          '#current-refinements',
-									templates:          {
-											item: $('#current-refinements-template').html()
-									},
-									includedAttributes: attributes.map(function (attribute) {
-											if (!(algoliaConfig.isCategoryPage && attribute.name.indexOf('categories') > -1)) {
-													return attribute.name;
-											}
-									}),
-									transformItems:     function (items) {
-											return items.map(function (item) {
-													var attribute = attributes.filter(function (_attribute) {
-															return item.attribute === _attribute.name
-													})[0];
-													if (!attribute) return item;
-													item.label = attribute.label;
-													item.refinements.forEach(function (refinement) {
-															if (refinement.type !== 'hierarchical') return refinement;
-															var levels = refinement.label.split('///');
-															var lastLevel = levels[levels.length - 1];
-															refinement.label = lastLevel;
-													});
-													return item;
-											})
-									}
-							},
+                                    return hoganTemplate.render(data)
+                                }
+                            }
+                        },
+                        /**
+                         * sortBy
+                         * Docs: https://www.algolia.com/doc/api-reference/widgets/sort-by/js/
+                         **/
+                        sortBy: {
+                            container: '#algolia-sorts',
+                            items    : algoliaConfig.sortingIndices.map(function (sortingIndice) {
+                                return {
+                                    label: sortingIndice.label,
+                                    value: sortingIndice.name,
+                                }
+                            })
+                        },
+                        /**
+                         * currentRefinements
+                         * Widget displays all filters and refinements applied on query. It also let your customer to clear them one by one
+                         * Docs: https://www.algolia.com/doc/api-reference/widgets/current-refinements/js/
+                         **/
+                        currentRefinements: {
+                            container         : '#current-refinements',
+                            // TODO: Remove this - it does nothing
+                            templates         : {
+                                item: $('#current-refinements-template').html()
+                            },
+                            includedAttributes: attributes.map(attribute => {
+                                if (attribute.name.indexOf('categories') === -1
+                                    || !algoliaConfig.isCategoryPage) // For category browse, requires a custom renderer to prevent removal of the root node from hierarchicalMenu widget
+                                    return attribute.name;
+                            }),
 
-							/*
-							 * clearRefinements
-							 * Widget displays a button that lets the user clean every refinement applied to the search. You can control which attributes are impacted by the button with the options.
-							 * Docs: https://www.algolia.com/doc/api-reference/widgets/clear-refinements/js/
-							 **/
-							clearRefinements: {
-									container:          '#clear-refinements',
-									templates:          {
-											resetLabel: algoliaConfig.translations.clearAll,
-									},
-									includedAttributes: attributes.map(function (attribute) {
-											if (!(algoliaConfig.isCategoryPage && attribute.name.indexOf('categories') > -1)) {
-													return attribute.name;
-											}
-									}),
-									cssClasses:         {
-											button: ['action', 'primary']
-									},
-									transformItems:     function (items) {
-											return items.map(function (item) {
-													var attribute = attributes.filter(function (_attribute) {
-															return item.attribute === _attribute.name
-													})[0];
-													if (!attribute) return item;
-													item.label = attribute.label;
-													return item;
-											})
-									}
-							},
-							/*
-							 * queryRuleCustomData
-							 * The queryRuleCustomData widget displays custom data from Query Rules.
-							 * Docs: https://www.algolia.com/doc/api-reference/widgets/query-rule-custom-data/js/
-							 **/
-							queryRuleCustomData: {
-									container: '#algolia-banner',
-									templates: {
-											default: '{{#items}} {{#banner}} {{{banner}}} {{/banner}} {{/items}}',
-									}
-							}
-					};
+                            transformItems: items => {
+                                return items
+                                    // This filter is only applicable if categories facet is included as an attribute
+                                    .filter(item => {
+                                        return !algoliaConfig.isCategoryPage
+                                            || item.refinements.filter(refinement => refinement.value !== algoliaConfig.request.path).length; // do not expose the category root
+                                    })
+                                    .map(item => {
+                                        const attribute = attributes.filter(_attribute => {
+                                            return item.attribute === _attribute.name
+                                        })[0];
+                                        if (!attribute) return item;
+                                        item.label = attribute.label;
+                                        item.refinements.forEach(function (refinement) {
+                                            if (refinement.type !== 'hierarchical') return refinement;
+
+                                            const levels = refinement.label.split(algoliaConfig.instant.categorySeparator);
+                                            const lastLevel = levels[levels.length - 1];
+                                            refinement.label = lastLevel;
+                                        });
+                                        return item;
+                                    });
+                            },
+
+                            /*
+                             * clearRefinements
+                             * Widget displays a button that lets the user clean every refinement applied to the search. You can control which attributes are impacted by the button with the options.
+                             * Docs: https://www.algolia.com/doc/api-reference/widgets/clear-refinements/js/
+                             **/
+                            clearRefinements: {
+                                container         : '#clear-refinements',
+                                templates         : {
+                                    resetLabel: algoliaConfig.translations.clearAll,
+                                },
+                                includedAttributes: attributes.map(function (attribute) {
+                                    if (!(algoliaConfig.isCategoryPage && attribute.name.indexOf('categories') > -1)) {
+                                        return attribute.name;
+                                    }
+                                }),
+                                cssClasses        : {
+                                    button: ['action', 'primary']
+                                },
+                                transformItems    : function (items) {
+                                    return items.map(function (item) {
+                                        var attribute = attributes.filter(function (_attribute) {
+                                            return item.attribute === _attribute.name
+                                        })[0];
+                                        if (!attribute) return item;
+                                        item.label = attribute.label;
+                                        return item;
+                                    })
+                                }
+                            },
+                            /*
+                             * queryRuleCustomData
+                             * The queryRuleCustomData widget displays custom data from Query Rules.
+                             * Docs: https://www.algolia.com/doc/api-reference/widgets/query-rule-custom-data/js/
+                             **/
+                            queryRuleCustomData: {
+                                container: '#algolia-banner',
+                                templates: {
+                                    default: '{{#items}} {{#banner}} {{{banner}}} {{/banner}} {{/items}}',
+                                }
+                            }
+                        }
+                    };
 
 					if (algoliaConfig.instant.isSearchBoxEnabled) {
 							/**
@@ -435,42 +448,56 @@ define(
 											hierarchical_levels.push('categories.level' + l.toString());
 									}
 
-									var hierarchicalMenuParams = {
-											container:          facet.wrapper.appendChild(createISWidgetContainer(facet.attribute)),
-											attributes:         hierarchical_levels,
-											separator:          ' /// ',
-											templates:          templates,
-											alwaysGetRootLevel: false,
-											showParentLevel:    false,
-											limit:              algoliaConfig.maxValuesPerFacet,
-											sortBy:             ['name:asc'],
-											transformItems(items) {
-													if (algoliaConfig.isCategoryPage) {
-															var filteredData = [];
-															items.forEach(element => {
-																	if (element.label == algoliaConfig.request.parentCategory) {
-																			filteredData.push(element);
-																	}
 
-															});
-															items = filteredData;
-													}
-													return items.map(item => ({
-															...item,
-															label: item.label,
-													}));
-											},
-									};
+                                    //return array of items starting from root based on category
+                                    const findRoot = (items) => {
+                                        const root = items.find(element => algoliaConfig.request.path.startsWith(element.value));
+
+                                        if (!root) {
+                                            return items;
+                                        }
+                                        if (!root.data) {
+                                            return [];
+                                        }
+
+                                        return findRoot(root.data);
+
+                                    };
+
+                                    var hierarchicalMenuParams = {
+                                        container         : facet.wrapper.appendChild(createISWidgetContainer(facet.attribute)),
+                                        attributes        : hierarchical_levels,
+                                        separator         : algoliaConfig.instant.categorySeparator,
+                                        templates         : templates,
+                                        showParentLevel   : true,
+                                        limit             : algoliaConfig.maxValuesPerFacet,
+                                        sortBy            : ['name:asc'],
+                                        transformItems(items) {
+                                            return (algoliaConfig.isCategoryPage)
+                                                ? findRoot(items).map(
+                                                    item => {
+                                                        return {
+                                                            ...item,
+                                                            categoryUrl: algoliaConfig.instant.isCategoryNavigationEnabled ? algoliaConfig.request.childCategories[item.value]['url'] : ''
+                                                        };
+                                                    }
+                                                )
+                                                : items;
+                                        },
+                                    };
 
 									hierarchicalMenuParams.templates.item = '' +
-											'<a class="{{cssClasses.link}} {{#isRefined}}{{cssClasses.link}}--selected{{/isRefined}}" href="{{url}}">{{label}}' + ' ' +
-											'<span class="{{cssClasses.count}}">{{#helpers.formatNumber}}{{count}}{{/helpers.formatNumber}}</span>' +
+                                        '<a class="{{cssClasses.link}} {{#isRefined}}{{cssClasses.link}}--selected{{/isRefined}}" href="{{categoryUrl}}">{{label}}' + ' ' +
+                                        '<span class="{{cssClasses.count}}">{{#helpers.formatNumber}}{{count}}{{/helpers.formatNumber}}</span>' +
 											'</a>';
 									hierarchicalMenuParams.panelOptions = {
-											templates: {
-													header: '<div class="name">' + (facet.label ? facet.label : facet.attribute) + '</div>',
-											}
-									};
+                                        templates: {
+                                            header: '<div class="name">' + (facet.label ? facet.label : facet.attribute) + '</div>',
+                                        },
+                                        hidden   : function ({items}) {
+                                            return !items.length;
+                                        }
+                                    };
 
 									return ['hierarchicalMenu', hierarchicalMenuParams];
 							}
