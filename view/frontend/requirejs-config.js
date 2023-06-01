@@ -27,7 +27,6 @@ var config = {
         'rangeSlider'     : 'Algolia_AlgoliaSearch/navigation/range-slider-widget',
     },
     deps  : [
-        'algoliaAutocomplete',
         'algoliaInstantSearch',
         'algoliaInsights'
     ],
