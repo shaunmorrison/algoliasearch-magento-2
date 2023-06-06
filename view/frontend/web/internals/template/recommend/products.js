@@ -8,7 +8,7 @@ define([], function () {
             }
             this.defaultIndexName = algoliaConfig.indexName + '_products';
             return  html`<div class="product-details">
-                <a class="recommend-item product-url" href="${item.url}" data-objectid=${item.objectID}  data-index=${this.defaultIndexName}>
+                <a class="recommend-item product-url" href="${item.url}" data-objectid=${item.objectID} data-position=${item.position}  data-index=${this.defaultIndexName}>
                     <img class="product-img" src="${item.image_url}" alt="${item.name}"/>
                     <p class="product-name">${item.name}</p>
                     ${addTocart && html`
