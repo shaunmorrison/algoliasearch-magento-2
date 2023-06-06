@@ -1,5 +1,15 @@
 # CHANGE LOG
 
+## 3.10.4
+
+### Bug Fixes
+- Fixed the checkout console “tagName” error
+- Fixed the undefined config variable issue in recommend
+- Fixed the issue with logged in user token for click and conversion when perso is turned off.
+- Fixed the issue with Items click position for Recommend Events
+- Fixed the issue with Hyphen converted to slash in facets.
+
+
 ## 3.10.3
 
 ### UPDATES
