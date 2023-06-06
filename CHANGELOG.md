@@ -3,9 +3,9 @@
 ## 3.10.4
 
 ### Bug Fixes
-- Fixed the checkout console “tagName” error
+- Fixed the checkout console “tagName” error due to autocomplete not defined by ensuring proper loading of the js library
 - Fixed the undefined config variable issue in recommend
-- Fixed the issue with logged in user token for click and conversion when perso is turned off.
+- Fixed the issue with logged in user token for click and conversion when personification is turned off.
 - Fixed the issue with Items click position for Recommend Events
 - Fixed the issue with Hyphen converted to slash in facets.
 
