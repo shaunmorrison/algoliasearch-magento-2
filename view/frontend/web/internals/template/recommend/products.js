@@ -4,9 +4,8 @@ define([], function () {
             let correctFKey = getCookie('form_key');
             let action = algoliaConfig.recommend.addToCartParams.action + 'product/' + item.objectID + '/';
             if(correctFKey != "" && algoliaConfig.recommend.addToCartParams.formKey != correctFKey) {
-                config.recommend.addToCartParams.formKey = correctFKey;
+                algoliaConfig.recommend.addToCartParams.formKey = correctFKey;
             }
-            this.config = algoliaConfig;
             this.defaultIndexName = algoliaConfig.indexName + '_products';
             return  html`<div class="product-details">
                 <a class="recommend-item product-url" href="${item.url}" data-objectid=${item.objectID}  data-index=${this.defaultIndexName}>
