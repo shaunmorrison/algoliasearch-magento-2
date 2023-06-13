@@ -28,7 +28,10 @@ define(['jquery'], function ($) {
             if (form.find('input[name="queryid"]').length === 0) {
                 form.prepend('<input type="hidden" name="queryID" />');
             }
-
+            var productId = form.find('input[name="product"]').val();
+            console.log("Query string:", window.location.search);
+            var actionUrl = `${window.algoliaConfig.instant.addToCartParams.action}/product/${productId}/?${window.location.search}`;
+            form.find('input[name="uenc"]').val(actionUrl);
             form.find('input[name="queryID"]').val(queryID);
         },
 
