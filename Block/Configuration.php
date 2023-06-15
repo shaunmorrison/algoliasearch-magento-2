@@ -233,6 +233,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'path' => $path,
                 'level' => $level,
                 'parentCategory' => $parentCategoryName,
+                'url' => $this->getUrl('*/*/*', ['_use_rewrite' => true, '_forced_secure' => true])
             ],
             'showCatsNotIncludedInNavigation' => $config->showCatsNotIncludedInNavigation(),
             'showSuggestionsOnNoResultsPage' => $config->showSuggestionsOnNoResultsPage(),
