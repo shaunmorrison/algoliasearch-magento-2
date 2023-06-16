@@ -154,6 +154,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'infiniteScrollEnabled' => $config->isInfiniteScrollEnabled(),
                 'urlTrackedParameters' => $this->getUrlTrackedParameters(),
                 'isSearchBoxEnabled' => $config->isInstantSearchBoxEnabled(),
+                'hidePagination' => $config->hidePaginationInInstantSearchPage()
             ],
             'autocomplete' => [
                 'enabled' => $config->isAutoCompleteEnabled(),

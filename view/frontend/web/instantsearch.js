@@ -392,7 +392,7 @@ define(
                         item:  $('#instant-hit-template').html(),
                     },
                     transformItems: function (items, { results }) {
-                        if (results.nbPages <= 1){
+                        if (results.nbPages <= 1 && algoliaConfig.instant.hidePagination === true){
                             document.getElementById('instant-search-pagination-container').style.display = "none";
                         }else{
                             document.getElementById('instant-search-pagination-container').style.display = "block";
