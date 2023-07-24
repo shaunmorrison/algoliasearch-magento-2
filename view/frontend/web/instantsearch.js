@@ -391,12 +391,7 @@ define(
                         empty: '',
                         item:  $('#instant-hit-template').html(),
                     },
-                    transformItems: function (items, { results }) {
-                        if (results.nbPages <= 1){
-                            document.getElementById('instant-search-pagination-container').style.display = "none";
-                        }else{
-                            document.getElementById('instant-search-pagination-container').style.display = "block";
-                        }
+                    transformItems: function (items) {
                         return items.map(function (item) {
 
                             item.__indexName = search.helper.lastResults.index;
