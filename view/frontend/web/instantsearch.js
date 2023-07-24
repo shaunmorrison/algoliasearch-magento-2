@@ -401,8 +401,7 @@ define(
                             return item;
                         })
                     }
-                };
-		    
+                };  
                 /**
                  * pagination
                  * Docs: https://www.algolia.com/doc/api-reference/widgets/pagination/js/
