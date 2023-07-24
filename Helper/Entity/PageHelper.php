@@ -196,7 +196,14 @@ class PageHelper
         if ($completeRemoveTags && $completeRemoveTags !== [] && $s) {
             $dom = new \DOMDocument();
             libxml_use_internal_errors(true);
-            $dom->loadHTML(mb_convert_encoding($s, 'HTML-ENTITIES', 'UTF-8'));
+            $encodedStr = mb_encode_numericentity(
+                htmlspecialchars_decode(
+                    htmlentities($s, ENT_NOQUOTES, 'UTF-8', false)
+                    ,ENT_NOQUOTES
+                ), [0x80, 0x10FFFF, 0, ~0],
+                'UTF-8'
+            );
+            $dom->loadHTML($encodedStr);
             libxml_use_internal_errors(false);
 
             $toRemove = [];
