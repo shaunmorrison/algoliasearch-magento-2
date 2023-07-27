@@ -197,7 +197,8 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'isVisualMerchEnabled' => $config->isVisualMerchEnabled(),
                 'categorySeparator' => $config->getCategorySeparator(),
                 'categoryPageIdAttribute' => $config->getCategoryPageIdAttributeName(),
-                'isCategoryNavigationEnabled' => self::IS_CATEGORY_NAVIGATION_ENABLED
+                'isCategoryNavigationEnabled' => self::IS_CATEGORY_NAVIGATION_ENABLED,
+                'hidePagination' => $config->hidePaginationInInstantSearchPage()
             ],
             'autocomplete' => [
                 'enabled' => $config->isAutoCompleteEnabled(),
@@ -239,10 +240,7 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
             'indexName' => $coreHelper->getBaseIndexName(),
             'apiKey' => $algoliaHelper->generateSearchSecuredApiKey(
                 $config->getSearchOnlyAPIKey(),
-                array_merge(
-                    $config->getAttributesToRetrieve($customerGroupId),
-                    $attributesToFilter
-                )
+                $attributesToFilter
             ),
             'attributeFilter' => $attributesToFilter,
             'facets' => $facets,
@@ -277,7 +275,8 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'path' => $path,
                 'level' => $level,
                 'parentCategory' => $parentCategoryName,
-                'childCategories' => $childCategories
+                'childCategories' => $childCategories,
+                'url' => $this->getUrl('*/*/*', ['_use_rewrite' => true, '_forced_secure' => true])
             ],
             'showCatsNotIncludedInNavigation' => $config->showCatsNotIncludedInNavigation(),
             'showSuggestionsOnNoResultsPage' => $config->showSuggestionsOnNoResultsPage(),

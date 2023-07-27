@@ -33,6 +33,7 @@ class ConfigHelper
     public const XML_ADD_TO_CART_ENABLE = 'algoliasearch_instant/instant/add_to_cart_enable';
     public const INFINITE_SCROLL_ENABLE = 'algoliasearch_instant/instant/infinite_scroll_enable';
     public const SEARCHBOX_ENABLE = 'algoliasearch_instant/instant/instantsearch_searchbox';
+    public const HIDE_PAGINATION = 'algoliasearch_instant/instant/hide_pagination';
 
     public const IS_POPUP_ENABLED = 'algoliasearch_autocomplete/autocomplete/is_popup_enabled';
     public const NB_OF_PRODUCTS_SUGGESTIONS = 'algoliasearch_autocomplete/autocomplete/nb_of_products_suggestions';
@@ -530,6 +531,16 @@ class ConfigHelper
     {
         return $this->isInstantEnabled($storeId)
             && $this->configInterface->isSetFlag(self::INFINITE_SCROLL_ENABLE, ScopeInterface::SCOPE_STORE, $storeId);
+    }
+
+    /**
+     * @param $storeId
+     * @return bool
+     */
+    public function hidePaginationInInstantSearchPage($storeId = null)
+    {
+        return $this->isInstantEnabled($storeId)
+            && $this->configInterface->isSetFlag(self::HIDE_PAGINATION, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     /**

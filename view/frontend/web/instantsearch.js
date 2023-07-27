@@ -404,15 +404,20 @@ define(
 											empty: '',
 											item:  $('#instant-hit-template').html(),
 									},
-									transformItems: function (items) {
-											return items.map(function (item) {
-													item.__indexName = search.helper.lastResults.index;
-													item = transformHit(item, algoliaConfig.priceKey, search.helper);
-													// FIXME: transformHit is a global
-													item.isAddToCartEnabled = algoliaConfig.instant.isAddToCartEnabled;
-													item.algoliaConfig = window.algoliaConfig;
-													return item;
-											})
+									transformItems: function (items, { results }) {
+                                        if (results.nbPages <= 1 && algoliaConfig.instant.hidePagination === true){
+                                            document.getElementById('instant-search-pagination-container').style.display = "none";
+                                        }else{
+                                            document.getElementById('instant-search-pagination-container').style.display = "block";
+                                        }
+										return items.map(function (item) {
+												item.__indexName = search.helper.lastResults.index;
+												item = transformHit(item, algoliaConfig.priceKey, search.helper);
+												// FIXME: transformHit is a global
+												item.isAddToCartEnabled = algoliaConfig.instant.isAddToCartEnabled;
+												item.algoliaConfig = window.algoliaConfig;
+												return item;
+										})
 									}
 							};
 
