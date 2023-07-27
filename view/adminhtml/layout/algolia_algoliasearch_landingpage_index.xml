@@ -19,6 +19,6 @@
                     <argument name="view_model" xsi:type="object">Algolia\AlgoliaSearch\ViewModel\Adminhtml\Common</argument>
                 </arguments>
             </block>
-        </referenceBlock>
+        </referenceContainer>
     </body>
 </page>
