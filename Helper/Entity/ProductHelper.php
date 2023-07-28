@@ -473,7 +473,7 @@ class ProductHelper
                 $replicas = array_values(array_unique(array_merge($replicas, $currentSettings['replicas'])));
             }
         } catch (AlgoliaException $e) {
-            if ($e->getMessage() !== 'Index does not exist') {
+            if ($e->getCode() !== 404) {
                 throw $e;
             }
         }
@@ -518,7 +518,7 @@ class ProductHelper
                     Copying synonyms from production index to TMP one to not erase them with the index move.
                 ');
             } catch (AlgoliaException $e) {
-                $this->logger->error('Error encountered while copying synonyms: ' . $e->getMessage());
+                $this->logger->log('Error encountered while copying synonyms: ' . $e->getMessage());
             }
 
             try {
@@ -527,9 +527,7 @@ class ProductHelper
                     Copying query rules to "' . $indexNameTmp . '" to not to erase them with the index move.
                 ');
             } catch (AlgoliaException $e) {
-                // Fail silently if query rules are disabled on the app
-                // If QRs are disabled, nothing will happen and the extension will work as expected
-                if ($e->getMessage() !== 'Query Rules are not enabled on this application') {
+                if ($e->getCode() !== 404) {
                     throw $e;
                 }
             }
@@ -1462,9 +1460,7 @@ class ProductHelper
                 $page++;
             } while (($page * $hitsPerPage) < $fetchedQueryRules['nbHits']);
         } catch (AlgoliaException $e) {
-            // Fail silently if query rules are disabled on the app
-            // If QRs are disabled, nothing will happen and the extension will work as expected
-            if ($e->getMessage() !== 'Query Rules are not enabled on this application') {
+            if ($e->getCode() !== 404) {
                 throw $e;
             }
         }

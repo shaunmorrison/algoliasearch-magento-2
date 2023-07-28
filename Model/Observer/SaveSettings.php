@@ -25,7 +25,7 @@ class SaveSettings implements ObserverInterface
     protected $algoliaHelper;
 
     /**
-     * @var AlgoliaHelper
+     * @var Data
      */
     protected $helper;
 
@@ -79,7 +79,7 @@ class SaveSettings implements ObserverInterface
                 }
             }
         } catch (\Exception $e) {
-            if ($e->getMessage() !== 'Index does not exist') {
+            if ($e->getCode() !== 404) {
                 throw $e;
             }
         }
