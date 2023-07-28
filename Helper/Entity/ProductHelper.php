@@ -518,7 +518,7 @@ class ProductHelper
                     Copying synonyms from production index to TMP one to not erase them with the index move.
                 ');
             } catch (AlgoliaException $e) {
-                $this->logger->log('Error encountered while copying synonyms: ' . $e->getMessage());
+                $this->logger->error('Error encountered while copying synonyms: ' . $e->getMessage());
             }
 
             try {
