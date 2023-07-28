@@ -1,5 +1,13 @@
 # CHANGE LOG
 
+## 3.10.5
+
+### Bug Fixes
+- Added the code to hide Pagination when the results have only one page in InstantSearch page
+- Add the code to fix the php8.2 version compatibility issues
+- Replaced referenceBlock by referenceContainer following Magento best practices.
+- Revert removal of tier price field for product
+  
 ## 3.10.4
 
 ### Bug Fixes
