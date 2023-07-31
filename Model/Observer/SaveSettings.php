@@ -67,7 +67,7 @@ class SaveSettings implements ObserverInterface
             foreach ($storeIds as $storeId) {
                 $indexName = $this->helper->getIndexName($this->productHelper->getIndexNameSuffix(), $storeId);
                 $currentSettings = $this->algoliaHelper->getSettings($indexName);
-                if (array_key_exists('replicas', $currentSettings)) {
+                if (is_array($currentSettings) && array_key_exists('replicas', $currentSettings)) {
                     $this->algoliaHelper->setSettings($indexName, ['replicas' => []]);
                     $setReplicasTaskId = $this->algoliaHelper->getLastTaskId();
                     $this->algoliaHelper->waitLastTask($indexName, $setReplicasTaskId);
