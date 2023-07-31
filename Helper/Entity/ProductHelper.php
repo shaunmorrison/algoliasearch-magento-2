@@ -469,7 +469,7 @@ class ProductHelper
         // Merge current replicas with sorting replicas to not delete A/B testing replica indices
         try {
             $currentSettings = $this->algoliaHelper->getSettings($indexName);
-            if (array_key_exists('replicas', $currentSettings)) {
+            if (is_array($currentSettings) && array_key_exists('replicas', $currentSettings)) {
                 $replicas = array_values(array_unique(array_merge($replicas, $currentSettings['replicas'])));
             }
         } catch (AlgoliaException $e) {
