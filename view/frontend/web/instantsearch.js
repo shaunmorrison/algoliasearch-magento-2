@@ -158,7 +158,7 @@ define(
                             {
                                 getWidgetSearchParameters: function (searchParameters) {
                                     if (algoliaConfig.request.query.length > 0 && location.hash.length < 1) {
-                                        return searchParameters.setQuery(algoliaConfig.request.query)
+                                        return searchParameters.setQuery(algolia.htmlspecialcharsDecode(algoliaConfig.request.query))
                                     }
                                     return searchParameters;
                                 },
