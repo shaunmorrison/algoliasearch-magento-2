@@ -434,7 +434,7 @@ define(
             detachedMediaQuery: 'none',
             onSubmit(data) {
                 if (data.state.query && data.state.query !== null && data.state.query !== "") {
-                    window.location.href = algoliaConfig.resultPageUrl + `?q=${data.state.query}`;
+                    window.location.href = algoliaConfig.resultPageUrl + `?q=${encodeURIComponent(data.state.query)}`;
                 }
             },
             getSources() {
