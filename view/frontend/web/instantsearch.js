@@ -354,7 +354,7 @@ define(
 									showSubmit:  false,
 									queryHook:   function (inputValue, search) {
 											if (algoliaConfig.isSearchPage && algoliaConfig.request.categoryId.length <= 0 && algoliaConfig.request.landingPageId.length <= 0) {
-													$(".page-title-wrapper span.base").html(algoliaConfig.translations.searchTitle + ": '" + inputValue + "'");
+													$(".page-title-wrapper span.base").html(algoliaConfig.translations.searchTitle + ": '" + algolia.htmlspecialcharsDecode(inputValue) + "'");
 											}
 											return search(inputValue);
 									}
