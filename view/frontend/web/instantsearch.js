@@ -1,13 +1,14 @@
 define(
-	[
-			'algoliaBundle',
-			'Magento_Catalog/js/price-utils',
-			'algoliaCommon',
-			'algoliaInsights',
-			'algoliaHooks'
-	],
-	function (algoliaBundle, priceUtils) {
-			algoliaBundle.$(function ($) {
+    [
+            'jquery',
+            'algoliaBundle',
+            'Magento_Catalog/js/price-utils',
+            'algoliaCommon',
+            'algoliaInsights',
+            'algoliaHooks'
+    ],
+    function ($, algoliaBundle, priceUtils) {
+            $(function ($) {
 					/** We have nothing to do here if instantsearch is not enabled **/
 					if (typeof algoliaConfig === 'undefined' || !algoliaConfig.instant.enabled || !(algoliaConfig.isSearchPage || !algoliaConfig.autocomplete.enabled)) {
 							return;
