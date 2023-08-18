@@ -43,6 +43,7 @@ class Bundle extends ProductWithChildren
      */
     protected function getMinMaxPrices(Product $product, $withTax, $subProducts, $currencyCode)
     {
+        $product = $this->productloader->create()->load($product->getId());
         $product->setData('website_id', $product->getStore()->getWebsiteId());
         $minPrice = $product->getPriceInfo()->getPrice('final_price')->getMinimalPrice()->getValue();
         $minOriginalPrice = $product->getPriceInfo()->getPrice('regular_price')->getMinimalPrice()->getValue();
