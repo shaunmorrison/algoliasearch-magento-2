@@ -1,5 +1,10 @@
 # CHANGE LOG
 
+## 3.10.6
+
+### Bug Fixes
+- Replaced referenceBlock by referenceContainer following Magento best practices.
+
 ## 3.10.5
 
 ### Bug Fixes
