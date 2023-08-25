@@ -404,12 +404,7 @@ define(
 											empty: '',
 											item:  $('#instant-hit-template').html(),
 									},
-									transformItems: function (items, { results }) {
-                                        if (results.nbPages <= 1 && algoliaConfig.instant.hidePagination === true){
-                                            document.getElementById('instant-search-pagination-container').style.display = "none";
-                                        }else{
-                                            document.getElementById('instant-search-pagination-container').style.display = "block";
-                                        }
+									transformItems: function (items) {
 										return items.map(function (item) {
 												item.__indexName = search.helper.lastResults.index;
 												item = transformHit(item, algoliaConfig.priceKey, search.helper);
@@ -517,6 +512,11 @@ define(
 																	+ '</div>',
 									},
 									hidden:    function (options) {
+										        if (options.results.nbPages <= 1 && algoliaConfig.instant.hidePagination === true){
+						                                            	document.getElementById('instant-search-pagination-container').style.display = "none";
+						                                        }else{
+						                                        	document.getElementById('instant-search-pagination-container').style.display = "block";
+						                                        }
 											if (!options.results) return true;
 											switch (facet.type) {
 													case 'conjunctive':
