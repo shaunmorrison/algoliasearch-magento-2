@@ -1436,7 +1436,7 @@ class ProductHelper
      * @param $replica
      * @return array
      */
-    protected function handleVirtualReplica($replicas, $indexName)
+    public function handleVirtualReplica($replicas, $indexName)
     {
         $virtualReplicaArray = [];
         foreach ($replicas as $replica) {

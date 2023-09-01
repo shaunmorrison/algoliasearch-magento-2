@@ -937,12 +937,15 @@ class ConfigHelper
      * @param $originalIndexName
      * @param $storeId
      * @param $currentCustomerGroupId
+     * @param $attrs
      * @return array
      * @throws Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getSortingIndices($originalIndexName, $storeId = null, $currentCustomerGroupId = null)
+    public function getSortingIndices($originalIndexName, $storeId = null, $currentCustomerGroupId = null, $attrs = null)
     {
-        $attrs = $this->getSorting($storeId);
+        if (!$attrs){
+            $attrs = $this->getSorting($storeId);
+        }
         $currency = $this->getCurrencyCode($storeId);
         $attributesToAdd = [];
         foreach ($attrs as $key => $attr) {

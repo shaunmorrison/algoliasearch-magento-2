@@ -336,7 +336,7 @@
                 <field id="sorts" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Sorts</label>
                     <frontend_model>Algolia\AlgoliaSearch\Model\Source\Sorts</frontend_model>
-                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <backend_model>Algolia\AlgoliaSearch\Model\Backend\Sorts</backend_model>
                     <comment>
                         <![CDATA[
                             Specify different sorting options you want to offer on a search results page.<br>
