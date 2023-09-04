@@ -1481,9 +1481,11 @@ class ProductHelper
                 }
             } catch (AlgoliaException $e) {
                 if ($e->getCode() !== 404) {
+                    $this->logger->log($e->getMessage());
                     throw $e;
                 }
             }
         }
+        return true;
     }
 }
