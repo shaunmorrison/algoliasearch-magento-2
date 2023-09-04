@@ -5,19 +5,17 @@ namespace Algolia\AlgoliaSearch\Model\Backend;
 use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
 use Algolia\AlgoliaSearch\Helper\Data;
 use Algolia\AlgoliaSearch\Helper\Entity\ProductHelper;
-use Magento\Config\Model\Config\Backend\Serialized\ArraySerialized;
 use Magento\Framework\App\Cache\TypeListInterface;
 use Magento\Framework\App\Config\ScopeConfigInterface;
-use Magento\Framework\App\ObjectManager;
+use Magento\Framework\App\Config\Value;
 use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
-use Magento\Framework\Serialize\Serializer\Json;
 use Magento\Store\Model\StoreManagerInterface;
 
-class Sorts extends ArraySerialized
+class Replica extends Value
 {
     /** @var StoreManagerInterface */
     protected $storeManager;
@@ -42,25 +40,22 @@ class Sorts extends ArraySerialized
      * @param AbstractResource|null $resource
      * @param AbstractDb|null $resourceCollection
      * @param array $data
-     * @param Json|null $serializer
      */
     public function __construct(
-        Context $context,
-        Registry $registry,
-        ScopeConfigInterface $config,
-        TypeListInterface $cacheTypeList,
+        Context               $context,
+        Registry              $registry,
+        ScopeConfigInterface  $config,
+        TypeListInterface     $cacheTypeList,
         StoreManagerInterface $storeManager,
-        Data $helper,
-        ProductHelper $productHelper,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
-        array $data = [],
-        Json $serializer = null
+        Data                  $helper,
+        ProductHelper         $productHelper,
+        AbstractResource      $resource = null,
+        AbstractDb            $resourceCollection = null,
+        array                 $data = []
     ) {
         $this->storeManager = $storeManager;
         $this->helper = $helper;
         $this->productHelper = $productHelper;
-        $this->serializer = $serializer ?: ObjectManager::getInstance()->get(Json::class);
         parent::__construct($context, $registry, $config, $cacheTypeList, $resource, $resourceCollection, $data);
     }
 
@@ -72,12 +67,11 @@ class Sorts extends ArraySerialized
     public function afterSave()
     {
         if ($this->isValueChanged()) {
-            try{
-                $oldValue = $this->serializer->unserialize($this->getOldValue());
+            try {
                 $storeIds = array_keys($this->storeManager->getStores());
                 foreach ($storeIds as $storeId) {
                     $indexName = $this->helper->getIndexName($this->productHelper->getIndexNameSuffix(), $storeId);
-                    $this->productHelper->handlingReplica($indexName, $storeId, $oldValue);
+                    $this->productHelper->handlingReplica($indexName, $storeId);
                 }
             } catch (AlgoliaException $e) {
                 if ($e->getCode() !== 404) {
@@ -88,3 +82,4 @@ class Sorts extends ArraySerialized
         return parent::afterSave();
     }
 }
+

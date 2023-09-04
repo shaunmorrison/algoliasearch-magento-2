@@ -1444,4 +1444,46 @@ class ProductHelper
         }
         return $virtualReplicaArray;
     }
+
+    /**
+     * @param $indexName
+     * @param $storeId
+     * @param $sortingAttribute
+     * @return void
+     * @throws AlgoliaException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    public function handlingReplica($indexName, $storeId, $sortingAttribute = false) {
+        if ($sortingAttribute) {
+            $sortingIndices = $this->configHelper->getSortingIndices($indexName, $storeId, null, $sortingAttribute);
+        } else {
+            $sortingIndices = $this->configHelper->getSortingIndices($indexName, $storeId);
+        }
+        if ($this->configHelper->isInstantEnabled($storeId)) {
+            $replicas = array_values(array_map(function ($sortingIndex) {
+                return $sortingIndex['name'];
+            }, $sortingIndices));
+            try {
+                if ($this->configHelper->useVirtualReplica($storeId)) {
+                    $replicas = $this->handleVirtualReplica($replicas, $indexName);
+                }
+                $currentSettings = $this->algoliaHelper->getSettings($indexName);
+                if (is_array($currentSettings) && array_key_exists('replicas', $currentSettings)) {
+                    $replicasRequired = array_values(array_diff_assoc($currentSettings['replicas'], $replicas));
+                    $this->algoliaHelper->setSettings($indexName, ['replicas' => $replicasRequired]);
+                    $setReplicasTaskId = $this->algoliaHelper->getLastTaskId();
+                    $this->algoliaHelper->waitLastTask($indexName, $setReplicasTaskId);
+                    if (count($replicas) > 0) {
+                        foreach ($replicas as $replicaIndex) {
+                            $this->algoliaHelper->deleteIndex($replicaIndex);
+                        }
+                    }
+                }
+            } catch (AlgoliaException $e) {
+                if ($e->getCode() !== 404) {
+                    throw $e;
+                }
+            }
+        }
+    }
 }
