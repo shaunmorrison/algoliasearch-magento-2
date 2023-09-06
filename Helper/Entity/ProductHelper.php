@@ -1454,11 +1454,7 @@ class ProductHelper
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function handlingReplica($indexName, $storeId, $sortingAttribute = false) {
-        if ($sortingAttribute) {
-            $sortingIndices = $this->configHelper->getSortingIndices($indexName, $storeId, null, $sortingAttribute);
-        } else {
-            $sortingIndices = $this->configHelper->getSortingIndices($indexName, $storeId);
-        }
+        $sortingIndices = $this->configHelper->getSortingIndices($indexName, $storeId, null, $sortingAttribute);
         if ($this->configHelper->isInstantEnabled($storeId)) {
             $replicas = array_values(array_map(function ($sortingIndex) {
                 return $sortingIndex['name'];
