@@ -15,6 +15,7 @@ define(
     function ($, algoliaBundle, pagesHtml, categoriesHtml, productsHtml, suggestionsHtml, additionalHtml) {
 
         const DEFAULT_HITS_PER_SECTION = 2;
+        const DEBOUNCE_MS = 300;
 
         // global state
         let suggestionSection = false;
@@ -382,7 +383,22 @@ define(
                     };
                 },
             });
-        }
+        };
+
+        const debouncePromise = (fn, time) => {
+            let timerId = undefined;
+
+            return function debounced(...args) {
+                if (timerId) {
+                    clearTimeout(timerId);
+                }
+
+                return new Promise((resolve) => {
+                    timerId = setTimeout(() => resolve(fn(...args)), time);
+                });
+            };
+        };
+        const debounced = debouncePromise((items) => Promise.resolve(items), DEBOUNCE_MS);
 
         /**
          * Load suggestions, products and categories as configured
@@ -438,7 +454,7 @@ define(
                 }
             },
             getSources() {
-                return autocompleteConfig;
+                return debounced(autocompleteConfig);
             },
         };
 
