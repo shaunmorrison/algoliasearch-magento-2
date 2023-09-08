@@ -154,7 +154,7 @@ define(
                     {
                         getWidgetSearchParameters: function (searchParameters) {
                             if (algoliaConfig.request.query.length > 0 && location.hash.length < 1) {
-                                return searchParameters.setQuery(algoliaConfig.request.query)
+                                return searchParameters.setQuery(algolia.htmlspecialcharsDecode(algoliaConfig.request.query))
                             }
                             return searchParameters;
                         },
@@ -341,7 +341,7 @@ define(
                     showSubmit:  false,
                     queryHook:   function (inputValue, search) {
                         if (algoliaConfig.isSearchPage && algoliaConfig.request.categoryId.length <= 0 && algoliaConfig.request.landingPageId.length <= 0) {
-                            $(".page-title-wrapper span.base").html(algoliaConfig.translations.searchTitle + ": '" + inputValue + "'");
+                            $(".page-title-wrapper span.base").html(algoliaConfig.translations.searchTitle + ": '" + algolia.htmlspecialcharsDecode(inputValue) + "'");
                         }
                         return search(inputValue);
                     }
@@ -391,12 +391,7 @@ define(
                         empty: '',
                         item:  $('#instant-hit-template').html(),
                     },
-                    transformItems: function (items, { results }) {
-                        if (results.nbPages <= 1 && algoliaConfig.instant.hidePagination === true){
-                            document.getElementById('instant-search-pagination-container').style.display = "none";
-                        }else{
-                            document.getElementById('instant-search-pagination-container').style.display = "block";
-                        }
+                    transformItems: function (items) {
                         return items.map(function (item) {
 
                             item.__indexName = search.helper.lastResults.index;
@@ -491,6 +486,11 @@ define(
                                     + '</div>',
                     },
                     hidden:    function (options) {
+                        if (options.results.nbPages <= 1 && algoliaConfig.instant.hidePagination === true){
+                                document.getElementById('instant-search-pagination-container').style.display = "none";
+                        }else{
+                            document.getElementById('instant-search-pagination-container').style.display = "block";
+                        }
                         if (!options.results) return true;
                         switch (facet.type) {
                             case 'conjunctive':
