@@ -164,7 +164,9 @@ class Configuration extends Algolia implements CollectionDataSourceInterface
                 'nbOfCategoriesSuggestions' => $config->getNumberOfCategoriesSuggestions(),
                 'nbOfQueriesSuggestions' => $config->getNumberOfQueriesSuggestions(),
                 'isDebugEnabled' => $config->isAutocompleteDebugEnabled(),
-                'isNavigatorEnabled' => $config->isAutocompleteNavigatorEnabled()
+                'isNavigatorEnabled' => $config->isAutocompleteNavigatorEnabled(),
+                'debounceMilliseconds' => $config->getAutocompleteDebounceMilliseconds(),
+                'minimumCharacters' => $config->getAutocompleteMinimumCharacterLength()
             ],
             'landingPage' => [
                 'query' => $this->getLandingPageQuery(),

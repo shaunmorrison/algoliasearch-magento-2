@@ -15,8 +15,8 @@ define(
     function ($, algoliaBundle, pagesHtml, categoriesHtml, productsHtml, suggestionsHtml, additionalHtml) {
 
         const DEFAULT_HITS_PER_SECTION = 2;
-        const DEBOUNCE_MS = 300;
-        const MIN_SEARCH_LENGTH_CHARS = 3;
+        const DEBOUNCE_MS = algoliaConfig.autocomplete.debounceMilliseconds;
+        const MIN_SEARCH_LENGTH_CHARS = algoliaConfig.autocomplete.minimumCharacters;
 
         // global state
         let suggestionSection = false;

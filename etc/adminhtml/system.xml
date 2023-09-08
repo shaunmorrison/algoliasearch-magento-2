@@ -243,6 +243,30 @@
                         <field id="is_popup_enabled">1</field>
                     </depends>
                 </field>
+                <field id="debounce_millis" translate="label comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <validate>validate-digits</validate>
+                    <label>Debounce requests</label>
+                    <comment>
+                        <![CDATA[
+                            The minimal time (in milliseconds) that should elapse as users type their search query before a request is sent to the Algolia Search API. Default value is 300.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="is_popup_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="minimum_char_length" translate="label comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <validate>validate-digits</validate>
+                    <label>Minimum query length</label>
+                    <comment>
+                        <![CDATA[
+                            The minimal number of characters required for a search term before a request is sent to the Algolia Search API. If set to 0 then results will be fetched on first keystroke. Default value is 0.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="is_popup_enabled">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
         <section id="algoliasearch_instant" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
