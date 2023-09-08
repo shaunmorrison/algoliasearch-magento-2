@@ -16,6 +16,7 @@ define(
 
         const DEFAULT_HITS_PER_SECTION = 2;
         const DEBOUNCE_MS = 300;
+        const MIN_SEARCH_LENGTH_CHARS = 3;
 
         // global state
         let suggestionSection = false;
@@ -349,8 +350,8 @@ define(
                 transformSource({source}) {
                     return {
                         ...source,
-                        getItems() {
-                          const items = source.getItems();
+                        getItems({ query }) {
+                          const items = filterMinChars(query, source.getItems());
                           const oldTransform = items.transformResponse;
                           items.transformResponse = arg => {
                               const hits = oldTransform ? oldTransform(arg) : arg.hits;
@@ -384,6 +385,12 @@ define(
                 },
             });
         };
+
+        const filterMinChars = (query, result) => {
+            return (query.length >= MIN_SEARCH_LENGTH_CHARS)
+                ? result
+                : [];
+        }
 
         const debouncePromise = (fn, time) => {
             let timerId = undefined;
@@ -453,9 +460,12 @@ define(
                     window.location.href = algoliaConfig.resultPageUrl + `?q=${encodeURIComponent(data.state.query)}`;
                 }
             },
-            getSources() {
-                return debounced(autocompleteConfig);
+            getSources({query}) {
+              return filterMinChars(query, debounced(autocompleteConfig));
             },
+            shouldPanelOpen({ state }) {
+                return state.query.length >= MIN_SEARCH_LENGTH_CHARS;
+            }
         };
 
         if (isMobile() === true) {
