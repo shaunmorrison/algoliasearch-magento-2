@@ -45,7 +45,7 @@ class ConfigHelper
     public const MIN_NUMBER_OF_RESULTS = 'algoliasearch_autocomplete/autocomplete/min_number_of_results';
     public const RENDER_TEMPLATE_DIRECTIVES = 'algoliasearch_autocomplete/autocomplete/render_template_directives';
     public const AUTOCOMPLETE_MENU_DEBUG = 'algoliasearch_autocomplete/autocomplete/debug';
-    public const AUTOCOMPLETE_DEBOUNCE_MILLIS = 'algoliasearch_autocomplete/autocomplete/debounce_millis';
+    public const AUTOCOMPLETE_DEBOUNCE_MILLISEC = 'algoliasearch_autocomplete/autocomplete/debounce_millisec';
     public const AUTOCOMPLETE_MINIMUM_CHAR_LENGTH = 'algoliasearch_autocomplete/autocomplete/minimum_char_length';
 
     public const PRODUCT_ATTRIBUTES = 'algoliasearch_products/products/product_additional_attributes';
@@ -938,7 +938,7 @@ class ConfigHelper
     public function getAutocompleteDebounceMilliseconds($storeId = null): int
     {
         return (int) $this->configInterface->getValue(
-            self::AUTOCOMPLETE_DEBOUNCE_MILLIS,
+            self::AUTOCOMPLETE_DEBOUNCE_MILLISEC,
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
