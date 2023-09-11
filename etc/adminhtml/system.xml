@@ -243,7 +243,7 @@
                         <field id="is_popup_enabled">1</field>
                     </depends>
                 </field>
-                <field id="debounce_millis" translate="label comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="debounce_millisec" translate="label comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
                     <validate>validate-digits</validate>
                     <label>Debounce requests</label>
                     <comment>
