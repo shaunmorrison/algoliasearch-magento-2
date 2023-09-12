@@ -946,6 +946,7 @@ class ConfigHelper
         if (!$attrs){
             $attrs = $this->getSorting($storeId);
         }
+        
         $currency = $this->getCurrencyCode($storeId);
         $attributesToAdd = [];
         foreach ($attrs as $key => $attr) {
