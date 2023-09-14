@@ -89,7 +89,12 @@ class IndicesConfigurator
         }
 
         $this->setCategoriesSettings($storeId);
-        $this->setPagesSettings($storeId);
+        /* heck if we want to index CMS pages */
+        if ($this->configHelper->isPagesIndexEnabled($storeId)) {
+            $this->setPagesSettings($storeId);
+        } else {
+            $this->logger->log('CMS Page Indexing is not enabled for the store.');
+        }
 
         //Check if we want to index Query Suggestions
         if ($this->configHelper->isQuerySuggestionsIndexEnabled($storeId)) {

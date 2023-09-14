@@ -260,6 +260,11 @@ class Data
         if ($this->isIndexingEnabled($storeId) === false) {
             return;
         }
+        
+        if (!$this->configHelper->isPagesIndexEnabled($storeId)) {
+            $this->logger->log('Pages Indexing is not enabled for the store.');
+            return;
+        }
 
         $indexName = $this->getIndexName($this->pageHelper->getIndexNameSuffix(), $storeId);
 
