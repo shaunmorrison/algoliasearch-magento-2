@@ -16,6 +16,7 @@ class ConfigHelper
 {
     public const ENABLE_FRONTEND = 'algoliasearch_credentials/credentials/enable_frontend';
     public const ENABLE_BACKEND = 'algoliasearch_credentials/credentials/enable_backend';
+    public const ENABLE_QUERY_SUGGESTIONS_INDEX = 'algoliasearch_credentials/credentials/enable_query_suggestions_index';
     public const LOGGING_ENABLED = 'algoliasearch_credentials/credentials/debug';
     public const APPLICATION_ID = 'algoliasearch_credentials/credentials/application_id';
     public const API_KEY = 'algoliasearch_credentials/credentials/api_key';
@@ -1595,6 +1596,15 @@ class ConfigHelper
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
+    }
+
+    /**
+     * @param $storeId
+     * @return bool
+     */
+    public function isQuerySuggestionsIndexEnabled($storeId = null)
+    {
+        return $this->configInterface->isSetFlag(self::ENABLE_QUERY_SUGGESTIONS_INDEX, ScopeInterface::SCOPE_STORE, $storeId);
     }
 
     /**
