@@ -10,6 +10,7 @@
         <algoliasearch_credentials>
             <credentials>
                 <enable_query_suggestions_index>1</enable_query_suggestions_index>
+                <enable_pages_index>1</enable_pages_index>
             </credentials>
         </algoliasearch_credentials>
         <algoliasearch_autocomplete>
