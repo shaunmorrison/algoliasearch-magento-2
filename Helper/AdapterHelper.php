@@ -12,16 +12,16 @@ class AdapterHelper
     public const BACKEND_ORDER_PARAM = 'product_list_order';
 
     /** @var CatalogSearchDataHelper */
-    private $catalogSearchHelper;
+    protected $catalogSearchHelper;
 
     /** @var AlgoliaDataHelper */
-    private $algoliaHelper;
+    protected $algoliaHelper;
 
     /** @var FiltersHelper */
-    private $filtersHelper;
+    protected $filtersHelper;
 
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /**
      * @param CatalogSearchDataHelper $catalogSearchHelper
@@ -81,7 +81,7 @@ class AdapterHelper
      *
      * @return string
      */
-    private function getOrderParam($storeId)
+    protected function getOrderParam($storeId)
     {
         return self::INSTANTSEARCH_ORDER_PARAM;
     }
@@ -93,7 +93,7 @@ class AdapterHelper
      *
      * @return array
      */
-    private function getSearchParams($storeId)
+    protected function getSearchParams($storeId)
     {
         $searchParams = [];
         $searchParams['facetFilters'] = [];
@@ -190,16 +190,28 @@ class AdapterHelper
             && $this->configHelper->isInstantEnabled($this->getStoreId()) === true;
     }
 
-    private function getStoreId()
+    /**
+     * @return int
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
+    protected function getStoreId()
     {
         return $this->configHelper->getStoreId();
     }
 
+    /**
+     * @return bool
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function isInstantEnabled()
     {
         return $this->configHelper->isInstantEnabled($this->getStoreId());
     }
 
+    /**
+     * @return bool
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function makeSeoRequest()
     {
         return $this->configHelper->makeSeoRequest($this->getStoreId());
