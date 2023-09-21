@@ -13,29 +13,38 @@ use Magento\Cms\Model\ResourceModel\Page\CollectionFactory as PageCollection;
 class IndexEntityDataProvider
 {
     /** @var Data */
-    private $dataHelper;
+    protected $dataHelper;
 
     /** @var ProductHelper */
-    private $productHelper;
+    protected $productHelper;
 
     /** @var CategoryHelper */
-    private $categoryHelper;
+    protected $categoryHelper;
 
     /** @var PageHelper */
-    private $pageHelper;
+    protected $pageHelper;
 
     /** @var ProductCollection */
-    private $productCollection;
+    protected $productCollection;
 
     /** @var CategoryCollection */
-    private $categoryCollection;
+    protected $categoryCollection;
 
     /** @var PageCollection */
-    private $pageCollection;
+    protected $pageCollection;
 
     /** @var array */
-    private $entityIndexes = [];
+    protected $entityIndexes = [];
 
+    /**
+     * @param Data $dataHelper
+     * @param ProductHelper $productHelper
+     * @param CategoryHelper $categoryHelper
+     * @param PageHelper $pageHelper
+     * @param ProductCollection $productCollection
+     * @param CategoryCollection $categoryCollection
+     * @param PageCollection $pageCollection
+     */
     public function __construct(
         Data $dataHelper,
         ProductHelper $productHelper,
@@ -57,8 +66,8 @@ class IndexEntityDataProvider
 
     /**
      * @param $storeId
-     *
      * @return array
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getEntityIndexes($storeId)
     {
@@ -78,6 +87,7 @@ class IndexEntityDataProvider
      * @param $storeId
      *
      * @return mixed
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getIndexNameByEntity($entity, $storeId)
     {
@@ -110,6 +120,7 @@ class IndexEntityDataProvider
      * @param array $objectIds
      *
      * @return \Magento\Catalog\Model\ResourceModel\Category\Collection
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function getCategoryCollection($storeId, $objectIds)
     {

@@ -8,14 +8,19 @@ use Algolia\AlgoliaSearch\Helper\Entity\ProductHelper;
 class MerchandisingHelper
 {
     /** @var Data */
-    private $coreHelper;
+    protected $coreHelper;
 
     /** @var ProductHelper */
-    private $productHelper;
+    protected $productHelper;
 
     /** @var AlgoliaHelper */
-    private $algoliaHelper;
+    protected $algoliaHelper;
 
+    /**
+     * @param Data $coreHelper
+     * @param ProductHelper $productHelper
+     * @param AlgoliaHelper $algoliaHelper
+     */
     public function __construct(
         Data $coreHelper,
         ProductHelper $productHelper,
@@ -26,6 +31,16 @@ class MerchandisingHelper
         $this->algoliaHelper = $algoliaHelper;
     }
 
+    /**
+     * @param $storeId
+     * @param $entityId
+     * @param $rawPositions
+     * @param $entityType
+     * @param $query
+     * @param $banner
+     * @return void
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function saveQueryRule($storeId, $entityId, $rawPositions, $entityType, $query = null, $banner = null)
     {
         if ($this->coreHelper->isIndexingEnabled($storeId) === false) {
@@ -73,6 +88,13 @@ class MerchandisingHelper
         $this->algoliaHelper->saveRule($rule, $productsIndexName);
     }
 
+    /**
+     * @param $storeId
+     * @param $entityId
+     * @param $entityType
+     * @return void
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function deleteQueryRule($storeId, $entityId, $entityType)
     {
         if ($this->coreHelper->isIndexingEnabled($storeId) === false) {
@@ -87,7 +109,11 @@ class MerchandisingHelper
         $this->algoliaHelper->deleteRule($productsIndexName, $ruleId);
     }
 
-    private function transformPositions($positions)
+    /**
+     * @param $positions
+     * @return array
+     */
+    protected function transformPositions($positions)
     {
         $transformedPositions = [];
 
@@ -168,7 +194,12 @@ class MerchandisingHelper
         }
     }
 
-    private function getQueryRuleId($entityId, $entityType)
+    /**
+     * @param $entityId
+     * @param $entityType
+     * @return string
+     */
+    protected function getQueryRuleId($entityId, $entityType)
     {
         return 'magento-' . $entityType . '-' . $entityId;
     }

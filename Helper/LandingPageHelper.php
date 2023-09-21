@@ -4,8 +4,8 @@ namespace Algolia\AlgoliaSearch\Helper;
 
 use Algolia\AlgoliaSearch\Model\LandingPage;
 use Algolia\AlgoliaSearch\Model\LandingPageFactory;
-use Magento\Framework\App\Action\Action;
 use Magento\Framework\Registry;
+use Magento\Framework\App\ActionInterface;
 
 /**
  * Landing Page Helper
@@ -29,7 +29,7 @@ class LandingPageHelper extends \Magento\Framework\App\Helper\AbstractHelper
     protected $resultPageFactory;
 
     /** @var Registry */
-    private $registry;
+    protected $registry;
 
     /**
      * Constructor
@@ -59,6 +59,11 @@ class LandingPageHelper extends \Magento\Framework\App\Helper\AbstractHelper
         parent::__construct($context);
     }
 
+    /**
+     * @param $pageId
+     * @return LandingPage|false
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getLandingPage($pageId)
     {
         if ($pageId !== null && $pageId !== $this->landingPage->getId()) {
@@ -75,12 +80,13 @@ class LandingPageHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Return result Landing page
      *
-     * @param Action $action
-     * @param int $pageId
+     * @param ActionInterface $action
+     * @param null $pageId
      *
      * @return \Magento\Framework\View\Result\Page|bool
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function prepareResultPage(Action $action, $pageId = null)
+    public function prepareResultPage(ActionInterface $action, $pageId = null)
     {
         $page = $this->getLandingPage($pageId);
 
@@ -106,9 +112,10 @@ class LandingPageHelper extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Retrieve landing page direct URL
      *
-     * @param string $pageId
+     * @param null $pageId
      *
      * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getPageUrl($pageId = null)
     {

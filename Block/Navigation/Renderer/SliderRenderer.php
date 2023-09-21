@@ -18,7 +18,7 @@ class SliderRenderer extends Template implements FilterRendererInterface
     protected $dataRole = 'range-slider';
 
     /** @var EncoderInterface */
-    private $jsonEncoder;
+    protected $jsonEncoder;
 
     /** @var FormatInterface */
     protected $localeFormat;
@@ -45,6 +45,10 @@ class SliderRenderer extends Template implements FilterRendererInterface
         $this->localeFormat = $localeFormat;
     }
 
+    /**
+     * @param FilterInterface $filter
+     * @return string
+     */
     public function render(FilterInterface $filter)
     {
         $html  = '';
@@ -59,6 +63,9 @@ class SliderRenderer extends Template implements FilterRendererInterface
         return $html;
     }
 
+    /**
+     * @return FilterInterface
+     */
     public function getFilter()
     {
         return $this->filter;
@@ -130,7 +137,7 @@ class SliderRenderer extends Template implements FilterRendererInterface
     }
 
     /** @return array */
-    private function getCurrentValue()
+    protected function getCurrentValue()
     {
         $currentValue = $this->getFilter()->getCurrentValue();
 
@@ -150,7 +157,7 @@ class SliderRenderer extends Template implements FilterRendererInterface
     }
 
     /** @return string */
-    private function getUrlTemplate()
+    protected function getUrlTemplate()
     {
         $filter = $this->getFilter();
         $item = current($this->getFilter()->getItems());

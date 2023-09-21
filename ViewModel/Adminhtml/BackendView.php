@@ -13,23 +13,31 @@ use Magento\Store\Model\StoreManagerInterface;
 class BackendView
 {
     /** @var RequestInterface */
-    private $request;
+    protected $request;
 
     /** @var LayoutInterface */
-    private $layout;
+    protected $layout;
 
     /** @var StoreManagerInterface */
-    private $storeManager;
+    protected $storeManager;
 
     /** @var TimezoneInterface */
-    private $dateTime;
+    protected $dateTime;
 
     /** @var Session */
-    private $session;
+    protected $session;
 
     /** @var UrlInterface */
-    private $url;
+    protected $url;
 
+    /**
+     * @param RequestInterface $request
+     * @param LayoutInterface $layout
+     * @param StoreManagerInterface $storeManager
+     * @param TimezoneInterface $dateTime
+     * @param Session $session
+     * @param UrlInterface $url
+     */
     public function __construct(
         RequestInterface $request,
         LayoutInterface $layout,

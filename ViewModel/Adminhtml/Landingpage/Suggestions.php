@@ -7,7 +7,7 @@ use Algolia\AlgoliaSearch\Model\ResourceModel\LandingPage\CollectionFactory as L
 class Suggestions implements \Magento\Framework\View\Element\Block\ArgumentInterface
 {
     /** @var LandingPageCollectionFactory */
-    private $landingPageCollectionFactory;
+    protected $landingPageCollectionFactory;
 
     /**
      * @param LandingPageCollectionFactory $landingPageCollectionFactory
@@ -17,6 +17,9 @@ class Suggestions implements \Magento\Framework\View\Element\Block\ArgumentInter
         $this->landingPageCollectionFactory = $landingPageCollectionFactory;
     }
 
+    /**
+     * @return mixed
+     */
     public function getNbOfLandingPages()
     {
         $landingPageCollection = $this->landingPageCollectionFactory->create();

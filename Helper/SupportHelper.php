@@ -5,7 +5,7 @@ namespace Algolia\AlgoliaSearch\Helper;
 class SupportHelper
 {
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /**
      * @param ConfigHelper $configHelper

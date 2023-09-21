@@ -11,28 +11,28 @@ use Magento\Store\Model\StoreManagerInterface;
 class NoteBuilder
 {
     /** @var JobResourceModel */
-    private $jobResourceModel;
+    protected $jobResourceModel;
 
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /** @var AdapterInterface */
-    private $dbConnection;
+    protected $dbConnection;
 
     /** @var StoreManagerInterface */
-    private $storeManager;
+    protected $storeManager;
 
     /** @var string */
-    private $queueArchiveTable;
+    protected $queueArchiveTable;
 
     /** @var string */
-    private $configTable;
+    protected $configTable;
 
     /** @var string */
-    private $catalogTable;
+    protected $catalogTable;
 
     /** @var string */
-    private $modulesTable;
+    protected $modulesTable;
 
     /**
      * @param JobResourceModel $jobResourceModel
@@ -92,7 +92,7 @@ class NoteBuilder
      *
      * @return string
      */
-    private function getQueueArchiveInfo()
+    protected function getQueueArchiveInfo()
     {
         $queueArchiveInfo = [];
 
@@ -126,7 +126,7 @@ class NoteBuilder
      *
      * @return string
      */
-    private function getAlgoliaConfiguration()
+    protected function getAlgoliaConfiguration()
     {
         $configurationText = [];
         $defaultConfigValues = [];
@@ -172,7 +172,7 @@ class NoteBuilder
      *
      * @return string
      */
-    private function getConfigurationValue($value)
+    protected function getConfigurationValue($value)
     {
         $value = json_decode($value, true) ?: $value;
         $value = var_export($value, true);
@@ -185,7 +185,7 @@ class NoteBuilder
      *
      * @return string
      */
-    private function getConfigurationQuery($storeId = null)
+    protected function getConfigurationQuery($storeId = null)
     {
         $scope = 'default';
         $scopeId = 0;
@@ -210,7 +210,7 @@ class NoteBuilder
      *
      * @return string
      */
-    private function getCatalogInfo()
+    protected function getCatalogInfo()
     {
         $catalogInfoText = [];
 
@@ -237,7 +237,7 @@ class NoteBuilder
      *
      * @return string
      */
-    private function get3rdPartyModules()
+    protected function get3rdPartyModules()
     {
         $modulesText = [];
 

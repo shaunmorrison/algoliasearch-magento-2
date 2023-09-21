@@ -7,13 +7,36 @@ use Psr\Log\LoggerInterface;
 
 class Logger
 {
-    private $enabled;
-    private $config;
-    private $logger;
+    /**
+     * @var bool
+     */
+    protected $enabled;
 
-    private $timers = [];
-    private $stores = [];
+    /**
+     * @var ConfigHelper
+     */
+    protected $config;
 
+    /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
+     * @var array
+     */
+    protected $timers = [];
+
+    /**
+     * @var array
+     */
+    protected $stores = [];
+
+    /**
+     * @param StoreManagerInterface $storeManager
+     * @param ConfigHelper $configHelper
+     * @param LoggerInterface $logger
+     */
     public function __construct(
         StoreManagerInterface $storeManager,
         ConfigHelper $configHelper,
@@ -28,11 +51,18 @@ class Logger
         }
     }
 
+    /**
+     * @return bool
+     */
     public function isEnable()
     {
         return $this->enabled;
     }
 
+    /**
+     * @param $storeId
+     * @return string
+     */
     public function getStoreName($storeId)
     {
         if ($storeId === null) {
@@ -42,6 +72,10 @@ class Logger
         return $storeId . ' (' . $this->stores[$storeId] . ')';
     }
 
+    /**
+     * @param $action
+     * @return void
+     */
     public function start($action)
     {
         if ($this->enabled === false) {
@@ -54,6 +88,11 @@ class Logger
         $this->timers[$action] = microtime(true);
     }
 
+    /**
+     * @param $action
+     * @return void
+     * @throws \Exception
+     */
     public function stop($action)
     {
         if ($this->enabled === false) {
@@ -67,6 +106,10 @@ class Logger
         $this->log('<<<<< END ' . $action . ' (' . $this->formatTime($this->timers[$action], microtime(true)) . ')');
     }
 
+    /**
+     * @param $message
+     * @return void
+     */
     public function log($message)
     {
         if ($this->enabled) {
@@ -74,7 +117,12 @@ class Logger
         }
     }
 
-    private function formatTime($begin, $end)
+    /**
+     * @param $begin
+     * @param $end
+     * @return string
+     */
+    protected function formatTime($begin, $end)
     {
         return ($end - $begin) . 'sec';
     }

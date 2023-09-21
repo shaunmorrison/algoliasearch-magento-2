@@ -16,25 +16,25 @@ class InsightsHelper
     public const ALGOLIA_CUSTOMER_USER_TOKEN_COOKIE_NAME = 'aa-search';
 
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /** @var PersonalizationHelper */
-    private $personalizationHelper;
+    protected $personalizationHelper;
 
     /** @var CookieManagerInterface */
-    private $cookieManager;
+    protected $cookieManager;
 
     /** @var CookieMetadataFactory */
-    private $cookieMetadataFactory;
+    protected $cookieMetadataFactory;
 
     /** @var InsightsClient */
-    private $insightsClient;
+    protected $insightsClient;
 
     /** @var UserInsightsClient */
-    private $userInsightsClient;
+    protected $userInsightsClient;
 
     /** @var CustomerSession */
-    private $customerSession;
+    protected $customerSession;
 
     /**
      * InsightsHelper constructor.
@@ -125,7 +125,7 @@ class InsightsHelper
     /**
      * @return string|null
      */
-    private function getUserToken()
+    protected function getUserToken()
     {
         $userToken = $this->cookieManager->getCookie(self::ALGOLIA_CUSTOMER_USER_TOKEN_COOKIE_NAME);
         if (!$userToken) {

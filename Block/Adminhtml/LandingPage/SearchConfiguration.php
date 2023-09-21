@@ -17,13 +17,10 @@ class SearchConfiguration extends \Magento\Backend\Block\Template
     protected $registry;
 
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /** @var Data */
-    private $coreHelper;
-
-    /** @var int */
-    protected $planLevel;
+    protected $coreHelper;
 
     /**
      * @param Context $context

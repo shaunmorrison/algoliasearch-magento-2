@@ -13,22 +13,22 @@ use Magento\Framework\View\Asset\Repository as AssetRepository;
 class NoticeHelper extends \Magento\Framework\App\Helper\AbstractHelper
 {
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /** @var PersonalizationHelper */
-    private $personalizationHelper;
+    protected $personalizationHelper;
 
     /** @var ModuleManager */
-    private $moduleManager;
+    protected $moduleManager;
 
     /** @var ObjectManagerInterface */
-    private $objectManager;
+    protected $objectManager;
 
     /** @var ExtensionNotification */
-    private $extensionNotification;
+    protected $extensionNotification;
 
     /** @var JobCollectionFactory */
-    private $jobCollectionFactory;
+    protected $jobCollectionFactory;
 
     /** @var UrlInterface */
     protected $urlBuilder;

@@ -10,10 +10,10 @@ use Magento\Framework\Message\ManagerInterface;
 class CleanCatalogImagesCacheAfter implements ObserverInterface
 {
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /** @var ManagerInterface */
-    private $messageManager;
+    protected $messageManager;
 
     /**
      * @param ConfigHelper $configHelper
@@ -35,8 +35,8 @@ class CleanCatalogImagesCacheAfter implements ObserverInterface
     public function execute(Observer $observer)
     {
         $this->messageManager->addWarningMessage(__('
-            Algolia Warning: The image cache has been cleared. 
-            All indexed image links will become invalid because the file will be nonexistent. 
+            Algolia Warning: The image cache has been cleared.
+            All indexed image links will become invalid because the file will be nonexistent.
             Please run a full reindex of your catalog data to resolve broken images in your Algolia Search.
         '));
     }

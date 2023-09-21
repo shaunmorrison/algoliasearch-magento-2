@@ -9,10 +9,24 @@ use Magento\Framework\View\Element\Template;
 
 class Hit extends Template
 {
-    private $config;
-    private $priceKey;
-    private $httpContext;
+    /**
+     * @var ConfigHelper
+     */
+    protected $config;
 
+    protected $priceKey;
+
+    /**
+     * @var HttpContext
+     */
+    protected $httpContext;
+
+    /**
+     * @param Template\Context $context
+     * @param ConfigHelper $config
+     * @param HttpContext $httpContext
+     * @param array $data
+     */
     public function __construct(
         Template\Context $context,
         ConfigHelper $config,
@@ -25,6 +39,10 @@ class Hit extends Template
         parent::__construct($context, $data);
     }
 
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getPriceKey()
     {
         if ($this->priceKey === null) {
@@ -41,6 +59,10 @@ class Hit extends Template
         return $this->priceKey;
     }
 
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function getCurrencyCode()
     {
         /** @var \Magento\Store\Model\Store $store */
@@ -49,6 +71,9 @@ class Hit extends Template
         return $store->getCurrentCurrencyCode();
     }
 
+    /**
+     * @return mixed|null
+     */
     public function getGroupId()
     {
         return $this->httpContext->getValue(CustomerContext::CONTEXT_GROUP);

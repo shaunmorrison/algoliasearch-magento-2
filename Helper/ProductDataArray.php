@@ -36,6 +36,10 @@ class ProductDataArray extends DataObject
         $this->setItems($items);
     }
 
+    /**
+     * @param $productId
+     * @return array|mixed|null
+     */
     public function getItem($productId)
     {
         return $this->getData('items', $productId);

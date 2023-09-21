@@ -9,10 +9,10 @@ use Magento\Backend\Block\Template;
 class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterface
 {
     /** @var BackendView */
-    private $backendView;
+    protected $backendView;
 
     /** @var SupportHelper */
-    private $supportHelper;
+    protected $supportHelper;
 
     /**
      * @param BackendView $backendView

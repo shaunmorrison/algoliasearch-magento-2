@@ -10,9 +10,9 @@ use Magento\Framework\Event\ObserverInterface;
 
 class CategoryCollectionAddPermissions implements ObserverInterface
 {
-    private $permissionsFactory;
-    private $customerGroupCollection;
-    private $sharedCatalogFactory;
+    protected $permissionsFactory;
+    protected $customerGroupCollection;
+    protected $sharedCatalogFactory;
 
     public function __construct(
         CustomerGroupCollection $customerGroupCollection,

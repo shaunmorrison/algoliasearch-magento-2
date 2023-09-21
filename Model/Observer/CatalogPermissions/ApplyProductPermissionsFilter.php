@@ -11,13 +11,13 @@ use Magento\Store\Model\StoreManager;
 class ApplyProductPermissionsFilter implements ObserverInterface
 {
     /** @var CatalogPermissionsFactory */
-    private $permissionsFactory;
+    protected $permissionsFactory;
 
     /** @var SharedCatalogFactory */
-    private $sharedCatalogFactory;
+    protected $sharedCatalogFactory;
 
     /** @var StoreManager */
-    private $storeManager;
+    protected $storeManager;
 
     /**
      * @param CatalogPermissionsFactory $permissionsFactory
@@ -34,6 +34,11 @@ class ApplyProductPermissionsFilter implements ObserverInterface
         $this->storeManager = $storeManager;
     }
 
+    /**
+     * @param Observer $observer
+     * @return $this|void
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function execute(Observer $observer)
     {
         $storeId = $this->storeManager->getStore()->getId();

@@ -7,7 +7,9 @@ use Magento\Framework\Exception\LocalizedException;
 
 class Duplicate extends AbstractAction
 {
-    /** @return \Magento\Framework\View\Result\Page */
+    /**
+     * @return \Magento\Backend\Model\View\Result\Redirect|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
@@ -54,7 +56,11 @@ class Duplicate extends AbstractAction
         return $resultRedirect->setPath('*/*/');
     }
 
-    private function duplicateLandingPage($landingPage)
+    /**
+     * @param $landingPage
+     * @return \Algolia\AlgoliaSearch\Model\LandingPage
+     */
+    protected function duplicateLandingPage($landingPage)
     {
         /** @var \Algolia\AlgoliaSearch\Model\LandingPage $newLandingPage */
         $newLandingPage = $this->landingPageFactory->create();
@@ -66,7 +72,13 @@ class Duplicate extends AbstractAction
         return $newLandingPage;
     }
 
-    private function copyQueryRules($landingPageFromId, $landingPageToId)
+    /**
+     * @param $landingPageFromId
+     * @param $landingPageToId
+     * @return void
+     * @throws \Algolia\AlgoliaSearch\Exceptions\AlgoliaException
+     */
+    protected function copyQueryRules($landingPageFromId, $landingPageToId)
     {
         $stores = [];
         if ($landingPageFromId) {

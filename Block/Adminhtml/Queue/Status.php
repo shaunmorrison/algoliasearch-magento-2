@@ -19,19 +19,19 @@ class Status extends Template
     public const QUEUE_FAST_LIMIT = 220;
 
     /** @var IndexerFactory */
-    private $indexerFactory;
+    protected $indexerFactory;
 
     /** @var DateTime */
-    private $dateTime;
+    protected $dateTime;
 
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /** @var Queue */
-    private $queue;
+    protected $queue;
 
     /** @var Indexer */
-    private $queueRunnerIndexer;
+    protected $queueRunnerIndexer;
 
     /**
      * @param Context        $context
@@ -62,42 +62,54 @@ class Status extends Template
         }
     }
 
+    /**
+     * @return bool
+     */
     public function isQueueActive()
     {
         return $this->configHelper->isQueueActive();
     }
 
+    /**
+     * @return string
+     */
     public function getQueueRunnerStatus()
     {
         $status = 'unknown';
         switch ($this->queueRunnerIndexer->getStatus()) {
             case \Magento\Framework\Indexer\StateInterface::STATUS_VALID:
                 $status = 'Ready';
-
                 break;
             case \Magento\Framework\Indexer\StateInterface::STATUS_INVALID:
                 $status = 'Reindex required';
-
                 break;
             case \Magento\Framework\Indexer\StateInterface::STATUS_WORKING:
                 $status = 'Processing';
-
                 break;
         }
 
         return $status;
     }
 
+    /**
+     * @return string
+     */
     public function getLastQueueUpdate()
     {
         return $this->queueRunnerIndexer->getLatestUpdated();
     }
 
+    /**
+     * @return string
+     */
     public function getResetQueueUrl()
     {
         return $this->getUrl('*/*/reset');
     }
 
+    /**
+     * @return array
+     */
     public function getNotices()
     {
         $notices = [];
@@ -134,7 +146,7 @@ class Status extends Template
      *
      * @return bool
      */
-    private function isQueueStuck()
+    protected function isQueueStuck()
     {
         if ($this->queueRunnerIndexer->getStatus() == \Magento\Framework\Indexer\StateInterface::STATUS_VALID) {
             return false;
@@ -152,7 +164,7 @@ class Status extends Template
      *
      * @return bool
      */
-    private function isQueueNotProcessed()
+    protected function isQueueNotProcessed()
     {
         return $this->getTimeSinceLastIndexerUpdate() > self::QUEUE_NOT_PROCESSED_LIMIT;
     }
@@ -162,7 +174,7 @@ class Status extends Template
      *
      * @return bool
      */
-    private function isQueueFast()
+    protected function isQueueFast()
     {
         $averageProcessingTime = $this->queue->getAverageProcessingTime();
 
@@ -170,13 +182,13 @@ class Status extends Template
     }
 
     /** @return int */
-    private function getIndexerLastUpdateTimestamp()
+    protected function getIndexerLastUpdateTimestamp()
     {
         return $this->dateTime->gmtTimestamp($this->queueRunnerIndexer->getLatestUpdated());
     }
 
     /** @return int */
-    private function getTimeSinceLastIndexerUpdate()
+    protected function getTimeSinceLastIndexerUpdate()
     {
         return $this->dateTime->gmtTimestamp('now') - $this->getIndexerLastUpdateTimestamp();
     }

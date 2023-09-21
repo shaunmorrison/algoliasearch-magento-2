@@ -4,9 +4,19 @@ namespace Algolia\AlgoliaSearch\Controller\Adminhtml\System\Config;
 
 class Save extends \Magento\Config\Controller\Adminhtml\System\Config\Save
 {
-    private $instantSerializedValues = ['facets', 'sorts'];
-    private $autocompleteSerializedValues = ['sections', 'excluded_pages'];
+    /**
+     * @var string[]
+     */
+    protected $instantSerializedValues = ['facets', 'sorts'];
 
+    /**
+     * @var string[]
+     */
+    protected $autocompleteSerializedValues = ['sections', 'excluded_pages'];
+
+    /**
+     * @return array|null
+     */
     protected function _getGroupsForSave()
     {
         $groups = parent::_getGroupsForSave();
@@ -14,7 +24,11 @@ class Save extends \Magento\Config\Controller\Adminhtml\System\Config\Save
         return $this->handleDeactivatedSerializedArrays($groups);
     }
 
-    private function handleDeactivatedSerializedArrays($groups)
+    /**
+     * @param $groups
+     * @return array
+     */
+    protected function handleDeactivatedSerializedArrays($groups)
     {
         if (isset($groups['autocomplete']['fields']['is_popup_enabled']['value'])
                 && $groups['autocomplete']['fields']['is_popup_enabled']['value'] == '0') {

@@ -12,10 +12,26 @@ use Magento\Store\Model\StoreManagerInterface;
 
 class Merchandising implements ObserverInterface
 {
-    private $merchandisingHelper;
-    private $storeManager;
-    private $request;
+    /**
+     * @var MerchandisingHelper
+     */
+    protected $merchandisingHelper;
 
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
+     * @var RequestInterface
+     */
+    protected $request;
+
+    /**
+     * @param StoreManagerInterface $storeManager
+     * @param MerchandisingHelper $merchandisingHelper
+     * @param RequestInterface $request
+     */
     public function __construct(
         StoreManagerInterface $storeManager,
         MerchandisingHelper $merchandisingHelper,
@@ -26,6 +42,12 @@ class Merchandising implements ObserverInterface
         $this->request = $request;
     }
 
+    /**
+     * @param Observer $observer
+     * @return void
+     * @throws LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function execute(Observer $observer)
     {
         $categoryId = $this->request->getParam('entity_id');
@@ -64,9 +86,9 @@ class Merchandising implements ObserverInterface
 
             if ($message === 'Rules quota exceeded. Please contact us if you need an extended quota.') {
                 $message = '
-                    The category cannot be merchandised with Algolia 
-                    as you hit your <a href="https://www.algolia.com/pricing/" target="_blank">query rules quota</a>. 
-                    If you need an extended quota, 
+                    The category cannot be merchandised with Algolia
+                    as you hit your <a href="https://www.algolia.com/pricing/" target="_blank">query rules quota</a>.
+                    If you need an extended quota,
                     please contact us on <a href="mailto:support@algolia.com">support@algolia.com</a>.';
             }
 

@@ -10,7 +10,7 @@ use Magento\Sales\Api\Data\OrderItemInterface;
 class QuoteItem
 {
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /**
      * QuoteItem constructor.

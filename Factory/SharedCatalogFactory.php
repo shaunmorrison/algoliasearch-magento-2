@@ -8,13 +8,29 @@ use Magento\Framework\ObjectManagerInterface;
 
 class SharedCatalogFactory
 {
-    private $scopeConfig;
-    private $moduleManager;
-    private $objectManager;
+    /**
+     * @var ScopeConfigInterface
+     */
+    protected $scopeConfig;
 
-    private $sharedCategoryCollection;
-    private $sharedProductItemCollection;
+    /**
+     * @var Manager
+     */
+    protected $moduleManager;
 
+    /**
+     * @var ObjectManagerInterface
+     */
+    protected $objectManager;
+
+    protected $sharedCategoryCollection;
+    protected $sharedProductItemCollection;
+
+    /**
+     * @param ScopeConfigInterface $scopeConfig
+     * @param Manager $moduleManager
+     * @param ObjectManagerInterface $objectManager
+     */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         Manager $moduleManager,
@@ -25,6 +41,10 @@ class SharedCatalogFactory
         $this->objectManager = $objectManager;
     }
 
+    /**
+     * @param $storeId
+     * @return bool
+     */
     public function isSharedCatalogEnabled($storeId)
     {
         return $this->isSharedCatalogModuleEnabled()
@@ -34,32 +54,50 @@ class SharedCatalogFactory
             );
     }
 
-    private function isSharedCatalogModuleEnabled()
+    /**
+     * @return bool
+     */
+    protected function isSharedCatalogModuleEnabled()
     {
         return $this->moduleManager->isEnabled('Magento_SharedCatalog');
     }
 
+    /**
+     * @return \Magento\SharedCatalog\Model\ResourceModel\ProductItem|mixed
+     */
     public function getSharedCatalogProductItemResource()
     {
         return $this->objectManager->create('\Magento\SharedCatalog\Model\ResourceModel\ProductItem');
     }
 
+    /**
+     * @return \Magento\SharedCatalog\Model\ResourceModel\Permission|mixed
+     */
     public function getSharedCatalogCategoryResource()
     {
         return $this->objectManager->create('\Magento\SharedCatalog\Model\ResourceModel\Permission');
     }
 
+    /**
+     * @return \Magento\SharedCatalog\Model\ResourceModel\SharedCatalog|mixed
+     */
     public function getSharedCatalogResource()
     {
         return $this->objectManager->create('\Magento\SharedCatalog\Model\ResourceModel\SharedCatalog');
     }
 
+    /**
+     * @return \Magento\SharedCatalog\Model\Config|mixed
+     */
     public function getSharedCatalogConfig()
     {
         return $this->objectManager->create('\Magento\SharedCatalog\Model\Config');
     }
 
-    private function getSharedCatalogCustomerGroups()
+    /**
+     * @return mixed
+     */
+    protected function getSharedCatalogCustomerGroups()
     {
         $sharedCatalogResource = $this->getSharedCatalogResource();
         $connection = $sharedCatalogResource->getConnection();
@@ -70,6 +108,9 @@ class SharedCatalogFactory
         return $connection->fetchAll($select);
     }
 
+    /**
+     * @return mixed
+     */
     public function getSharedCategoryCollection()
     {
         if (!$this->sharedCategoryCollection) {
@@ -89,6 +130,9 @@ class SharedCatalogFactory
         return $this->sharedCategoryCollection;
     }
 
+    /**
+     * @return mixed
+     */
     public function getSharedProductItemCollection()
     {
         if (!$this->sharedProductItemCollection) {
@@ -128,6 +172,9 @@ class SharedCatalogFactory
         return $this->sharedProductItemCollection;
     }
 
+    /**
+     * @return mixed
+     */
     public function getSharedCatalogGroups()
     {
         /** @var \Magento\SharedCatalog\Model\ResourceModel\SharedCatalog\Collection $sharedCatalog */

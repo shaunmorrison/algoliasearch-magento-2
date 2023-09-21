@@ -63,7 +63,7 @@ class PriceRenderer extends SliderRenderer
     }
 
     /* @return bool */
-    private function isManualCalculation()
+    protected function isManualCalculation()
     {
         $calculation = $this->_scopeConfig->getValue(PriceDataProvider::XML_PATH_RANGE_CALCULATION, ScopeInterface::SCOPE_STORE);
         if ($calculation === PriceDataProvider::RANGE_CALCULATION_MANUAL) {
@@ -74,7 +74,7 @@ class PriceRenderer extends SliderRenderer
     }
 
     /* @return int */
-    private function getStepValue()
+    protected function getStepValue()
     {
         $value = $this->_scopeConfig->getValue(PriceDataProvider::XML_PATH_RANGE_STEP, ScopeInterface::SCOPE_STORE);
 

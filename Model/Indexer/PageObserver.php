@@ -8,13 +8,20 @@ use Magento\Framework\Model\AbstractModel;
 
 class PageObserver
 {
-    private $indexer;
+    /**
+     * @var \Magento\Framework\Indexer\IndexerInterface
+     */
+    protected $indexer;
 
     /**
      * @var ConfigHelper
      */
-    private $configHelper;
+    protected $configHelper;
 
+    /**
+     * @param IndexerRegistry $indexerRegistry
+     * @param ConfigHelper $configHelper
+     */
     public function __construct(
         IndexerRegistry $indexerRegistry,
         ConfigHelper $configHelper
@@ -23,6 +30,11 @@ class PageObserver
         $this->configHelper = $configHelper;
     }
 
+    /**
+     * @param \Magento\Cms\Model\ResourceModel\Page $pageResource
+     * @param AbstractModel $page
+     * @return AbstractModel[]
+     */
     public function beforeSave(
         \Magento\Cms\Model\ResourceModel\Page $pageResource,
         AbstractModel $page
@@ -42,6 +54,11 @@ class PageObserver
         return [$page];
     }
 
+    /**
+     * @param \Magento\Cms\Model\ResourceModel\Page $pageResource
+     * @param AbstractModel $page
+     * @return AbstractModel[]
+     */
     public function beforeDelete(
         \Magento\Cms\Model\ResourceModel\Page $pageResource,
         AbstractModel $page

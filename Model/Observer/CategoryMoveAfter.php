@@ -12,10 +12,10 @@ use Magento\Framework\Indexer\IndexerRegistry;
 class CategoryMoveAfter implements ObserverInterface
 {
     /** @var IndexerRegistry */
-    private $indexerRegistry;
+    protected $indexerRegistry;
 
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /** @var ResourceConnection */
     protected $resource;

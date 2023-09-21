@@ -8,11 +8,15 @@ use Algolia\AlgoliaSearch\Helper\Configuration\NoticeHelper;
 class Configuration implements \Magento\Framework\View\Element\Block\ArgumentInterface
 {
     /** @var AssetHelper */
-    private $assetHelper;
+    protected $assetHelper;
 
     /** @var NoticeHelper */
-    private $noticeHelper;
+    protected $noticeHelper;
 
+    /**
+     * @param AssetHelper $assetHelper
+     * @param NoticeHelper $noticeHelper
+     */
     public function __construct(
         AssetHelper $assetHelper,
         NoticeHelper $noticeHelper
@@ -27,16 +31,26 @@ class Configuration implements \Magento\Framework\View\Element\Block\ArgumentInt
         return $this->noticeHelper->isClickAnalyticsEnabled();
     }
 
+    /**
+     * @param $section
+     * @return string
+     */
     public function getLinksAndVideoTemplate($section)
     {
         return $this->assetHelper->getLinksAndVideoTemplate($section);
     }
 
+    /**
+     * @return array[]
+     */
     public function getExtensionNotices()
     {
         return $this->noticeHelper->getExtensionNotices();
     }
 
+    /**
+     * @return int
+     */
     public function getPersonalizationStatus()
     {
         return $this->noticeHelper->getPersonalizationStatus();

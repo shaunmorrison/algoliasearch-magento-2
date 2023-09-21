@@ -378,7 +378,7 @@ class CategoryHelper
      * @param MagentoCategory $category
      * @return array|string|string[]
      */
-    private function getUrl(Category $category)
+    protected function getUrl(Category $category)
     {
         $categoryUrl = $category->getUrl();
 
@@ -495,7 +495,7 @@ class CategoryHelper
      * @param $storeId
      * @return mixed|null
      */
-    private function getCategoryKeyId($categoryId, $storeId = null)
+    protected function getCategoryKeyId($categoryId, $storeId = null)
     {
         $categoryKeyId = $categoryId;
 
@@ -512,7 +512,7 @@ class CategoryHelper
      * @param $storeId
      * @return mixed|null
      */
-    private function getCategoryById($categoryId, $storeId = null)
+    protected function getCategoryById($categoryId, $storeId = null)
     {
         $categories = $this->getCoreCategories(false, $storeId);
 
@@ -581,7 +581,7 @@ class CategoryHelper
     /**
      * @return string
      */
-    private function getCorrectIdColumn()
+    protected function getCorrectIdColumn()
     {
         if (isset($this->idColumn)) {
             return $this->idColumn;

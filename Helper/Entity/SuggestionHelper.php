@@ -16,7 +16,7 @@ class SuggestionHelper
     /***
      * @var ManagerInterface
      */
-    private $eventManager;
+    protected $eventManager;
     /**
      * @var QueryCollectionFactory
      */
@@ -24,17 +24,17 @@ class SuggestionHelper
     /**
      * @var ConfigCache
      */
-    private $cache;
+    protected $cache;
 
     /**
      * @var ConfigHelper
      */
-    private $configHelper;
+    protected $configHelper;
 
     /**
      * @var SerializerInterface
      */
-    private $serializer;
+    protected $serializer;
 
     /**
      * @var string

@@ -8,13 +8,29 @@ use Magento\Framework\ObjectManagerInterface;
 
 class CatalogPermissionsFactory
 {
-    private $scopeConfig;
-    private $moduleManager;
-    private $objectManager;
+    /**
+     * @var ScopeConfigInterface
+     */
+    protected $scopeConfig;
 
-    private $categoryPermissionsCollection;
-    private $productPermissionsCollection;
+    /**
+     * @var Manager
+     */
+    protected $moduleManager;
 
+    /**
+     * @var ObjectManagerInterface
+     */
+    protected $objectManager;
+
+    protected $categoryPermissionsCollection;
+    protected $productPermissionsCollection;
+
+    /**
+     * @param ScopeConfigInterface $scopeConfig
+     * @param Manager $moduleManager
+     * @param ObjectManagerInterface $objectManager
+     */
     public function __construct(
         ScopeConfigInterface $scopeConfig,
         Manager $moduleManager,
@@ -25,32 +41,52 @@ class CatalogPermissionsFactory
         $this->objectManager = $objectManager;
     }
 
+    /**
+     * @param $storeId
+     * @return bool
+     */
     public function isCatalogPermissionsEnabled($storeId)
     {
         return $this->isCatalogPermissionsModuleEnabled()
             && $this->getCatalogPermissionsConfig()->isEnabled($storeId);
     }
 
-    private function isCatalogPermissionsModuleEnabled()
+    /**
+     * @return bool
+     */
+    protected function isCatalogPermissionsModuleEnabled()
     {
         return $this->moduleManager->isEnabled('Magento_CatalogPermissions');
     }
 
+    /**
+     * @return \Magento\CatalogPermissions\Model\ResourceModel\Permission\Index|mixed
+     */
     public function getPermissionsIndexResource()
     {
         return $this->objectManager->create('\Magento\CatalogPermissions\Model\ResourceModel\Permission\Index');
     }
 
+    /**
+     * @return \Magento\CatalogPermissions\Helper\Data|mixed
+     */
     public function getCatalogPermissionsHelper()
     {
         return $this->objectManager->create('\Magento\CatalogPermissions\Helper\Data');
     }
 
+    /**
+     * @return \Magento\CatalogPermissions\App\Config|mixed
+     */
     public function getCatalogPermissionsConfig()
     {
         return $this->objectManager->create('\Magento\CatalogPermissions\App\Config');
     }
 
+    /**
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function getCategoryPermissionsCollection()
     {
         if (!$this->categoryPermissionsCollection) {
@@ -70,6 +106,10 @@ class CatalogPermissionsFactory
         return $this->categoryPermissionsCollection;
     }
 
+    /**
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
     public function getProductPermissionsCollection()
     {
         if (!$this->productPermissionsCollection) {

@@ -56,7 +56,10 @@ class Collection extends JobCollection implements SearchResultInterface
         $this->addStatusToCollection();
     }
 
-    private function addStatusToCollection()
+    /**
+     * @return void
+     */
+    protected function addStatusToCollection()
     {
         $this->addExpressionFieldToSelect('status', "IF({{retries}} >= {{max_retries}}, '{{error}}', IF({{pid}} IS NULL, '{{new}}', '{{progress}}'))", [
             'pid' => JobInterface::FIELD_PID,

@@ -29,10 +29,10 @@ class PersonalizationHelper extends \Magento\Framework\App\Helper\AbstractHelper
     public const ALGOLIA_USER_COOKIE = '_ALGOLIA';
 
     /** @var ScopeConfigInterface */
-    private $configInterface;
+    protected $configInterface;
 
     /** @var ConfigResourceInterface */
-    private $configResourceInterface;
+    protected $configResourceInterface;
 
     /**
      * @param \Magento\Framework\App\Helper\Context $context

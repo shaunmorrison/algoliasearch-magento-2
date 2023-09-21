@@ -15,47 +15,45 @@ class AnalyticsHelper
     public const ANALYTICS_CLICKS_PATH = '/2/clicks';
 
     /** @var AlgoliaHelper */
-    private $algoliaHelper;
+    protected $algoliaHelper;
 
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /** @var IndexEntityDataProvider */
-    private $entityHelper;
+    protected $entityHelper;
 
     /** @var Logger */
-    private $logger;
+    protected $logger;
 
-    private $searches;
-    private $users;
-    private $rateOfNoResults;
+    protected $searches;
+    protected $users;
+    protected $rateOfNoResults;
 
-    private $clickPositions;
-    private $clickThroughs;
-    private $conversions;
+    protected $clickPositions;
+    protected $clickThroughs;
+    protected $conversions;
 
-    private $clientData;
+    protected $errors = [];
 
-    private $errors = [];
-
-    private $fetchError = false;
+    protected $fetchError = false;
 
     /**
      * @var AnalyticsClient
      */
-    private $analyticsClient;
+    protected $analyticsClient;
 
     /**
      * @var AnalyticsConfig
      */
-    private $analyticsConfig;
+    protected $analyticsConfig;
 
     /**
      * Can be changed through DI
      *
      * @var string
      */
-    private $region;
+    protected $region;
 
     /**
      * @param AlgoliaHelper $algoliaHelper
@@ -235,22 +233,43 @@ class AnalyticsHelper
         return $this->fetch(self::ANALYTICS_FILTER_PATH, $params);
     }
 
+    /**
+     * @param $search
+     * @param array $params
+     * @return false|mixed
+     */
     public function getTopFiltersForANoResultsSearch($search, array $params)
     {
         return $this->fetch(self::ANALYTICS_FILTER_PATH . '/noResults?search=' . urlencode($search), $params);
     }
 
+    /**
+     * @param $search
+     * @param array $params
+     * @return false|mixed
+     */
     public function getTopFiltersForASearch($search, array $params)
     {
         return $this->fetch(self::ANALYTICS_FILTER_PATH . '?search=' . urlencode($search), $params);
     }
 
+    /**
+     * @param array $attributes
+     * @param $search
+     * @param array $params
+     * @return false|mixed
+     */
     public function getTopFiltersForAttributesAndSearch(array $attributes, $search, array $params)
     {
         return $this->fetch(self::ANALYTICS_FILTER_PATH . '/' . implode(',', $attributes)
             . '?search=' . urlencode($search), $params);
     }
 
+    /**
+     * @param $attribute
+     * @param array $params
+     * @return false|mixed
+     */
     public function getTopFiltersForAttribute($attribute, array $params)
     {
         return $this->fetch(self::ANALYTICS_FILTER_PATH . '/' . $attribute, $params);
@@ -272,6 +291,10 @@ class AnalyticsHelper
         return $this->clickPositions;
     }
 
+    /**
+     * @param array $params
+     * @return array|mixed
+     */
     public function getAverageClickPositionByDates(array $params)
     {
         $click = $this->getAverageClickPosition($params);
@@ -279,6 +302,10 @@ class AnalyticsHelper
         return $click && isset($click['dates']) ? $click['dates'] : [];
     }
 
+    /**
+     * @param array $params
+     * @return false|mixed
+     */
     public function getClickThroughRate(array $params)
     {
         if (!$this->clickThroughs) {
@@ -288,6 +315,10 @@ class AnalyticsHelper
         return $this->clickThroughs;
     }
 
+    /**
+     * @param array $params
+     * @return array|mixed
+     */
     public function getClickThroughRateByDates(array $params)
     {
         $click = $this->getClickThroughRate($params);
@@ -295,6 +326,10 @@ class AnalyticsHelper
         return $click && isset($click['dates']) ? $click['dates'] : [];
     }
 
+    /**
+     * @param array $params
+     * @return false|mixed
+     */
     public function getConversionRate(array $params)
     {
         if (!$this->conversions) {
@@ -304,6 +339,10 @@ class AnalyticsHelper
         return $this->conversions;
     }
 
+    /**
+     * @param array $params
+     * @return array|mixed
+     */
     public function getConversionRateByDates(array $params)
     {
         $conversion = $this->getConversionRate($params);
@@ -311,11 +350,17 @@ class AnalyticsHelper
         return $conversion && isset($conversion['dates']) ? $conversion['dates'] : [];
     }
 
+    /**
+     * @return bool
+     */
     public function isAnalyticsApiEnabled()
     {
         return true;
     }
 
+    /**
+     * @return bool
+     */
     public function isClickAnalyticsEnabled()
     {
         if (!$this->configHelper->isClickConversionAnalyticsEnabled()) {
@@ -333,7 +378,7 @@ class AnalyticsHelper
      *
      * @return mixed
      */
-    private function fetch($path, array $params)
+    protected function fetch($path, array $params)
     {
         $response = false;
         if ($this->fetchError) {
@@ -366,6 +411,9 @@ class AnalyticsHelper
         return $response;
     }
 
+    /**
+     * @return array
+     */
     public function getErrors()
     {
         return $this->errors;

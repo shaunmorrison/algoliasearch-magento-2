@@ -12,14 +12,50 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 class DeleteProduct implements \Magento\Framework\Indexer\ActionInterface, \Magento\Framework\Mview\ActionInterface
 {
-    private $fullAction;
-    private $storeManager;
-    private $algoliaHelper;
-    private $queue;
-    private $configHelper;
-    private $messageManager;
-    private $output;
+    /**
+     * @var Data
+     */
+    protected $fullAction;
 
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
+     * @var AlgoliaHelper
+     */
+    protected $algoliaHelper;
+
+    /**
+     * @var Queue
+     */
+    protected $queue;
+
+    /**
+     * @var ConfigHelper
+     */
+    protected $configHelper;
+
+    /**
+     * @var ManagerInterface
+     */
+    protected $messageManager;
+
+    /**
+     * @var ConsoleOutput
+     */
+    protected $output;
+
+    /**
+     * @param StoreManagerInterface $storeManager
+     * @param Data $helper
+     * @param AlgoliaHelper $algoliaHelper
+     * @param Queue $queue
+     * @param ConfigHelper $configHelper
+     * @param ManagerInterface $messageManager
+     * @param ConsoleOutput $output
+     */
     public function __construct(
         StoreManagerInterface $storeManager,
         Data $helper,
@@ -38,17 +74,25 @@ class DeleteProduct implements \Magento\Framework\Indexer\ActionInterface, \Mage
         $this->output = $output;
     }
 
+    /**
+     * @param $ids
+     * @return $this|void
+     */
     public function execute($ids)
     {
         return $this;
     }
 
+    /**
+     * @return void
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     public function executeFull()
     {
         if (!$this->configHelper->getApplicationID()
             || !$this->configHelper->getAPIKey()
             || !$this->configHelper->getSearchOnlyAPIKey()) {
-            $errorMessage = 'Algolia reindexing failed: 
+            $errorMessage = 'Algolia reindexing failed:
                 You need to configure your Algolia credentials in Stores > Configuration > Algolia Search.';
 
             if (php_sapi_name() === 'cli') {
@@ -73,6 +117,10 @@ class DeleteProduct implements \Magento\Framework\Indexer\ActionInterface, \Mage
         }
     }
 
+    /**
+     * @param array $ids
+     * @return $this|void
+     */
     public function executeList(array $ids)
     {
         return $this;

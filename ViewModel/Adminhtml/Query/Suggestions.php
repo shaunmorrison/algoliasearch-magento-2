@@ -7,7 +7,7 @@ use Algolia\AlgoliaSearch\Model\ResourceModel\Query\CollectionFactory as QueryCo
 class Suggestions implements \Magento\Framework\View\Element\Block\ArgumentInterface
 {
     /** @var QueryCollectionFactory */
-    private $queryCollectionFactory;
+    protected $queryCollectionFactory;
 
     /**
      * @param QueryCollectionFactory $queryCollectionFactory
@@ -17,6 +17,9 @@ class Suggestions implements \Magento\Framework\View\Element\Block\ArgumentInter
         $this->queryCollectionFactory = $queryCollectionFactory;
     }
 
+    /**
+     * @return mixed
+     */
     public function getNbOfQueries()
     {
         $queryCollection = $this->queryCollectionFactory->create();

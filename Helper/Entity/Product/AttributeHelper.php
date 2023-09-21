@@ -8,11 +8,15 @@ use Magento\Eav\Model\ResourceModel\Entity\Attribute\Option\CollectionFactory as
 class AttributeHelper
 {
     /** @var EntityAttribute */
-    private $entityAttribute;
+    protected $entityAttribute;
 
     /** @var AttributeOptionCollectionFactory */
-    private $entityAttributeOptionCollectionFactory;
+    protected $entityAttributeOptionCollectionFactory;
 
+    /**
+     * @param EntityAttribute $entityAttribute
+     * @param AttributeOptionCollectionFactory $entityAttributeOptionCollectionFactory
+     */
     public function __construct(
         EntityAttribute $entityAttribute,
         AttributeOptionCollectionFactory $entityAttributeOptionCollectionFactory

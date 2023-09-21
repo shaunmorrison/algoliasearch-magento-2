@@ -79,7 +79,7 @@ class Data
     protected $emulationRuns = false;
 
     /** @var \Magento\Framework\Indexer\IndexerInterface */
-    private $priceIndexer;
+    protected $priceIndexer;
 
 
     /**

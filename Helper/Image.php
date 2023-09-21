@@ -14,7 +14,7 @@ class Image extends \Magento\Catalog\Helper\Image
      * @var ConfigHelper
      */
     protected $configHelper;
-    private $logger;
+    protected $logger;
 
     /**
      * Image constructor.
@@ -82,7 +82,7 @@ class Image extends \Magento\Catalog\Helper\Image
      *
      * @return mixed|string|null
      */
-    private function getProductImage(\Magento\Catalog\Model\Product\Image $model)
+    protected function getProductImage(\Magento\Catalog\Model\Product\Image $model)
     {
         $imageUrl = $this->getProduct()->getData($model->getDestinationSubdir());
         if (($imageUrl === null || $imageUrl == '' || $imageUrl == 'no_selection') &&
@@ -94,7 +94,10 @@ class Image extends \Magento\Catalog\Helper\Image
         return $imageUrl;
     }
 
-    private function getConfigurableProductImage()
+    /**
+     * @return null
+     */
+    protected function getConfigurableProductImage()
     {
         $childProducts = $this->getProduct()->getTypeInstance()->getUsedProducts($this->getProduct());
         foreach ($childProducts as $childProduct) {
@@ -107,6 +110,10 @@ class Image extends \Magento\Catalog\Helper\Image
         return null;
     }
 
+    /**
+     * @param $url
+     * @return array|string|string[]
+     */
     public function removePubDirectory($url)
     {
         return str_replace('/pub/', '/', $url);

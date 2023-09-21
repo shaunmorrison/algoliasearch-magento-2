@@ -8,13 +8,13 @@ use Magento\Framework\View\Asset\Repository as AssetRepository;
 class AssetHelper extends \Magento\Framework\App\Helper\AbstractHelper
 {
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /** @var AssetRepository */
-    private $assetRepository;
+    protected $assetRepository;
 
     /** @var array */
-    private $videosConfig = [
+    protected $videosConfig = [
         'algoliasearch_credentials' => [
             'title' => 'How to change a setting',
             'url' => 'https://www.youtube.com/watch?v=7yqOMb2SHw0',
@@ -53,7 +53,7 @@ class AssetHelper extends \Magento\Framework\App\Helper\AbstractHelper
     ];
 
     /** @var array */
-    private $linksConfig = [
+    protected $linksConfig = [
         'algoliasearch_credentials' => [
             [
                 'title' => 'Documentation',
@@ -178,10 +178,10 @@ class AssetHelper extends \Magento\Framework\App\Helper\AbstractHelper
         ],
     ];
 
-    private $icons = [];
+    protected $icons = [];
 
     /** @var array */
-    private $videoInstallation = [
+    protected $videoInstallation = [
         'title' => 'Installation & Setup',
         'url' => 'https://www.youtube.com/watch?v=twEj_VBWxp8',
         'thumbnail' => 'https://img.youtube.com/vi/twEj_VBWxp8/mqdefault.jpg',

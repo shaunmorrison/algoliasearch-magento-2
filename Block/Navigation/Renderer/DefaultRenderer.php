@@ -10,7 +10,7 @@ use Magento\LayeredNavigation\Block\Navigation\FilterRendererInterface;
 class DefaultRenderer extends Template implements FilterRendererInterface
 {
     /** @var bool */
-    private $isSearchable = true;
+    protected $isSearchable = true;
 
     public const JS_COMPONENT = 'Algolia_AlgoliaSearch/navigation/attribute-filter';
 
@@ -22,7 +22,7 @@ class DefaultRenderer extends Template implements FilterRendererInterface
     protected $_template = 'Algolia_AlgoliaSearch::layer/filter/js-default.phtml';
 
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /** @var FilterInterface */
     protected $filter;
@@ -129,7 +129,7 @@ class DefaultRenderer extends Template implements FilterRendererInterface
      *
      * @return string
      */
-    private function getAjaxLoadUrl()
+    protected function getAjaxLoadUrl()
     {
         $qsParams = ['filterName' => $this->getFilter()->getRequestVar()];
 

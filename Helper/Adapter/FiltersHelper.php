@@ -11,19 +11,19 @@ use Magento\Framework\Registry;
 class FiltersHelper
 {
     /** @var ConfigHelper */
-    private $config;
+    protected $config;
 
     /** @var Registry */
-    private $registry;
+    protected $registry;
 
     /** @var CustomerSession */
-    private $customerSession;
+    protected $customerSession;
 
     /** @var AttributeHelper */
-    private $attributeHelper;
+    protected $attributeHelper;
 
     /** @var Http */
-    private $request;
+    protected $request;
 
     /**
      * @param ConfigHelper $config
@@ -290,7 +290,7 @@ class FiltersHelper
      *
      * @return array
      */
-    private function getParamPriceSlider($storeId)
+    protected function getParamPriceSlider($storeId)
     {
         // Handle price filtering
         $currencyCode = $this->config->getCurrencyCode($storeId);
@@ -327,7 +327,7 @@ class FiltersHelper
      *
      * @return string
      */
-    private function getAttributeOptionLabelFromId($attribute, $value)
+    protected function getAttributeOptionLabelFromId($attribute, $value)
     {
         $attributeOptionLabel = '';
         $attrInfo = $this->attributeHelper->getAttributeInfo(

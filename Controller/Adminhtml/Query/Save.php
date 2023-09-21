@@ -143,7 +143,12 @@ class Save extends AbstractAction
         return $resultRedirect->setPath('*/*/');
     }
 
-    private function manageQueryRules($queryId, $data)
+    /**
+     * @param $queryId
+     * @param $data
+     * @return void
+     */
+    protected function manageQueryRules($queryId, $data)
     {
         $positions = json_decode($data['algolia_merchandising_positions'], true);
         $stores = [];
@@ -180,7 +185,7 @@ class Save extends AbstractAction
      *
      * @return string|null
      */
-    private function prepareBannerContent($data)
+    protected function prepareBannerContent($data)
     {
         $content = null;
 

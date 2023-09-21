@@ -10,10 +10,26 @@ use Magento\Framework\Event\ObserverInterface;
 
 class ProductCollectionAddPermissions implements ObserverInterface
 {
-    private $permissionsFactory;
-    private $customerGroupCollection;
-    private $sharedCatalogFactory;
+    /**
+     * @var CatalogPermissionsFactory
+     */
+    protected $permissionsFactory;
 
+    /**
+     * @var CustomerGroupCollection
+     */
+    protected $customerGroupCollection;
+
+    /**
+     * @var SharedCatalogFactory
+     */
+    protected $sharedCatalogFactory;
+
+    /**
+     * @param CustomerGroupCollection $customerGroupCollection
+     * @param CatalogPermissionsFactory $permissionsFactory
+     * @param SharedCatalogFactory $sharedCatalogFactory
+     */
     public function __construct(
         CustomerGroupCollection $customerGroupCollection,
         CatalogPermissionsFactory $permissionsFactory,
@@ -24,6 +40,10 @@ class ProductCollectionAddPermissions implements ObserverInterface
         $this->sharedCatalogFactory = $sharedCatalogFactory;
     }
 
+    /**
+     * @param Observer $observer
+     * @return $this|void
+     */
     public function execute(Observer $observer)
     {
         /** @var \Magento\Catalog\Model\ResourceModel\Product\Collection $collection */
@@ -50,6 +70,7 @@ class ProductCollectionAddPermissions implements ObserverInterface
      * @param $additionalData \Algolia\AlgoliaSearch\Helper\ProductDataArray
      * @param $productIds
      * @param $storeId
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function addProductPermissionsData($additionalData, $productIds, $storeId)
     {

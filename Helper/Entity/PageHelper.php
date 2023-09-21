@@ -16,32 +16,32 @@ class PageHelper
     /**
      * @var ManagerInterface
      */
-    private $eventManager;
+    protected $eventManager;
 
     /**
      * @var PageCollectionFactory
      */
-    private $pageCollectionFactory;
+    protected $pageCollectionFactory;
 
     /**
      * @var ConfigHelper
      */
-    private $configHelper;
+    protected $configHelper;
 
     /**
      * @var FilterProvider
      */
-    private $filterProvider;
+    protected $filterProvider;
 
     /**
      * @var StoreManagerInterface
      */
-    private $storeManager;
+    protected $storeManager;
 
     /**
      * @var UrlFactory
      */
-    private $frontendUrlFactory;
+    protected $frontendUrlFactory;
 
     /**
      * PageHelper constructor.
@@ -191,7 +191,12 @@ class PageHelper
         return $storeIds;
     }
 
-    private function strip($s, $completeRemoveTags = [])
+    /**
+     * @param $s
+     * @param $completeRemoveTags
+     * @return string
+     */
+    protected function strip($s, $completeRemoveTags = [])
     {
         if ($completeRemoveTags && $completeRemoveTags !== [] && $s) {
             $dom = new \DOMDocument();

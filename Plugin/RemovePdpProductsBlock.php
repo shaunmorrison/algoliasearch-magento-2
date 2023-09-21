@@ -12,7 +12,7 @@ class RemovePdpProductsBlock
     /**
      * @var ConfigHelper
      */
-    private $_configHelper;
+    protected $_configHelper;
 
     /**
      * @param ConfigHelper $configHelper

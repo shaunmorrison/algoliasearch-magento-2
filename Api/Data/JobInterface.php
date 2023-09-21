@@ -9,6 +9,7 @@ namespace Algolia\AlgoliaSearch\Api\Data;
  */
 interface JobInterface
 {
+
     public const TABLE_NAME = 'algoliasearch_queue';
 
     public const STATUS_NEW = 'new';

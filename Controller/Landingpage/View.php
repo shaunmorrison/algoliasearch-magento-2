@@ -3,12 +3,17 @@
 namespace Algolia\AlgoliaSearch\Controller\Landingpage;
 
 use Algolia\AlgoliaSearch\Helper\LandingPageHelper;
-use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\ActionInterface;
 
-class View extends Action
+class View implements ActionInterface
 {
     /** @var \Magento\Framework\Controller\Result\ForwardFactory */
     protected $resultForwardFactory;
+
+    /**
+     * @var LandingPageHelper
+     */
+    protected $landingPageHelper;
 
     /**
      * @param \Magento\Framework\App\Action\Context $context
@@ -16,10 +21,11 @@ class View extends Action
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
-        \Magento\Framework\Controller\Result\ForwardFactory $resultForwardFactory
+        \Magento\Framework\Controller\Result\ForwardFactory $resultForwardFactory,
+        LandingPageHelper $landingPageHelper
     ) {
         $this->resultForwardFactory = $resultForwardFactory;
-        parent::__construct($context);
+        $this->landingPageHelper = $landingPageHelper;
     }
 
     /**
@@ -31,7 +37,7 @@ class View extends Action
     {
         $pageId = $this->getRequest()->getParam('landing_page_id');
 
-        $resultPage = $this->_objectManager->get(LandingPageHelper::class)->prepareResultPage($this, $pageId);
+        $resultPage = $this->landingPageHelper->prepareResultPage($this, $pageId);
         if (!$resultPage) {
             $resultForward = $this->resultForwardFactory->create();
 

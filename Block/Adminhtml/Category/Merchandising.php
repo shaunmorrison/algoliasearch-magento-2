@@ -17,13 +17,13 @@ class Merchandising extends \Magento\Backend\Block\Template
     protected $registry;
 
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
     /** @var Data */
-    private $coreHelper;
+    protected $coreHelper;
 
     /** @var \Magento\Store\Model\StoreManagerInterface */
-    private $storeManager;
+    protected $storeManager;
 
     /**
      * @param Context $context

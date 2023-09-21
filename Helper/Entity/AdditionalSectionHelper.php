@@ -12,17 +12,17 @@ class AdditionalSectionHelper
     /**
      * @var ManagerInterface
      */
-    private $eventManager;
+    protected $eventManager;
 
     /**
      * @var CollectionFactory
      */
-    private $collectionFactory;
+    protected $collectionFactory;
 
     /**
      * @var Config
      */
-    private $eavConfig;
+    protected $eavConfig;
 
     /**
      * AdditionalSectionHelper constructor.

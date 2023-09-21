@@ -12,22 +12,20 @@ use Magento\Store\Api\Data\StoreInterface;
 class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterface
 {
     public const LIMIT_RESULTS = 5;
-
     public const DEFAULT_TYPE = 'products';
-
     public const DEFAULT_RETENTION_DAYS = 90;
 
     /** @var BackendView */
-    private $backendView;
+    protected $backendView;
 
     /** @var AnalyticsHelper */
-    private $analyticsHelper;
+    protected $analyticsHelper;
 
     /** @var IndexEntityDataProvider */
-    private $indexEntityDataProvider;
+    protected $indexEntityDataProvider;
 
     /** @var array */
-    private $analyticsParams = [];
+    protected $analyticsParams = [];
 
     /**
      * Index constructor.
@@ -54,6 +52,10 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
         return $this->backendView;
     }
 
+    /**
+     * @return string
+     * @throws NoSuchEntityException
+     */
     public function getTimeZone()
     {
         return $this->backendView->getDateTime()->getConfigTimezone(
@@ -63,9 +65,8 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
     }
 
     /**
-     * @throws NoSuchEntityException
-     *
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function getIndexName()
     {
@@ -75,11 +76,9 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
     }
 
     /**
-     * @param array $additional
-     *
-     * @throws NoSuchEntityException
-     *
+     * @param $additional
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getAnalyticsParams($additional = [])
     {
@@ -102,31 +101,55 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
         return array_merge($this->analyticsParams, $additional);
     }
 
+    /**
+     * @return int|mixed
+     * @throws NoSuchEntityException
+     */
     public function getTotalCountOfSearches()
     {
         return $this->analyticsHelper->getTotalCountOfSearches($this->getAnalyticsParams());
     }
 
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
     public function getSearchesByDates()
     {
         return $this->analyticsHelper->getSearchesByDates($this->getAnalyticsParams());
     }
 
+    /**
+     * @return int|mixed
+     * @throws NoSuchEntityException
+     */
     public function getTotalUsersCount()
     {
         return $this->analyticsHelper->getTotalUsersCount($this->getAnalyticsParams());
     }
 
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
     public function getUsersCountByDates()
     {
         return $this->analyticsHelper->getUsersCountByDates($this->getAnalyticsParams());
     }
 
+    /**
+     * @return int|string
+     * @throws NoSuchEntityException
+     */
     public function getTotalResultRates()
     {
         return $this->analyticsHelper->getTotalResultRates($this->getAnalyticsParams());
     }
 
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
     public function getResultRateByDates()
     {
         return $this->analyticsHelper->getResultRateByDates($this->getAnalyticsParams());
@@ -134,36 +157,54 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
 
     /**
      * Click Analytics
-     *
+     * @return false|mixed
      * @throws NoSuchEntityException
-     *
-     * @return mixed
      */
     public function getClickThroughRate()
     {
         return $this->analyticsHelper->getClickThroughRate($this->getAnalyticsParams());
     }
 
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
     public function getClickThroughRateByDates()
     {
         return $this->analyticsHelper->getClickThroughRateByDates($this->getAnalyticsParams());
     }
 
+    /**
+     * @return false|mixed
+     * @throws NoSuchEntityException
+     */
     public function getConversionRate()
     {
         return $this->analyticsHelper->getConversionRate($this->getAnalyticsParams());
     }
 
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
     public function getConversionRateByDates()
     {
         return $this->analyticsHelper->getConversionRateByDates($this->getAnalyticsParams());
     }
 
+    /**
+     * @return false|mixed
+     * @throws NoSuchEntityException
+     */
     public function getClickPosition()
     {
         return $this->analyticsHelper->getAverageClickPosition($this->getAnalyticsParams());
     }
 
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
     public function getClickPositionByDates()
     {
         return $this->analyticsHelper->getAverageClickPositionByDates($this->getAnalyticsParams());
@@ -171,8 +212,8 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
 
     /**
      * Get aggregated Daily data from separate calls
-     *
-     * @return array
+     * @return array|mixed
+     * @throws NoSuchEntityException
      */
     public function getDailySearchData()
     {
@@ -212,7 +253,7 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
      *
      * @return string
      */
-    private function getDateValue($array, $date, $valueKey)
+    protected function getDateValue($array, $date, $valueKey)
     {
         $value = '';
         foreach ($array as $item) {
@@ -226,6 +267,10 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
         return $value;
     }
 
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
     public function getTopSearches()
     {
         $topSearches = $this->analyticsHelper->getTopSearches(
@@ -288,9 +333,8 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
     }
 
     /**
+     * @return array|mixed
      * @throws NoSuchEntityException
-     *
-     * @return array
      */
     public function getNoResultSearches()
     {
@@ -451,8 +495,8 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
 
     /**
      * Messages rendered HTML getter.
-     *
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getMessagesHtml()
     {

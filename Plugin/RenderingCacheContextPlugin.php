@@ -19,10 +19,26 @@ class RenderingCacheContextPlugin
     public const RENDERING_WITH_BACKEND = 'with_backend';
     public const RENDERING_WITHOUT_BACKEND = 'without_backend';
 
-    private $configHelper;
-    private $storeManager;
-    private $request;
+    /**
+     * @var ConfigHelper
+     */
+    protected $configHelper;
 
+    /**
+     * @var StoreManagerInterface
+     */
+    protected $storeManager;
+
+    /**
+     * @var Http
+     */
+    protected $request;
+
+    /**
+     * @param ConfigHelper $configHelper
+     * @param StoreManagerInterface $storeManager
+     * @param Http $request
+     */
     public function __construct(
         ConfigHelper $configHelper,
         StoreManagerInterface $storeManager,
@@ -42,6 +58,7 @@ class RenderingCacheContextPlugin
      * @param string[] $data
      *
      * @return array
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function afterGetData(HttpContext $subject, $data)
     {

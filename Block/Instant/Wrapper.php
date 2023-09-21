@@ -7,8 +7,16 @@ use Magento\Framework\View\Element\Template;
 
 class Wrapper extends Template
 {
-    private $config;
+    /**
+     * @var ConfigHelper
+     */
+    protected $config;
 
+    /**
+     * @param Template\Context $context
+     * @param ConfigHelper $config
+     * @param array $data
+     */
     public function __construct(
         Template\Context $context,
         ConfigHelper $config,
@@ -18,6 +26,9 @@ class Wrapper extends Template
         parent::__construct($context, $data);
     }
 
+    /**
+     * @return bool
+     */
     public function hasFacets()
     {
         return count($this->config->getFacets()) > 0;

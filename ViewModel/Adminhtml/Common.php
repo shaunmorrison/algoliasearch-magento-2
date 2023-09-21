@@ -7,8 +7,11 @@ use Algolia\AlgoliaSearch\Helper\ConfigHelper;
 class Common implements \Magento\Framework\View\Element\Block\ArgumentInterface
 {
     /** @var ConfigHelper */
-    private $configHelper;
+    protected $configHelper;
 
+    /**
+     * @param ConfigHelper $configHelper
+     */
     public function __construct(
         ConfigHelper $configHelper
     ) {

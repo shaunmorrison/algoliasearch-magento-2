@@ -13,14 +13,25 @@ use Magento\Framework\ObjectManagerInterface;
  */
 class CategoryUrlPlugin
 {
-    private $objectManager;
+    /**
+     * @var ObjectManagerInterface
+     */
+    protected $objectManager;
 
+    /**
+     * @param ObjectManagerInterface $objectManager
+     */
     public function __construct(
         ObjectManagerInterface $objectManager
     ) {
         $this->objectManager = $objectManager;
     }
 
+    /**
+     * @param Category $category
+     * @param \Closure $proceed
+     * @return mixed
+     */
     public function aroundGetUrlInstance(Category $category, \Closure $proceed)
     {
         if ($category->getStoreId() === 0) {

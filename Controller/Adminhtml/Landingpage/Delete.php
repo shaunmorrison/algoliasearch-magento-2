@@ -6,7 +6,9 @@ use Magento\Framework\Controller\ResultFactory;
 
 class Delete extends AbstractAction
 {
-    /** @return \Magento\Framework\View\Result\Page */
+    /**
+     * @return \Magento\Backend\Model\View\Result\Redirect|\Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
+     */
     public function execute()
     {
         /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
@@ -35,7 +37,11 @@ class Delete extends AbstractAction
         return $resultRedirect->setPath('*/*/');
     }
 
-    private function deleteQueryRules($landingPage)
+    /**
+     * @param $landingPage
+     * @return void
+     */
+    protected function deleteQueryRules($landingPage)
     {
         $stores = [];
         if ($landingPage->getStoreId() == 0) {

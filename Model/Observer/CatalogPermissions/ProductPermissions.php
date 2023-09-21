@@ -9,9 +9,20 @@ use Magento\Framework\Event\ObserverInterface;
 
 class ProductPermissions implements ObserverInterface
 {
-    private $permissionsFactory;
-    private $customerGroupCollection;
+    /**
+     * @var CatalogPermissionsFactory
+     */
+    protected $permissionsFactory;
 
+    /**
+     * @var CustomerGroupCollection
+     */
+    protected $customerGroupCollection;
+
+    /**
+     * @param CustomerGroupCollection $customerGroupCollection
+     * @param CatalogPermissionsFactory $permissionsFactory
+     */
     public function __construct(
         CustomerGroupCollection $customerGroupCollection,
         CatalogPermissionsFactory $permissionsFactory
@@ -20,6 +31,10 @@ class ProductPermissions implements ObserverInterface
         $this->permissionsFactory = $permissionsFactory;
     }
 
+    /**
+     * @param Observer $observer
+     * @return $this|void
+     */
     public function execute(Observer $observer)
     {
         /** @var \Magento\Framework\DataObject $transport */
