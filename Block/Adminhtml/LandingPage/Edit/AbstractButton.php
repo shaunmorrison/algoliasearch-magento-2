@@ -3,6 +3,7 @@
 namespace Algolia\AlgoliaSearch\Block\Adminhtml\LandingPage\Edit;
 
 use Algolia\AlgoliaSearch\Block\Adminhtml\LandingPage\Renderer\UrlBuilder;
+use Algolia\AlgoliaSearch\Model\LandingPage;
 use Algolia\AlgoliaSearch\Model\LandingPageFactory;
 use Magento\Backend\Block\Widget\Context;
 
@@ -18,13 +19,9 @@ abstract class AbstractButton
     protected $frontendUrlBuilder;
 
     /**
-     * PHP Constructor
-     *
      * @param Context $context
      * @param LandingPageFactory $landingPageFactory
      * @param UrlBuilder $frontendUrlBuilder
-     *
-     * @return AbstractButton
      */
     public function __construct(
         Context $context,
@@ -38,16 +35,13 @@ abstract class AbstractButton
 
     /**
      * Return object
-     *
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     *
-     * @return int|null
+     * @return LandingPage|null
      */
     public function getObject()
     {
         try {
             $modelId = $this->context->getRequest()->getParam('id');
-            /** @var \Algolia\AlgoliaSearch\Model\LandingPage $landingPage */
+            /** @var LandingPage $landingPage */
             $landingPage = $this->landingPageFactory->create();
             $landingPage->getResource()->load($landingPage, $modelId);
 
@@ -60,8 +54,7 @@ abstract class AbstractButton
 
     /**
      * Return object ID
-     *
-     * @return int|null
+     * @return mixed|null
      */
     public function getObjectId()
     {
@@ -69,9 +62,8 @@ abstract class AbstractButton
     }
 
     /**
-     * Return object ID
-     *
-     * @return int|null
+     * Return url key
+     * @return string|null
      */
     public function getObjectUrlKey()
     {
@@ -80,11 +72,9 @@ abstract class AbstractButton
 
     /**
      * Generate url by route and parameters
-     *
-     * @param string $route
-     * @param array $params
-     *
-     * @return  string
+     * @param $route
+     * @param $params
+     * @return string
      */
     public function getUrl($route = '', $params = [])
     {
@@ -92,9 +82,8 @@ abstract class AbstractButton
     }
 
     /**
-     * get the button data
-     *
-     * @return array
+    * get the button data
+     * @return mixed
      */
     abstract public function getButtonData();
 }
