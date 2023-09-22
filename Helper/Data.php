@@ -4,11 +4,13 @@ namespace Algolia\AlgoliaSearch\Helper;
 
 use Algolia\AlgoliaSearch\Exception\CategoryReindexingException;
 use Algolia\AlgoliaSearch\Exception\ProductReindexingException;
+use Algolia\AlgoliaSearch\Exceptions\AlgoliaException;
 use Algolia\AlgoliaSearch\Helper\Entity\AdditionalSectionHelper;
 use Algolia\AlgoliaSearch\Helper\Entity\CategoryHelper;
 use Algolia\AlgoliaSearch\Helper\Entity\PageHelper;
 use Algolia\AlgoliaSearch\Helper\Entity\ProductHelper;
 use Algolia\AlgoliaSearch\Helper\Entity\SuggestionHelper;
+use Exception;
 use Magento\Catalog\Model\Category;
 use Magento\Catalog\Model\Product;
 use Magento\Catalog\Model\ResourceModel\Product\Collection;
@@ -16,6 +18,8 @@ use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\ScopeCodeResolver;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Indexer\IndexerRegistry;
 use Magento\Search\Model\Query;
 use Magento\Store\Model\App\Emulation;
@@ -96,6 +100,7 @@ class Data
      * @param ManagerInterface $eventManager
      * @param ScopeCodeResolver $scopeCodeResolver
      * @param StoreManagerInterface $storeManager
+     * @param IndexerRegistry $indexerRegistry
      */
     public function __construct(
         AlgoliaHelper           $algoliaHelper,
@@ -111,9 +116,7 @@ class Data
         ManagerInterface        $eventManager,
         ScopeCodeResolver       $scopeCodeResolver,
         StoreManagerInterface   $storeManager,
-        IndexerRegistry         $indexerRegistry
-
-    )
+        IndexerRegistry         $indexerRegistry)
     {
         $this->algoliaHelper = $algoliaHelper;
         $this->pageHelper = $pageHelper;
@@ -155,12 +158,12 @@ class Data
     }
 
     /**
-     * @param string $query
-     * @param int $storeId
-     * @param array|null $searchParams
-     * @param string|null $targetedIndex
-     *
+     * @param $query
+     * @param $storeId
+     * @param $searchParams
+     * @param $targetedIndex
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getSearchResult($query, $storeId, $searchParams = null, $targetedIndex = null)
     {
@@ -217,7 +220,8 @@ class Data
     /**
      * @param $storeId
      * @return void
-     * @throws \Algolia\AlgoliaSearch\Exceptions\AlgoliaException
+     * @throws AlgoliaException
+     * @throws NoSuchEntityException
      */
     public function rebuildStoreAdditionalSectionsIndex($storeId)
     {
@@ -253,14 +257,14 @@ class Data
      * @param $storeId
      * @param array|null $pageIds
      * @return void
-     * @throws \Algolia\AlgoliaSearch\Exceptions\AlgoliaException
+     * @throws AlgoliaException|NoSuchEntityException
      */
     public function rebuildStorePageIndex($storeId, array $pageIds = null)
     {
         if ($this->isIndexingEnabled($storeId) === false) {
             return;
         }
-        
+
         if (!$this->configHelper->isPagesIndexEnabled($storeId)) {
             $this->logger->log('Pages Indexing is not enabled for the store.');
             return;
@@ -284,7 +288,7 @@ class Data
             foreach (array_chunk($pagesToIndex, 100) as $chunk) {
                 try {
                     $this->algoliaHelper->addObjects($chunk, $toIndexName);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->logger->log($e->getMessage());
                     continue;
                 }
@@ -296,7 +300,7 @@ class Data
             foreach (array_chunk($pagesToRemove, 100) as $chunk) {
                 try {
                     $this->algoliaHelper->deleteObjects($chunk, $indexName);
-                } catch (\Exception $e) {
+                } catch (Exception $e) {
                     $this->logger->log($e->getMessage());
                     continue;
                 }
@@ -314,8 +318,8 @@ class Data
      * @param $storeId
      * @param $categoryIds
      * @return void
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function rebuildStoreCategoryIndex($storeId, $categoryIds = null)
     {
@@ -346,9 +350,8 @@ class Data
                     );
                     $page++;
                 }
-                unset($indexData);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->stopEmulation();
             throw $e;
         }
@@ -358,6 +361,7 @@ class Data
     /**
      * @param $storeId
      * @return void
+     * @throws NoSuchEntityException
      */
     public function rebuildStoreSuggestionIndex($storeId)
     {
@@ -387,7 +391,6 @@ class Data
                 );
                 $page++;
             }
-            unset($indexData);
         }
         $this->moveStoreSuggestionIndex($storeId);
     }
@@ -395,6 +398,7 @@ class Data
     /**
      * @param $storeId
      * @return void
+     * @throws NoSuchEntityException
      */
     public function moveStoreSuggestionIndex($storeId)
     {
@@ -413,7 +417,7 @@ class Data
      * @param $storeId
      * @param $productIds
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function rebuildStoreProductIndex($storeId, $productIds)
     {
@@ -449,7 +453,7 @@ class Data
                     $page++;
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->stopEmulation();
             throw $e;
         }
@@ -464,6 +468,7 @@ class Data
      * @param $pageSize
      * @param $useTmpIndex
      * @return void
+     * @throws Exception
      */
     public function rebuildProductIndex($storeId, $productIds, $page, $pageSize, $useTmpIndex)
     {
@@ -479,8 +484,8 @@ class Data
      * @param $page
      * @param $pageSize
      * @return void
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     public function rebuildCategoryIndex($storeId, $page, $pageSize)
     {
@@ -500,6 +505,7 @@ class Data
      * @param $page
      * @param $pageSize
      * @return void
+     * @throws NoSuchEntityException
      */
     public function rebuildStoreSuggestionIndexPage($storeId, $collectionDefault, $page, $pageSize)
     {
@@ -532,6 +538,15 @@ class Data
         unset($collection);
     }
 
+    /**
+     * @param $storeId
+     * @param $collection
+     * @param $page
+     * @param $pageSize
+     * @param $categoryIds
+     * @return void
+     * @throws NoSuchEntityException
+     */
     public function rebuildStoreCategoryIndexPage($storeId, $collection, $page, $pageSize, $categoryIds = null)
     {
         if ($this->isIndexingEnabled($storeId) === false) {
@@ -568,7 +583,7 @@ class Data
      * @param $collection
      * @param $potentiallyDeletedProductsIds
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     protected function getProductsRecords($storeId, $collection, $potentiallyDeletedProductsIds = null)
     {
@@ -644,13 +659,12 @@ class Data
     }
 
     /**
-     * @param int $storeId
-     * @param \Magento\Catalog\Model\ResourceModel\Category\Collection $collection
-     * @param array|null $potentiallyDeletedCategoriesIds
-     *
+     * @param $storeId
+     * @param $collection
+     * @param $potentiallyDeletedCategoriesIds
      * @return array
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     *
+     * @throws LocalizedException
+     * @throws NoSuchEntityException
      */
     protected function getCategoryRecords($storeId, $collection, $potentiallyDeletedCategoriesIds = null)
     {
@@ -708,7 +722,7 @@ class Data
      * @param $productIds
      * @param $useTmpIndex
      * @return void
-     * @throws \Exception
+     * @throws NoSuchEntityException
      */
     public function rebuildStoreProductIndexPage(
         $storeId,
@@ -791,7 +805,7 @@ class Data
     /**
      * @param $storeId
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function startEmulation($storeId)
     {
@@ -808,7 +822,7 @@ class Data
 
     /**
      * @return void
-     * @throws \Exception
+     * @throws Exception
      */
     public function stopEmulation()
     {
@@ -892,7 +906,7 @@ class Data
     /**
      * @param $storeId
      * @return void
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function deleteInactiveProducts($storeId)
     {
@@ -923,7 +937,7 @@ class Data
      * @param $storeId
      * @param $tmp
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getIndexName($indexSuffix, $storeId = null, $tmp = false)
     {
@@ -933,7 +947,7 @@ class Data
     /**
      * @param $storeId
      * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws NoSuchEntityException
      */
     public function getBaseIndexName($storeId = null)
     {
@@ -942,6 +956,7 @@ class Data
 
     /**
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getIndexDataByStoreIds()
     {
