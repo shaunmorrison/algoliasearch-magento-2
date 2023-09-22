@@ -10,7 +10,9 @@ use Magento\Framework\Indexer\IndexerRegistry;
 
 class ProductObserver
 {
-    /** @var Product */
+    /**
+     * @var \Magento\Framework\Indexer\IndexerInterface
+     */
     private $indexer;
 
     /** @var ConfigHelper */
@@ -30,8 +32,7 @@ class ProductObserver
      * @param ProductResource $productResource
      * @param ProductResource $result
      * @param ProductModel $product
-     *
-     * @return ProductModel[]
+     * @return ProductResource
      */
     public function afterSave(ProductResource $productResource, ProductResource $result, ProductModel $product)
     {
@@ -48,8 +49,7 @@ class ProductObserver
      * @param ProductResource $productResource
      * @param ProductResource $result
      * @param ProductModel $product
-     *
-     * @return ProductModel[]
+     * @return ProductResource
      */
     public function afterDelete(ProductResource $productResource, ProductResource $result, ProductModel $product)
     {
@@ -65,9 +65,8 @@ class ProductObserver
     /**
      * @param Action $subject
      * @param Action|null $result
-     * @param array $productIds
-     *
-     * @return Action
+     * @param $productIds
+     * @return Action|null
      */
     public function afterUpdateAttributes(Action $subject, Action $result = null, $productIds)
     {
@@ -82,8 +81,7 @@ class ProductObserver
      * @param Action $subject
      * @param Action|null $result
      * @param array $productIds
-     *
-     * @return mixed
+     * @return Action|null
      */
     public function afterUpdateWebsites(Action $subject, Action $result = null, array $productIds)
     {
