@@ -14,8 +14,6 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     protected $_eventPrefix = 'algoliasearch_landing_page';
 
     /**
-     * Magento Constructor
-     *
      * @return void
      */
     protected function _construct()
@@ -23,13 +21,16 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
         $this->_init(\Algolia\AlgoliaSearch\Model\ResourceModel\LandingPage::class);
     }
 
+    /**
+     * @return string[]
+     */
     public function getIdentities()
     {
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
 
     /**
-     * @inheritdoc
+     * @return int|mixed|null
      */
     public function getLandingPageId()
     {
@@ -37,7 +38,7 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @return int
      */
     public function getStoreId()
     {
@@ -45,7 +46,7 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getUrlKey()
     {
@@ -53,7 +54,7 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @return bool
      */
     public function getIsActive()
     {
@@ -61,7 +62,7 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getTitle()
     {
@@ -69,7 +70,7 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getDateFrom()
     {
@@ -77,7 +78,7 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getDateTo()
     {
@@ -85,7 +86,7 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getMetaTitle()
     {
@@ -93,7 +94,7 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getMetaDescription()
     {
@@ -101,7 +102,7 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getMetaKeywords()
     {
@@ -109,7 +110,7 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getContent()
     {
@@ -125,7 +126,7 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getConfiguration()
     {
@@ -133,7 +134,7 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getCustomJs()
     {
@@ -141,7 +142,7 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @return string
      */
     public function getCustomCss()
     {
@@ -149,7 +150,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage'
      */
     public function setLandingPageId($value)
     {
@@ -157,7 +159,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage
      */
     public function setStoreId($value)
     {
@@ -165,7 +168,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage
      */
     public function setUrlKey($value)
     {
@@ -173,7 +177,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage
      */
     public function setIsActive($value)
     {
@@ -181,7 +186,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage
      */
     public function setTitle($value)
     {
@@ -189,7 +195,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage
      */
     public function setDateFrom($value)
     {
@@ -197,7 +204,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage
      */
     public function setDateTo($value)
     {
@@ -205,7 +213,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage
      */
     public function setMetaTitle($value)
     {
@@ -213,7 +222,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage
      */
     public function setMetaDescription($value)
     {
@@ -221,7 +231,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage
      */
     public function setMetaKeywords($value)
     {
@@ -229,7 +240,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage
      */
     public function setContent($value)
     {
@@ -237,7 +249,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage
      */
     public function setQuery($value)
     {
@@ -245,7 +258,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage
      */
     public function setConfiguration($value)
     {
@@ -253,7 +267,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage
      */
     public function setCustomJs($value)
     {
@@ -261,7 +276,8 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * @inheritdoc
+     * @param $value
+     * @return LandingPageInterface|LandingPage
      */
     public function setCustomCss($value)
     {
@@ -269,14 +285,12 @@ class LandingPage extends \Magento\Framework\Model\AbstractModel implements Iden
     }
 
     /**
-     * Check if landing page url key exists for specific store
-     * return page id if landing page exists
-     *
-     * @param string $identifier
-     * @param int $storeId
-     * @param string $date
-     *
-     * @return int
+     * Check if landing page url key exists for specific store return page id if landing page exists
+     * @param $identifier
+     * @param $storeId
+     * @param $date
+     * @return mixed
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function checkIdentifier($identifier, $storeId, $date)
     {
