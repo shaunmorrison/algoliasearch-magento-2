@@ -17,6 +17,8 @@ class TrendsItem extends Template implements BlockInterface
 
     protected $_template = 'recommend/widget/trends-item.phtml';
 
+    private $mathRandom;
+
     /**
      * @param Context $context
      * @param ConfigHelper $configHelper
