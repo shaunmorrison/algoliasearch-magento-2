@@ -8,7 +8,9 @@ use Magento\Framework\Controller\ResultFactory;
 
 class Index extends \Magento\Backend\App\Action
 {
-    /** @var Algolia\AlgoliaSearch\Helper\ConfigHelper */
+    /**
+     * @var ConfigHelper
+     */
     protected $configHelper;
 
     /**
@@ -38,9 +40,12 @@ class Index extends \Magento\Backend\App\Action
         return $resultPage;
     }
 
+    /**
+     * @return void
+     */
     protected function checkQueueIsActivated()
     {
-        if (! $this->configHelper->isQueueActive()) {
+        if (!$this->configHelper->isQueueActive()) {
             $msg = __(
                 'The indexing queue is not activated. Please activate it in the <a href="%1">Algolia configuration</a>.',
                 $this->getUrl('adminhtml/system_config/edit/section/algoliasearch_queue')
