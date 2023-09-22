@@ -18,13 +18,9 @@ abstract class AbstractButton
     protected $frontendUrlBuilder;
 
     /**
-     * PHP Constructor
-     *
      * @param Context $context
      * @param QueryFactory $queryFactory
      * @param UrlBuilder $frontendUrlBuilder
-     *
-     * @return AbstractButton
      */
     public function __construct(
         Context $context,
@@ -38,10 +34,7 @@ abstract class AbstractButton
 
     /**
      * Return object
-     *
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     *
-     * @return int|null
+     * @return \Algolia\AlgoliaSearch\Model\Query|null
      */
     public function getObject()
     {
@@ -60,8 +53,7 @@ abstract class AbstractButton
 
     /**
      * Return object ID
-     *
-     * @return int|null
+     * @return mixed|null
      */
     public function getObjectId()
     {
@@ -70,7 +62,6 @@ abstract class AbstractButton
 
     /**
      * Return object query text
-     *
      * @return string|null
      */
     public function getObjectQueryText()
@@ -80,11 +71,9 @@ abstract class AbstractButton
 
     /**
      * Generate url by route and parameters
-     *
-     * @param string $route
-     * @param array $params
-     *
-     * @return  string
+     * @param $route
+     * @param $params
+     * @return string
      */
     public function getUrl($route = '', $params = [])
     {
@@ -92,9 +81,8 @@ abstract class AbstractButton
     }
 
     /**
-     * get the button data
-     *
-     * @return array
+     * Get the button data
+     * @return mixed
      */
     abstract public function getButtonData();
 }
