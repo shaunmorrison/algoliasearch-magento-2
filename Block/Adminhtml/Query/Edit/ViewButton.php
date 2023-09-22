@@ -6,6 +6,9 @@ use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 
 class ViewButton extends AbstractButton implements ButtonProviderInterface
 {
+    /**
+     * @return array|void
+     */
     public function getButtonData()
     {
         if ($this->getObjectQueryText()) {
@@ -20,21 +23,14 @@ class ViewButton extends AbstractButton implements ButtonProviderInterface
 
     /**
      * Get action url
-     *
-     * @param string $scope
-     * @param string $store
-     *
      * @return string
      */
-    public function getQueryTextViewUrl($scope = null, $store = null)
+    public function getQueryTextViewUrl()
     {
         if ($this->getObject()->getStoreId() != 0) {
             $this->frontendUrlBuilder->setScope($this->getObject()->getStoreId());
         }
 
-        $href = $this->frontendUrlBuilder->getUrl('catalogsearch/result/?q=' . $this->getObjectQueryText());
-        $href = rtrim($href, '/');
-
-        return $href;
+        return rtrim($this->frontendUrlBuilder->getUrl('catalogsearch/result/?q=' . $this->getObjectQueryText()), '/');
     }
 }
