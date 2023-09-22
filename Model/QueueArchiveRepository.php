@@ -12,7 +12,7 @@ use Magento\Framework\Api\SearchResultsInterfaceFactory;
 use Magento\Framework\Exception\CouldNotDeleteException;
 use Magento\Framework\Exception\CouldNotSaveException;
 use Magento\Framework\Exception\NoSuchEntityException;
-use Magento\Framework\Exception\StateException;
+use Magento\Framework\Api\SearchCriteria\CollectionProcessorInterface;
 
 class QueueArchiveRepository implements QueueArchiveRepositoryInterface
 {
@@ -36,16 +36,23 @@ class QueueArchiveRepository implements QueueArchiveRepositoryInterface
      */
     private $searchResultsFactory;
 
+    /**
+     * @var CollectionProcessorInterface
+     */
+    private $collectionProcessor;
+
     public function __construct(
         QueueArchiveResource          $resource,
         QueueArchiveFactory           $queueArchiveFactory,
         CollectionFactory             $collectionFactory,
+        CollectionProcessorInterface  $collectionProcessor,
         SearchResultsInterfaceFactory $searchResultsFactory
     )
     {
         $this->resource = $resource;
         $this->queueArchiveFactory = $queueArchiveFactory;
         $this->collectionFactory = $collectionFactory;
+        $this->collectionProcessor = $collectionProcessor;
         $this->searchResultsFactory = $searchResultsFactory;
     }
 
