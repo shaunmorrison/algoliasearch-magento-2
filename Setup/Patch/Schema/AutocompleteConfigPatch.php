@@ -30,6 +30,9 @@ class AutocompleteConfigPatch implements SchemaPatchInterface
         $this->moduleDataSetup = $moduleDataSetup;
     }
 
+    /**
+     * @return AutocompleteConfigPatch|void
+     */
     public function apply()
     {
         $movedConfigDirectives = [
