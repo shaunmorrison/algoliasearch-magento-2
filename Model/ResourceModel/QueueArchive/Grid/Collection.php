@@ -3,7 +3,6 @@
 namespace Algolia\AlgoliaSearch\Model\ResourceModel\QueueArchive\Grid;
 
 use Algolia\AlgoliaSearch\Model\ResourceModel\QueueArchive\Collection as QueueArchiveCollection;
-use Magento\Framework\Api\ExtensibleDataInterface;
 use Magento\Framework\Api\Search\AggregationInterface;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
@@ -23,15 +22,13 @@ class Collection extends QueueArchiveCollection implements SearchResultInterface
      * @param LoggerInterface $logger
      * @param FetchStrategyInterface $fetchStrategy
      * @param ManagerInterface $eventManager
-     * @param mixed|null $mainTable
-     * @param AbstractDb $eventPrefix
-     * @param mixed $eventObject
-     * @param mixed $resourceModel
-     * @param string $model
-     * @param null $connection
+     * @param $mainTable
+     * @param $eventPrefix
+     * @param $eventObject
+     * @param $resourceModel
+     * @param $model
+     * @param $connection
      * @param AbstractDb|null $resource
-     *
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         EntityFactoryInterface $entityFactory,
@@ -67,9 +64,8 @@ class Collection extends QueueArchiveCollection implements SearchResultInterface
     }
 
     /**
-     * @param AggregationInterface $aggregations
-     *
-     * @return void
+     * @param $aggregations
+     * @return Collection|void
      */
     public function setAggregations($aggregations)
     {
@@ -84,10 +80,7 @@ class Collection extends QueueArchiveCollection implements SearchResultInterface
 
     /**
      * @param SearchCriteriaInterface|null $searchCriteria
-     *
-     * @return $this
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @return $this|Collection
      */
     public function setSearchCriteria(SearchCriteriaInterface $searchCriteria = null)
     {
@@ -101,11 +94,8 @@ class Collection extends QueueArchiveCollection implements SearchResultInterface
     }
 
     /**
-     * @param int $totalCount
-     *
-     * @return $this
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @param $totalCount
+     * @return $this|Collection
      */
     public function setTotalCount($totalCount)
     {
@@ -113,11 +103,8 @@ class Collection extends QueueArchiveCollection implements SearchResultInterface
     }
 
     /**
-     * @param ExtensibleDataInterface[] $items
-     *
-     * @return $this
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @param array|null $items
+     * @return $this|Collection
      */
     public function setItems(array $items = null)
     {

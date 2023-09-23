@@ -5,6 +5,12 @@ namespace Algolia\AlgoliaSearch\Model\ResourceModel\Run\Grid;
 use Algolia\AlgoliaSearch\Model\ResourceModel\Run\Collection as RunCollection;
 use Magento\Framework\Api\Search\AggregationInterface;
 use Magento\Framework\Api\Search\SearchResultInterface;
+use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Data\Collection\Db\FetchStrategyInterface;
+use Magento\Framework\Data\Collection\EntityFactoryInterface;
+use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Psr\Log\LoggerInterface;
 
 class Collection extends RunCollection implements SearchResultInterface
 {
@@ -12,32 +18,30 @@ class Collection extends RunCollection implements SearchResultInterface
     protected $aggregations;
 
     /**
-     * @param \Magento\Framework\Data\Collection\EntityFactoryInterface    $entityFactory
-     * @param \Psr\Log\LoggerInterface                                     $logger
-     * @param \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy
-     * @param \Magento\Framework\Event\ManagerInterface                    $eventManager
-     * @param mixed|null                                                   $mainTable
-     * @param \Magento\Framework\Model\ResourceModel\Db\AbstractDb         $eventPrefix
-     * @param mixed                                                        $eventObject
-     * @param mixed                                                        $resourceModel
-     * @param string                                                       $model
-     * @param null                                                         $connection
-     * @param \Magento\Framework\Model\ResourceModel\Db\AbstractDb|null    $resource
-     *
-     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     * @param EntityFactoryInterface $entityFactory
+     * @param LoggerInterface $logger
+     * @param FetchStrategyInterface $fetchStrategy
+     * @param ManagerInterface $eventManager
+     * @param $mainTable
+     * @param $eventPrefix
+     * @param $eventObject
+     * @param $resourceModel
+     * @param $model
+     * @param $connection
+     * @param AbstractDb|null $resource
      */
     public function __construct(
-        \Magento\Framework\Data\Collection\EntityFactoryInterface $entityFactory,
-        \Psr\Log\LoggerInterface $logger,
-        \Magento\Framework\Data\Collection\Db\FetchStrategyInterface $fetchStrategy,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
+        EntityFactoryInterface $entityFactory,
+        LoggerInterface $logger,
+        FetchStrategyInterface $fetchStrategy,
+        ManagerInterface $eventManager,
         $mainTable,
         $eventPrefix,
         $eventObject,
         $resourceModel,
         $model = 'Magento\Framework\View\Element\UiComponent\DataProvider\Document',
         $connection = null,
-        \Magento\Framework\Model\ResourceModel\Db\AbstractDb $resource = null
+        AbstractDb $resource = null
     ) {
         parent::__construct(
             $entityFactory,
@@ -60,29 +64,25 @@ class Collection extends RunCollection implements SearchResultInterface
     }
 
     /**
-     * @param AggregationInterface $aggregations
-     *
-     * @return $this
+     * @param $aggregations
+     * @return Collection|void
      */
     public function setAggregations($aggregations)
     {
         $this->aggregations = $aggregations;
     }
 
-    /** @return \Magento\Framework\Api\SearchCriteriaInterface|null */
+    /** @return SearchCriteriaInterface|null */
     public function getSearchCriteria()
     {
         return null;
     }
 
     /**
-     * @param \Magento\Framework\Api\SearchCriteriaInterface $searchCriteria
-     *
-     * @return $this
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @param SearchCriteriaInterface|null $searchCriteria
+     * @return $this|Collection
      */
-    public function setSearchCriteria(\Magento\Framework\Api\SearchCriteriaInterface $searchCriteria = null)
+    public function setSearchCriteria(SearchCriteriaInterface $searchCriteria = null)
     {
         return $this;
     }
@@ -94,11 +94,8 @@ class Collection extends RunCollection implements SearchResultInterface
     }
 
     /**
-     * @param int $totalCount
-     *
-     * @return $this
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @param $totalCount
+     * @return $this|Collection
      */
     public function setTotalCount($totalCount)
     {
@@ -106,11 +103,8 @@ class Collection extends RunCollection implements SearchResultInterface
     }
 
     /**
-     * @param \Magento\Framework\Api\ExtensibleDataInterface[] $items
-     *
-     * @return $this
-     *
-     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @param array|null $items
+     * @return $this|Collection
      */
     public function setItems(array $items = null)
     {
