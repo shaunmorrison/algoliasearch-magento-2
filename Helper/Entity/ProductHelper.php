@@ -291,7 +291,7 @@ class ProductHelper
      * @param $productIds
      * @param $onlyVisible
      * @param $includeNotVisibleIndividually
-     * @return Collection
+     * @return ProductCollection
      */
     public function getProductCollectionQuery(
         $storeId,
@@ -372,12 +372,11 @@ class ProductHelper
      *            Otherwise, the resulting inner join will filter out products
      *            without a price. These removed products will initiate a `deleteObject`
      *            operation against the underlying product index in Algolia.
-     * @param $products
+     * @param ProductCollection $products
      * @return void
      */
     protected function addMandatoryAttributes(ProductCollection $products): void
     {
-        /** @var ProductCollection $products */
         $products->addFinalPrice()
             ->addAttributeToSelect('special_price')
             ->addAttributeToSelect('special_from_date')
@@ -402,6 +401,7 @@ class ProductHelper
      * @param $saveToTmpIndicesToo
      * @return void
      * @throws AlgoliaException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function setSettings($indexName, $indexNameTmp, $storeId, $saveToTmpIndicesToo = false)
     {
@@ -1468,11 +1468,9 @@ class ProductHelper
 
     /**
      * Check if product can be index on Algolia
-     *
-     * @param Product $product
-     * @param int $storeId
-     * @param bool $isChildProduct
-     *
+     * @param $product
+     * @param $storeId
+     * @param $isChildProduct
      * @return bool
      */
     public function canProductBeReindexed($product, $storeId, $isChildProduct = false)
@@ -1515,10 +1513,8 @@ class ProductHelper
 
     /**
      * Returns is product in stock
-     *
-     * @param Product $product
-     * @param int $storeId
-     *
+     * @param $product
+     * @param $storeId
      * @return bool
      */
     public function productIsInStock($product, $storeId)
@@ -1529,7 +1525,8 @@ class ProductHelper
     }
 
     /**
-     * @param $replica
+     * @param $replicas
+     * @param $indexName
      * @return array
      */
     protected function handleVirtualReplica($replicas, $indexName)
