@@ -5,7 +5,6 @@ namespace Algolia\AlgoliaSearch\ViewModel\Recommend;
 use Algolia\AlgoliaSearch\Helper\ConfigHelper;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
-use Magento\Framework\View\Element\Template\Context;
 
 class Cart implements ArgumentInterface
 {
@@ -20,16 +19,12 @@ class Cart implements ArgumentInterface
     protected $configHelper;
 
     /**
-     * @param Context $context
      * @param Session $checkoutSession
      * @param ConfigHelper $configHelper
-     * @param array $data
      */
     public function __construct(
-        Context $context,
         Session $checkoutSession,
-        ConfigHelper $configHelper,
-        array $data = []
+        ConfigHelper $configHelper
     ) {
         $this->checkoutSession = $checkoutSession;
         $this->configHelper = $configHelper;

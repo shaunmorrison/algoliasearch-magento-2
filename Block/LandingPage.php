@@ -25,9 +25,7 @@ class LandingPage extends Result
     protected $landingPageFactory;
 
     /**
-     * Construct
-     *
-     * @param Magento\Framework\View\Element\Template\Context $context
+     * @param \Magento\Framework\View\Element\Template\Context $context
      * @param LayerResolver $layerResolver
      * @param Data $catalogSearchData
      * @param QueryFactory $queryFactory
@@ -61,8 +59,8 @@ class LandingPage extends Result
 
     /**
      * Retrieve Page instance
-     *
-     * @return LandingPageModel
+     * @return array|mixed|null
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getPage()
     {
@@ -82,8 +80,8 @@ class LandingPage extends Result
 
     /**
      * Prepare global layout
-     *
-     * @return $this
+     * @return $this|LandingPage
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     protected function _prepareLayout()
     {
@@ -101,11 +99,19 @@ class LandingPage extends Result
         return $this;
     }
 
+    /**
+     * @return string
+     * @throws \Exception
+     */
     protected function getLandingPageContent()
     {
         return $this->filterProvider->getPageFilter()->filter($this->getPage()->getContent());
     }
 
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     protected function getLandingCustomJs()
     {
         $customJs = $this->getPage()->getCustomJs();
@@ -117,6 +123,10 @@ class LandingPage extends Result
         return '<script type="text/javascript">' . $customJs . '</script>';
     }
 
+    /**
+     * @return string
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     */
     protected function getLandingCustomCss()
     {
         $customCss = $this->getPage()->getCustomCss();
@@ -129,9 +139,8 @@ class LandingPage extends Result
     }
 
     /**
-     * Return identifiers for produced content
-     *
-     * @return array
+     * @return string[]
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     public function getIdentities()
     {
