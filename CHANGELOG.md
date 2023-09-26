@@ -1,6 +1,6 @@
 # CHANGE LOG
 
-## 3.11.0-beta
+## 3.11.0
 
 ### Bug Fixes
 - Support for Merch Studio and the Visual Merchandiser.
@@ -8,6 +8,13 @@
 - Upgraded the Algolia insight 2.6.0
 - Preserve facet selections after adding an item to the cart from the PLP
 - Fixes related to Neural Search compatibility
+
+
+## 3.10.6
+
+### Bug Fixes
+- Replaced referenceBlock by referenceContainer following Magento best practices.
+
 
 ## 3.10.5
 
