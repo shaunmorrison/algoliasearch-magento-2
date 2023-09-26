@@ -2,12 +2,20 @@
 
 ## 3.11.0
 
-### Bug Fixes
+### Updates
 - Support for Merch Studio and the Visual Merchandiser.
 - Upgraded the Algolia PHP client to version 3.3.2
 - Upgraded the Algolia insight 2.6.0
 - Preserve facet selections after adding an item to the cart from the PLP
 - Fixes related to Neural Search compatibility
+- Added the code to hide Pagination when the results have only one page in InstantSearch page
+- Increased the  character limit of Class filed in algoliasearch_queue table
+- Fixed Address vulnerability in query (htmlspecialcharacters) while search special characters
+- Fixed  the problem related to overlooked special characters in autocomplete search queries.
+- Fixed the Bundle Product Price indexing issue with Dynamic and Static Product Type
+- Added a functionality for debouncing and controlling the query length in autocomplete
+- Add a banner within the Admin's Merchandising section of Magento
+
 
 
 ## 3.10.6
