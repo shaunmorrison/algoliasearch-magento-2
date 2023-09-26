@@ -10,7 +10,7 @@
 - Fixes related to Neural Search compatibility
 - Added ability to hide Pagination when results have only one page in InstantSearch page
 - Increased the character limit of class field in algoliasearch_queue, algoliasearch_queue_archive table
-- Fixed vulnerability in query (htmlspecialcharacters) while using search special characters
+- Fixed vulnerability in query (htmlspecialcharacters) while searching using special characters
 - Fixed issues related to overlooked special characters in autocomplete search queries.
 - Fixed Bundle Product Price indexing issue for Dynamic and Static Product Types
 - Added ability to debounce and control the query length in autocomplete
