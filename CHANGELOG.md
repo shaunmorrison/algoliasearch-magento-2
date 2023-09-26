@@ -8,13 +8,14 @@
 - Upgraded the Algolia insight 2.6.0
 - Preserve facet selections after adding an item to the cart from the PLP
 - Fixes related to Neural Search compatibility
-- Added the code to hide Pagination when the results have only one page in InstantSearch page
-- Increased the  character limit of Class filed in algoliasearch_queue table
-- Fixed Address vulnerability in query (htmlspecialcharacters) while search special characters
-- Fixed  the problem related to overlooked special characters in autocomplete search queries.
-- Fixed the Bundle Product Price indexing issue with Dynamic and Static Product Type
-- Added a functionality for debouncing and controlling the query length in autocomplete
-- Add a banner within the Admin's Merchandising section of Magento
+- Added ability to hide Pagination when results have only one page in InstantSearch page
+- Increased the character limit of class field in algoliasearch_queue, algoliasearch_queue_archive table
+- Fixed vulnerability in query (htmlspecialcharacters) while using search special characters
+- Fixed issues related to overlooked special characters in autocomplete search queries.
+- Fixed Bundle Product Price indexing issue for Dynamic and Static Product Types
+- Added ability to debounce and control the query length in autocomplete
+- Added ability to turn off suggestions and pages indexing
+- Added flattened categoryID attribute to product index to support Merchandising Studio
 
 
 
