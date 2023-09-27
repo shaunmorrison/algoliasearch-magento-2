@@ -96,13 +96,24 @@ class IndicesConfigurator
         if ($this->baseHelper->isIndexingEnabled($storeId) === false) {
             $this->logger->log('Indexing is not enabled for the store.');
             $this->logger->stop($logEventName);
-
             return;
         }
 
         $this->setCategoriesSettings($storeId);
-        $this->setPagesSettings($storeId);
-        $this->setQuerySuggestionsSettings($storeId);
+        /* heck if we want to index CMS pages */
+        if ($this->configHelper->isPagesIndexEnabled($storeId)) {
+            $this->setPagesSettings($storeId);
+        } else {
+            $this->logger->log('CMS Page Indexing is not enabled for the store.');
+        }
+
+        //Check if we want to index Query Suggestions
+        if ($this->configHelper->isQuerySuggestionsIndexEnabled($storeId)) {
+            $this->setQuerySuggestionsSettings($storeId);
+        } else {
+            $this->logger->log('Query Suggestions Indexing is not enabled for the store.');
+        }
+
         $this->setAdditionalSectionsSettings($storeId);
         $this->setProductsSettings($storeId, $useTmpIndex);
 
