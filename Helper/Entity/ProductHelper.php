@@ -732,20 +732,6 @@ class ProductHelper
         return $customData;
     }
 
-    protected function getCategoryPaths($product, $category)
-    {
-        $category->getUrlInstance()->setStore($product->getStoreId());
-        $path = [];
-
-        foreach ($category->getPathIds() as $treeCategoryId) {
-            $name = $this->categoryHelper->getCategoryName($treeCategoryId, $storeId);
-            if ($name) {
-                $categoryIds[] = $treeCategoryId;
-                $path[] = $name;
-            }
-        }
-    }
-
     /**
      * A category should only be indexed if in the path of the current store and has a valid name.
      *
@@ -787,11 +773,11 @@ class ProductHelper
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     protected function  addBundleProductDefaultOptions($customData, Product $product) {
-        $optionsCollection = $product->getTypeInstance(true)->getOptionsCollection($product);
+        $optionsCollection = $product->getTypeInstance()->getOptionsCollection($product);
         $optionDetails = [];
         foreach ($optionsCollection as $option){
-            $selections = $product->getTypeInstance(true)->getSelectionsCollection($option->getOptionId(),$product);
-            //selection details by optionids
+            $selections = $product->getTypeInstance()->getSelectionsCollection($option->getOptionId(),$product);
+            //selection details by optionIds
             foreach ($selections as $selection) {
                 if($selection->getIsDefault()){
                     $optionDetails[$option->getOptionId()] = $selection->getSelectionId();
