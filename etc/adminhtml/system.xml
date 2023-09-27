@@ -64,6 +64,32 @@
                         ]]>
                     </comment>
                 </field>
+                <field id="enable_query_suggestions_index" translate="label comment" type="select" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Query Suggestions Index</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            Do you want the Algolia extension to push your search terms/suggestions to Algolia?<br>
+                            If you choose "No", _suggestion indexes will not be created.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="enable_backend">1</field>
+                    </depends>
+                </field>
+                <field id="enable_pages_index" translate="label comment" type="select" sortOrder="41" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable Pages Index</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment>
+                        <![CDATA[
+                            Do you want the Algolia extension to push your CMS Pages to Algolia?<br>
+                            If you choose "No", _pages indexes will not be created.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="enable_backend">1</field>
+                    </depends>
+                </field>
                 <field id="enable_frontend" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Search</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
@@ -243,6 +269,30 @@
                         <field id="is_popup_enabled">1</field>
                     </depends>
                 </field>
+                <field id="debounce_millisec" translate="label comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <validate>validate-digits</validate>
+                    <label>Debounce requests</label>
+                    <comment>
+                        <![CDATA[
+                            The minimal time (in milliseconds) that should elapse as users type their search query before a request is sent to the Algolia Search API. Default value is 300.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="is_popup_enabled">1</field>
+                    </depends>
+                </field>
+                <field id="minimum_char_length" translate="label comment" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <validate>validate-digits</validate>
+                    <label>Minimum query length</label>
+                    <comment>
+                        <![CDATA[
+                            The minimal number of characters required for a search term before a request is sent to the Algolia Search API. If set to 0 then results will be fetched on first keystroke. Default value is 0.
+                        ]]>
+                    </comment>
+                    <depends>
+                        <field id="is_popup_enabled">1</field>
+                    </depends>
+                </field>
             </group>
         </section>
         <section id="algoliasearch_instant" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
@@ -324,6 +374,7 @@
                 <field id="use_virtual_replica" translate="label comment" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Use Virtual Replica</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <backend_model>Algolia\AlgoliaSearch\Model\Backend\Replica</backend_model>
                     <comment>
                         <![CDATA[
                             Virtual Replica is only available on Premium plans <a target="_blank" href="https://www.algolia.com/doc/integration/magento-2/how-it-works/indexing/?client=php#switching-to-virtual-replica">documentation</a>
@@ -336,7 +387,7 @@
                 <field id="sorts" translate="label comment" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Sorts</label>
                     <frontend_model>Algolia\AlgoliaSearch\Model\Source\Sorts</frontend_model>
-                    <backend_model>Magento\Config\Model\Config\Backend\Serialized\ArraySerialized</backend_model>
+                    <backend_model>Algolia\AlgoliaSearch\Model\Backend\Sorts</backend_model>
                     <comment>
                         <![CDATA[
                             Specify different sorting options you want to offer on a search results page.<br>
@@ -1086,6 +1137,7 @@
                 <field id="customer_groups_enable" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
                     <label>Enable Customer Groups</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <backend_model>Algolia\AlgoliaSearch\Model\Backend\Replica</backend_model>    
                     <comment>
                         <![CDATA[
                             Do you want to take into account customer groups and display the price of the logged-in group instead of the default price?

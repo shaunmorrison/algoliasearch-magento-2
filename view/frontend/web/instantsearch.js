@@ -118,36 +118,36 @@ define(
 
                     instantsearchOptions = algolia.triggerHooks('beforeInstantsearchInit', instantsearchOptions, algoliaBundle);
 
-					var search = algoliaBundle.instantsearch(instantsearchOptions);
+                    var search = algoliaBundle.instantsearch(instantsearchOptions);
 
-					search.client.addAlgoliaAgent('Magento2 integration (' + algoliaConfig.extensionVersion + ')');
+                    search.client.addAlgoliaAgent('Magento2 integration (' + algoliaConfig.extensionVersion + ')');
 
-					/** Prepare sorting indices data */
-					algoliaConfig.sortingIndices.unshift({
-							name:  indexName,
-							label: algoliaConfig.translations.relevance
-					});
+                    /** Prepare sorting indices data */
+                    algoliaConfig.sortingIndices.unshift({
+                            name:  indexName,
+                            label: algoliaConfig.translations.relevance
+                    });
 
-					/** Setup attributes for current refinements widget **/
-					var attributes = [];
-					$.each(algoliaConfig.facets, function (i, facet) {
-							var name = facet.attribute;
+                    /** Setup attributes for current refinements widget **/
+                    var attributes = [];
+                    $.each(algoliaConfig.facets, function (i, facet) {
+                            var name = facet.attribute;
 
-							if (name === 'categories') {
-									name = 'categories.level0';
-							}
+                            if (name === 'categories') {
+                                    name = 'categories.level0';
+                            }
 
-							if (name === 'price') {
-									name = facet.attribute + algoliaConfig.priceKey
-							}
+                            if (name === 'price') {
+                                    name = facet.attribute + algoliaConfig.priceKey
+                            }
 
-							attributes.push({
-									name:  name,
-									label: facet.label ? facet.label : facet.attribute
-							});
-					});
+                            attributes.push({
+                                    name:  name,
+                                    label: facet.label ? facet.label : facet.attribute
+                            });
+                    });
 
-					var allWidgetConfiguration = {
+                    var allWidgetConfiguration = {
                         infiniteHits: {},
                         hits        : {},
                         configure   : searchParameters,
@@ -159,7 +159,7 @@ define(
                             {
                                 getWidgetSearchParameters: function (searchParameters) {
                                     if (algoliaConfig.request.query.length > 0 && location.hash.length < 1) {
-                                        return searchParameters.setQuery(algoliaConfig.request.query)
+                                        return searchParameters.setQuery(algolia.htmlspecialcharsDecode(algoliaConfig.request.query))
                                     }
                                     return searchParameters;
                                 },
@@ -344,115 +344,115 @@ define(
                         }
                     };
 
-					if (algoliaConfig.instant.isSearchBoxEnabled) {
-							/**
-							 * searchBox
-							 * Docs: https://www.algolia.com/doc/api-reference/widgets/search-box/js/
-							 **/
-							allWidgetConfiguration.searchBox = {
-									container:   instant_selector,
-									placeholder: algoliaConfig.translations.searchFor,
-									showSubmit:  false,
-									queryHook:   function (inputValue, search) {
-											if (algoliaConfig.isSearchPage && algoliaConfig.request.categoryId.length <= 0 && algoliaConfig.request.landingPageId.length <= 0) {
-													$(".page-title-wrapper span.base").html(algoliaConfig.translations.searchTitle + ": '" + inputValue + "'");
-											}
-											return search(inputValue);
-									}
-							}
-					}
+                    if (algoliaConfig.instant.isSearchBoxEnabled) {
+                            /**
+                             * searchBox
+                             * Docs: https://www.algolia.com/doc/api-reference/widgets/search-box/js/
+                             **/
+                            allWidgetConfiguration.searchBox = {
+                                    container:   instant_selector,
+                                    placeholder: algoliaConfig.translations.searchFor,
+                                    showSubmit:  false,
+                                    queryHook:   function (inputValue, search) {
+                                            if (algoliaConfig.isSearchPage && algoliaConfig.request.categoryId.length <= 0 && algoliaConfig.request.landingPageId.length <= 0) {
+                                                $(".page-title-wrapper span.base").html(algoliaConfig.translations.searchTitle + ": '" + algolia.htmlspecialcharsDecode(inputValue) + "'");
+                                            }
+                                            return search(inputValue);
+                                    }
+                            }
+                    }
 
-					if (algoliaConfig.instant.infiniteScrollEnabled === true) {
-							/**
-							 * infiniteHits
-							 * This widget renders all products into result page
-							 * Docs: https://www.algolia.com/doc/api-reference/widgets/infinite-hits/js/
-							 **/
-							allWidgetConfiguration.infiniteHits = {
-									container:      '#instant-search-results-container',
-									templates:      {
-											empty:        '',
-											item:         $('#instant-hit-template').html(),
-											showMoreText: algoliaConfig.translations.showMore
-									},
-									cssClasses:     {
-											loadPrevious: ['action', 'primary'],
-											loadMore:     ['action', 'primary']
-									},
-									transformItems: function (items) {
-											return items.map(function (item) {
-													item.__indexName = search.helper.lastResults.index;
-													item = transformHit(item, algoliaConfig.priceKey, search.helper);
-													// FIXME: transformHit is a global
-													item.isAddToCartEnabled = algoliaConfig.instant.isAddToCartEnabled;
-													return item;
-											});
-									},
-									showPrevious:   true,
-									escapeHits:     true
-							};
+                    if (algoliaConfig.instant.infiniteScrollEnabled === true) {
+                            /**
+                             * infiniteHits
+                             * This widget renders all products into result page
+                             * Docs: https://www.algolia.com/doc/api-reference/widgets/infinite-hits/js/
+                             **/
+                            allWidgetConfiguration.infiniteHits = {
+                                    container:      '#instant-search-results-container',
+                                    templates:      {
+                                            empty:        '',
+                                            item:         $('#instant-hit-template').html(),
+                                            showMoreText: algoliaConfig.translations.showMore
+                                    },
+                                    cssClasses:     {
+                                            loadPrevious: ['action', 'primary'],
+                                            loadMore:     ['action', 'primary']
+                                    },
+                                    transformItems: function (items) {
+                                            return items.map(function (item) {
+                                                    item.__indexName = search.helper.lastResults.index;
+                                                    item = transformHit(item, algoliaConfig.priceKey, search.helper);
+                                                    // FIXME: transformHit is a global
+                                                    item.isAddToCartEnabled = algoliaConfig.instant.isAddToCartEnabled;
+                                                    return item;
+                                            });
+                                    },
+                                    showPrevious:   true,
+                                    escapeHits:     true
+                            };
 
-							delete allWidgetConfiguration.hits;
-					} else {
-							/**
-							 * hits
-							 * This widget renders all products into result page
-							 * Docs: https://www.algolia.com/doc/api-reference/widgets/hits/js/
-							 **/
-							allWidgetConfiguration.hits = {
-									container:      '#instant-search-results-container',
-									templates:      {
-											empty: '',
-											item:  $('#instant-hit-template').html(),
-									},
-									transformItems: function (items, { results }) {
+                            delete allWidgetConfiguration.hits;
+                    } else {
+                            /**
+                             * hits
+                             * This widget renders all products into result page
+                             * Docs: https://www.algolia.com/doc/api-reference/widgets/hits/js/
+                             **/
+                            allWidgetConfiguration.hits = {
+                                    container:      '#instant-search-results-container',
+                                    templates:      {
+                                            empty: '',
+                                            item:  $('#instant-hit-template').html(),
+                                    },
+                                    transformItems: function (items, { results }) {
                                         if (results.nbPages <= 1 && algoliaConfig.instant.hidePagination === true){
                                             document.getElementById('instant-search-pagination-container').style.display = "none";
                                         }else{
                                             document.getElementById('instant-search-pagination-container').style.display = "block";
                                         }
-										return items.map(function (item) {
-												item.__indexName = search.helper.lastResults.index;
-												item = transformHit(item, algoliaConfig.priceKey, search.helper);
-												// FIXME: transformHit is a global
-												item.isAddToCartEnabled = algoliaConfig.instant.isAddToCartEnabled;
-												item.algoliaConfig = window.algoliaConfig;
-												return item;
-										})
-									}
-							};
+                                        return items.map(function (item) {
+                                                item.__indexName = search.helper.lastResults.index;
+                                                item = transformHit(item, algoliaConfig.priceKey, search.helper);
+                                                // FIXME: transformHit is a global
+                                                item.isAddToCartEnabled = algoliaConfig.instant.isAddToCartEnabled;
+                                                item.algoliaConfig = window.algoliaConfig;
+                                                return item;
+                                        })
+                                    }
+                            };
 
-							/**
-							 * pagination
-							 * Docs: https://www.algolia.com/doc/api-reference/widgets/pagination/js/
-							 **/
-							allWidgetConfiguration.pagination = {
-									container:    '#instant-search-pagination-container',
-									showFirst:    false,
-									showLast:     false,
-									showNext:     true,
-									showPrevious: true,
-									totalPages:   1000,
-									templates:    {
-											previous: algoliaConfig.translations.previousPage,
-											next:     algoliaConfig.translations.nextPage
-									},
-							};
+                            /**
+                             * pagination
+                             * Docs: https://www.algolia.com/doc/api-reference/widgets/pagination/js/
+                             **/
+                            allWidgetConfiguration.pagination = {
+                                    container:    '#instant-search-pagination-container',
+                                    showFirst:    false,
+                                    showLast:     false,
+                                    showNext:     true,
+                                    showPrevious: true,
+                                    totalPages:   1000,
+                                    templates:    {
+                                            previous: algoliaConfig.translations.previousPage,
+                                            next:     algoliaConfig.translations.nextPage
+                                    },
+                            };
 
-							delete allWidgetConfiguration.infiniteHits;
-					}
+                            delete allWidgetConfiguration.infiniteHits;
+                    }
 
-					/**
-					 * Here are specified custom attributes widgets which require special code to run properly
-					 * Custom widgets can be added to this object like [attribute]: function(facet, templates)
-					 * Function must return an array [<widget name>: string, <widget options>: object]
-					 **/
-					var customAttributeFacet = {
-							categories: function (facet, templates) {
-									var hierarchical_levels = [];
-									for (var l = 0; l < 10; l++) {
-											hierarchical_levels.push('categories.level' + l.toString());
-									}
+                    /**
+                     * Here are specified custom attributes widgets which require special code to run properly
+                     * Custom widgets can be added to this object like [attribute]: function(facet, templates)
+                     * Function must return an array [<widget name>: string, <widget options>: object]
+                     **/
+                    var customAttributeFacet = {
+                            categories: function (facet, templates) {
+                                    var hierarchical_levels = [];
+                                    for (var l = 0; l < 10; l++) {
+                                            hierarchical_levels.push('categories.level' + l.toString());
+                                    }
 
 
                                     //return array of items starting from root based on category
@@ -492,11 +492,11 @@ define(
                                         },
                                     };
 
-									hierarchicalMenuParams.templates.item = '' +
+                                    hierarchicalMenuParams.templates.item = '' +
                                         '<a class="{{cssClasses.link}} {{#isRefined}}{{cssClasses.link}}--selected{{/isRefined}}" href="{{categoryUrl}}">{{label}}' + ' ' +
                                         '<span class="{{cssClasses.count}}">{{#helpers.formatNumber}}{{count}}{{/helpers.formatNumber}}</span>' +
-											'</a>';
-									hierarchicalMenuParams.panelOptions = {
+                                            '</a>';
+                                    hierarchicalMenuParams.panelOptions = {
                                         templates: {
                                             header: '<div class="name">' + (facet.label ? facet.label : facet.attribute) + '</div>',
                                         },
@@ -505,221 +505,226 @@ define(
                                         }
                                     };
 
-									return ['hierarchicalMenu', hierarchicalMenuParams];
-							}
-					};
+                                    return ['hierarchicalMenu', hierarchicalMenuParams];
+                            }
+                    };
 
-					/** Add all facet widgets to instantsearch object **/
-					window.getFacetWidget = function (facet, templates) {
-							var panelOptions = {
-									templates: {
-											header: '<div class="name">'
-																	+ (facet.label ? facet.label : facet.attribute)
-																	+ '</div>',
-									},
-									hidden:    function (options) {
-											if (!options.results) return true;
-											switch (facet.type) {
-													case 'conjunctive':
-															var facetsNames = options.results.facets.map(function (f) {
-																	return f.name
-															});
-															return facetsNames.indexOf(facet.attribute) === -1;
-													case 'disjunctive':
-															var disjunctiveFacetsNames = options.results.disjunctiveFacets.map(function (f) {
-																	return f.name
-															});
-															return disjunctiveFacetsNames.indexOf(facet.attribute) === -1;
-													default:
-															return false;
-											}
-									}
-							};
-							if (facet.type === 'priceRanges') {
-									delete templates.item;
+                    /** Add all facet widgets to instantsearch object **/
+                    window.getFacetWidget = function (facet, templates) {
+                            var panelOptions = {
+                                    templates: {
+                                            header: '<div class="name">'
+                                                                    + (facet.label ? facet.label : facet.attribute)
+                                                                    + '</div>',
+                                    },
+                                    hidden:    function (options) {
+                                            if (options.results.nbPages <= 1 && algoliaConfig.instant.hidePagination === true){
+                                                    document.getElementById('instant-search-pagination-container').style.display = "none";
+                                            }else{
+                                                document.getElementById('instant-search-pagination-container').style.display = "block";
+                                            }
+                                            if (!options.results) return true;
+                                            switch (facet.type) {
+                                                    case 'conjunctive':
+                                                            var facetsNames = options.results.facets.map(function (f) {
+                                                                    return f.name
+                                                            });
+                                                            return facetsNames.indexOf(facet.attribute) === -1;
+                                                    case 'disjunctive':
+                                                            var disjunctiveFacetsNames = options.results.disjunctiveFacets.map(function (f) {
+                                                                    return f.name
+                                                            });
+                                                            return disjunctiveFacetsNames.indexOf(facet.attribute) === -1;
+                                                    default:
+                                                            return false;
+                                            }
+                                    }
+                            };
+                            if (facet.type === 'priceRanges') {
+                                    delete templates.item;
 
-									return ['rangeInput', {
-											container:    facet.wrapper.appendChild(createISWidgetContainer(facet.attribute)),
-											attribute:    facet.attribute,
-											templates:    $.extend({
-													separatorText: algoliaConfig.translations.to,
-													submitText:    algoliaConfig.translations.go
-											}, templates),
-											cssClasses:   {
-													root: 'conjunctive'
-											},
-											panelOptions: panelOptions,
-									}];
-							}
+                                    return ['rangeInput', {
+                                            container:    facet.wrapper.appendChild(createISWidgetContainer(facet.attribute)),
+                                            attribute:    facet.attribute,
+                                            templates:    $.extend({
+                                                    separatorText: algoliaConfig.translations.to,
+                                                    submitText:    algoliaConfig.translations.go
+                                            }, templates),
+                                            cssClasses:   {
+                                                    root: 'conjunctive'
+                                            },
+                                            panelOptions: panelOptions,
+                                    }];
+                            }
 
-							if (facet.type === 'conjunctive') {
-									var refinementListOptions = {
-											container:    facet.wrapper.appendChild(createISWidgetContainer(facet.attribute)),
-											attribute:    facet.attribute,
-											limit:        algoliaConfig.maxValuesPerFacet,
-											operator:     'and',
-											templates:    templates,
-											sortBy:       ['count:desc', 'name:asc'],
-											cssClasses:   {
-													root: 'conjunctive'
-											},
-											panelOptions: panelOptions
-									};
+                            if (facet.type === 'conjunctive') {
+                                    var refinementListOptions = {
+                                            container:    facet.wrapper.appendChild(createISWidgetContainer(facet.attribute)),
+                                            attribute:    facet.attribute,
+                                            limit:        algoliaConfig.maxValuesPerFacet,
+                                            operator:     'and',
+                                            templates:    templates,
+                                            sortBy:       ['count:desc', 'name:asc'],
+                                            cssClasses:   {
+                                                    root: 'conjunctive'
+                                            },
+                                            panelOptions: panelOptions
+                                    };
 
-									refinementListOptions = addSearchForFacetValues(facet, refinementListOptions);
+                                    refinementListOptions = addSearchForFacetValues(facet, refinementListOptions);
 
-									return ['refinementList', refinementListOptions];
-							}
+                                    return ['refinementList', refinementListOptions];
+                            }
 
-							if (facet.type === 'disjunctive') {
-									var refinementListOptions = {
-											container:    facet.wrapper.appendChild(createISWidgetContainer(facet.attribute)),
-											attribute:    facet.attribute,
-											limit:        algoliaConfig.maxValuesPerFacet,
-											operator:     'or',
-											templates:    templates,
-											sortBy:       ['count:desc', 'name:asc'],
-											panelOptions: panelOptions,
-											cssClasses:   {
-													root: 'disjunctive'
-											}
-									};
+                            if (facet.type === 'disjunctive') {
+                                    var refinementListOptions = {
+                                            container:    facet.wrapper.appendChild(createISWidgetContainer(facet.attribute)),
+                                            attribute:    facet.attribute,
+                                            limit:        algoliaConfig.maxValuesPerFacet,
+                                            operator:     'or',
+                                            templates:    templates,
+                                            sortBy:       ['count:desc', 'name:asc'],
+                                            panelOptions: panelOptions,
+                                            cssClasses:   {
+                                                    root: 'disjunctive'
+                                            }
+                                    };
 
-									refinementListOptions = addSearchForFacetValues(facet, refinementListOptions);
+                                    refinementListOptions = addSearchForFacetValues(facet, refinementListOptions);
 
-									return ['refinementList', refinementListOptions];
-							}
+                                    return ['refinementList', refinementListOptions];
+                            }
 
-							if (facet.type === 'slider') {
-									delete templates.item;
+                            if (facet.type === 'slider') {
+                                    delete templates.item;
 
-									return ['rangeSlider', {
-											container:    facet.wrapper.appendChild(createISWidgetContainer(facet.attribute)),
-											attribute:    facet.attribute,
-											templates:    templates,
-											pips:         false,
-											panelOptions: panelOptions,
-											tooltips:     {
-													format: function (formattedValue) {
-															return facet.attribute.match(/price/) === null ?
-																	parseInt(formattedValue) :
-																	priceUtils.formatPrice(formattedValue, algoliaConfig.priceFormat);
-													}
-											}
-									}];
-							}
-					};
+                                    return ['rangeSlider', {
+                                            container:    facet.wrapper.appendChild(createISWidgetContainer(facet.attribute)),
+                                            attribute:    facet.attribute,
+                                            templates:    templates,
+                                            pips:         false,
+                                            panelOptions: panelOptions,
+                                            tooltips:     {
+                                                    format: function (formattedValue) {
+                                                            return facet.attribute.match(/price/) === null ?
+                                                                    parseInt(formattedValue) :
+                                                                    priceUtils.formatPrice(formattedValue, algoliaConfig.priceFormat);
+                                                    }
+                                            }
+                                    }];
+                            }
+                    };
 
-					var wrapper = document.getElementById('instant-search-facets-container');
-					$.each(algoliaConfig.facets, function (i, facet) {
+                    var wrapper = document.getElementById('instant-search-facets-container');
+                    $.each(algoliaConfig.facets, function (i, facet) {
 
-							if (facet.attribute.indexOf("price") !== -1)
-									facet.attribute = facet.attribute + algoliaConfig.priceKey;
+                            if (facet.attribute.indexOf("price") !== -1)
+                                    facet.attribute = facet.attribute + algoliaConfig.priceKey;
 
-							facet.wrapper = wrapper;
+                            facet.wrapper = wrapper;
 
-							var templates = {
-									item: $('#refinements-lists-item-template').html()
-							};
+                            var templates = {
+                                    item: $('#refinements-lists-item-template').html()
+                            };
 
-							var widgetInfo = customAttributeFacet[facet.attribute] !== undefined ?
-									customAttributeFacet[facet.attribute](facet, templates) :
-									getFacetWidget(facet, templates);
+                            var widgetInfo = customAttributeFacet[facet.attribute] !== undefined ?
+                                    customAttributeFacet[facet.attribute](facet, templates) :
+                                    getFacetWidget(facet, templates);
 
-							var widgetType = widgetInfo[0],
-									widgetConfig = widgetInfo[1];
+                            var widgetType = widgetInfo[0],
+                                    widgetConfig = widgetInfo[1];
 
-							if (typeof allWidgetConfiguration[widgetType] === 'undefined') {
-									allWidgetConfiguration[widgetType] = [widgetConfig];
-							} else {
-									allWidgetConfiguration[widgetType].push(widgetConfig);
-							}
-					});
+                            if (typeof allWidgetConfiguration[widgetType] === 'undefined') {
+                                    allWidgetConfiguration[widgetType] = [widgetConfig];
+                            } else {
+                                    allWidgetConfiguration[widgetType].push(widgetConfig);
+                            }
+                    });
 
-					if (algoliaConfig.analytics.enabled) {
-							if (typeof algoliaAnalyticsPushFunction !== 'function') {
-									var algoliaAnalyticsPushFunction = function (formattedParameters, state, results) {
-											var trackedUrl = '/catalogsearch/result/?q=' + state.query + '&' + formattedParameters + '&numberOfHits=' + results.nbHits;
+                    if (algoliaConfig.analytics.enabled) {
+                            if (typeof algoliaAnalyticsPushFunction !== 'function') {
+                                    var algoliaAnalyticsPushFunction = function (formattedParameters, state, results) {
+                                            var trackedUrl = '/catalogsearch/result/?q=' + state.query + '&' + formattedParameters + '&numberOfHits=' + results.nbHits;
 
-											// Universal Analytics
-											if (typeof window.ga !== 'undefined') {
-													window.ga('set', 'page', trackedUrl);
-													window.ga('send', 'pageView');
-											}
-									};
-							}
+                                            // Universal Analytics
+                                            if (typeof window.ga !== 'undefined') {
+                                                    window.ga('set', 'page', trackedUrl);
+                                                    window.ga('send', 'pageView');
+                                            }
+                                    };
+                            }
 
-							allWidgetConfiguration['analytics'] = {
-									pushFunction:           algoliaAnalyticsPushFunction,
-									delay:                  algoliaConfig.analytics.delay,
-									triggerOnUIInteraction: algoliaConfig.analytics.triggerOnUiInteraction,
-									pushInitialSearch:      algoliaConfig.analytics.pushInitialSearch
-							};
-					}
+                            allWidgetConfiguration['analytics'] = {
+                                    pushFunction:           algoliaAnalyticsPushFunction,
+                                    delay:                  algoliaConfig.analytics.delay,
+                                    triggerOnUIInteraction: algoliaConfig.analytics.triggerOnUiInteraction,
+                                    pushInitialSearch:      algoliaConfig.analytics.pushInitialSearch
+                            };
+                    }
 
-					allWidgetConfiguration = algolia.triggerHooks('beforeWidgetInitialization', allWidgetConfiguration, algoliaBundle);
+                    allWidgetConfiguration = algolia.triggerHooks('beforeWidgetInitialization', allWidgetConfiguration, algoliaBundle);
 
-					$.each(allWidgetConfiguration, function (widgetType, widgetConfig) {
-							if (Array.isArray(widgetConfig) === true) {
-									$.each(widgetConfig, function (i, widgetConfig) {
-											addWidget(search, widgetType, widgetConfig);
-									});
-							} else {
-									addWidget(search, widgetType, widgetConfig);
-							}
-					});
+                    $.each(allWidgetConfiguration, function (widgetType, widgetConfig) {
+                            if (Array.isArray(widgetConfig) === true) {
+                                    $.each(widgetConfig, function (i, widgetConfig) {
+                                            addWidget(search, widgetType, widgetConfig);
+                                    });
+                            } else {
+                                    addWidget(search, widgetType, widgetConfig);
+                            }
+                    });
 
-					var isStarted = false;
+                    var isStarted = false;
 
-					function startInstantSearch() {
-							if (isStarted === true) {
-									return;
-							}
+                    function startInstantSearch() {
+                            if (isStarted === true) {
+                                    return;
+                            }
 
-							search = algolia.triggerHooks('beforeInstantsearchStart', search, algoliaBundle);
-							search.start();
-							search = algolia.triggerHooks('afterInstantsearchStart', search, algoliaBundle);
+                            search = algolia.triggerHooks('beforeInstantsearchStart', search, algoliaBundle);
+                            search.start();
+                            search = algolia.triggerHooks('afterInstantsearchStart', search, algoliaBundle);
 
-							isStarted = true;
-					}
+                            isStarted = true;
+                    }
 
-					/** Initialise searching **/
-					startInstantSearch();
-			});
+                    /** Initialise searching **/
+                    startInstantSearch();
+            });
 
-			function addWidget(search, type, config) {
-					if (type === 'custom') {
-							search.addWidgets([config]);
-							return;
-					}
-					var widget = algoliaBundle.instantsearch.widgets[type];
-					if (config.panelOptions) {
-							widget = algoliaBundle.instantsearch.widgets.panel(config.panelOptions)(widget);
-							delete config.panelOptions;
-					}
-					if(type === "rangeSlider" && config.attribute.indexOf("price.") < 0) {
-			config.panelOptions = {
-				hidden(options) {
-					return options.range.min === 0 && options.range.max === 0;
-				},
-			};
-			widget = algoliaBundle.instantsearch.widgets.panel(config.panelOptions)(widget);
-			delete config.panelOptions;
-		}
+            function addWidget(search, type, config) {
+                    if (type === 'custom') {
+                            search.addWidgets([config]);
+                            return;
+                    }
+                    var widget = algoliaBundle.instantsearch.widgets[type];
+                    if (config.panelOptions) {
+                            widget = algoliaBundle.instantsearch.widgets.panel(config.panelOptions)(widget);
+                            delete config.panelOptions;
+                    }
+                    if(type === "rangeSlider" && config.attribute.indexOf("price.") < 0) {
+            config.panelOptions = {
+                hidden(options) {
+                    return options.range.min === 0 && options.range.max === 0;
+                },
+            };
+            widget = algoliaBundle.instantsearch.widgets.panel(config.panelOptions)(widget);
+            delete config.panelOptions;
+        }
 
-					search.addWidgets([widget(config)]);
-			}
+                    search.addWidgets([widget(config)]);
+            }
 
-			function addSearchForFacetValues(facet, options) {
-					if (facet.searchable === '1') {
-							options.searchable = true;
-							options.searchableIsAlwaysActive = false;
-							options.searchablePlaceholder = algoliaConfig.translations.searchForFacetValuesPlaceholder;
-							options.templates = options.templates || {};
-							options.templates.searchableNoResults = '<div class="sffv-no-results">' + algoliaConfig.translations.noResults + '</div>';
-					}
+            function addSearchForFacetValues(facet, options) {
+                    if (facet.searchable === '1') {
+                            options.searchable = true;
+                            options.searchableIsAlwaysActive = false;
+                            options.searchablePlaceholder = algoliaConfig.translations.searchForFacetValuesPlaceholder;
+                            options.templates = options.templates || {};
+                            options.templates.searchableNoResults = '<div class="sffv-no-results">' + algoliaConfig.translations.noResults + '</div>';
+                    }
 
-					return options;
-			}
-	}
+                    return options;
+            }
+    }
 );
