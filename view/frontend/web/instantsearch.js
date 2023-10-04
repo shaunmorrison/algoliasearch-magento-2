@@ -475,7 +475,7 @@ define(
                                         separator         : algoliaConfig.instant.categorySeparator,
                                         templates         : templates,
                                         showParentLevel   : true,
-                                        limit             : algoliaConfig.maxValuesPerFacet,
+                                        limit             : 999, // arbitrarily high number - as premature truncate of results can prevent preselection for large category lists
                                         sortBy            : ['name:asc'],
                                         transformItems(items) {
                                             return (algoliaConfig.isCategoryPage)
