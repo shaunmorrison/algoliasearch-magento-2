@@ -989,10 +989,16 @@ class ConfigHelper
         if (!$attrs){
             $attrs = $this->getSorting($storeId);
         }
-        
+
         $currency = $this->getCurrencyCode($storeId);
         $attributesToAdd = [];
+        $defaultVirtualReplicaEnabled = $this->useVirtualReplica($storeId);
         foreach ($attrs as $key => $attr) {
+            if ($defaultVirtualReplicaEnabled || (isset($attr['virtualReplica']) && $attr['virtualReplica'])){
+                $virtualReplica = 1;
+            } else {
+                $virtualReplica = 0;
+            }
             $indexName = false;
             $sortAttribute = false;
             if ($this->isCustomerGroupsEnabled($storeId) && $attr['attribute'] === 'price') {
@@ -1011,6 +1017,7 @@ class ConfigHelper
                     $newAttr['attribute'] = $attr['attribute'];
                     $newAttr['sort'] = $attr['sort'];
                     $newAttr['sortLabel'] = $attr['sortLabel'];
+                    $newAttr['virtualReplica'] = $virtualReplica;
                     if (!array_key_exists('label', $newAttr) && array_key_exists('sortLabel', $newAttr)) {
                         $newAttr['label'] = $newAttr['sortLabel'];
                     }
@@ -1036,6 +1043,7 @@ class ConfigHelper
             }
             if ($indexName && $sortAttribute) {
                 $attrs[$key]['name'] = $indexName;
+                $attrs[$key]['virtualReplica'] = $virtualReplica;
                 if (!array_key_exists('label', $attrs[$key]) && array_key_exists('sortLabel', $attrs[$key])) {
                     $attrs[$key]['label'] = $attrs[$key]['sortLabel'];
                 }
