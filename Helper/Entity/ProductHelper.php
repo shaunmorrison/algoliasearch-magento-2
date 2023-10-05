@@ -1059,7 +1059,7 @@ class ProductHelper
             }
 
             $type = $product->getTypeId();
-            if ($type !== 'configurable' && $type !== 'grouped' && $type !== 'bundle' && $attributeName != 'test') {
+            if ($type !== 'configurable' && $type !== 'grouped' && $type !== 'bundle') {
                 continue;
             }
 
@@ -1222,7 +1222,7 @@ class ProductHelper
             $value = $attributeResource->getFrontend()->getValue($product);
         }
 
-        if ($value !== null) {
+        if ($value) {
             $customData[$attribute['attribute']] = $value;
         }
 
