@@ -26,6 +26,7 @@
                     <argument name="view_model" xsi:type="object">Algolia\AlgoliaSearch\ViewModel\Adminhtml\Analytics\Overview</argument>
                 </arguments>
             </block>
+            <block class="Magento\Backend\Block\Template" name="analytics.tooltip" template="Algolia_AlgoliaSearch::ui/tooltip.phtml"/>
         </referenceContainer>
     </body>
 </page>

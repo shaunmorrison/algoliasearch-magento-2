@@ -35,12 +35,7 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
      */
     public function getLegacyVersionHtml()
     {
-        /** @var Template $block */
-        $block = $this->backendView->getLayout()->createBlock(Template::class);
-
-        $block->setTemplate('Algolia_AlgoliaSearch::support/components/legacy-version.phtml');
-        $block->setData('extension_version', $this->supportHelper->getExtensionVersion());
-
-        return $block->toHtml();
+        return $this->backendView->getLayout()->getBlock('support_legacy_version')
+            ->setData('extension_version',$this->supportHelper->getExtensionVersion())->toHtml();
     }
 }

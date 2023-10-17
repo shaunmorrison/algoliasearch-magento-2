@@ -13,6 +13,7 @@
                     <argument name="view_model" xsi:type="object">Algolia\AlgoliaSearch\ViewModel\Adminhtml\Support\Overview</argument>
                 </arguments>
             </block>
+            <block class="Magento\Backend\Block\Template" name="support_legacy_version" template="Algolia_AlgoliaSearch::support/components/legacy-version.phtml"/>
         </referenceContainer>
     </body>
 </page>
