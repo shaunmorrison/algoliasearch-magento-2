@@ -45,12 +45,9 @@ class LandingPage extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 
     /**
      * Create url rewrite before saving
-     *
      * @param AbstractModel $object
-     *
-     * @throws LocalizedException
-     *
-     * @return $this
+     * @return LandingPage
+     * @throws \Magento\UrlRewrite\Model\Exception\UrlAlreadyExistsException
      */
     protected function _afterSave(AbstractModel $object)
     {
@@ -73,12 +70,8 @@ class LandingPage extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
 
     /**
      * Delete url rewrite after deletion
-     *
      * @param AbstractModel $object
-     *
-     * @throws LocalizedException
-     *
-     * @return $this
+     * @return LandingPage
      */
     protected function _afterDelete(AbstractModel $object)
     {
@@ -95,12 +88,11 @@ class LandingPage extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
     /**
      * Check if landing page identifier exist for specific store
      * return page id if page exists
-     *
-     * @param string $identifier
-     * @param int $storeId
-     * @param string $date
-     *
-     * @return int
+     * @param $identifier
+     * @param $storeId
+     * @param $date
+     * @return string
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     public function checkIdentifier($identifier, $storeId, $date)
     {
