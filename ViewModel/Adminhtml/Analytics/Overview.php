@@ -6,7 +6,6 @@ use Algolia\AlgoliaSearch\DataProvider\Analytics\IndexEntityDataProvider;
 use Algolia\AlgoliaSearch\Helper\AnalyticsHelper;
 use Algolia\AlgoliaSearch\ViewModel\Adminhtml\BackendView;
 use Magento\Backend\Block\Template;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Api\Data\StoreInterface;
@@ -58,6 +57,10 @@ class Overview implements ArgumentInterface
         return $this->backendView;
     }
 
+    /**
+     * @return string
+     * @throws NoSuchEntityException
+     */
     public function getTimeZone()
     {
         return $this->backendView->getDateTime()->getConfigTimezone(
@@ -67,9 +70,8 @@ class Overview implements ArgumentInterface
     }
 
     /**
-     * @throws NoSuchEntityException
-     *
      * @return mixed
+     * @throws NoSuchEntityException
      */
     public function getIndexName()
     {
@@ -79,11 +81,9 @@ class Overview implements ArgumentInterface
     }
 
     /**
-     * @param array $additional
-     *
-     * @throws NoSuchEntityException
-     *
+     * @param $additional
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getAnalyticsParams($additional = [])
     {
@@ -106,31 +106,55 @@ class Overview implements ArgumentInterface
         return array_merge($this->analyticsParams, $additional);
     }
 
+    /**
+     * @return int|mixed
+     * @throws NoSuchEntityException
+     */
     public function getTotalCountOfSearches()
     {
         return $this->analyticsHelper->getTotalCountOfSearches($this->getAnalyticsParams());
     }
 
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
     public function getSearchesByDates()
     {
         return $this->analyticsHelper->getSearchesByDates($this->getAnalyticsParams());
     }
 
+    /**
+     * @return int|mixed
+     * @throws NoSuchEntityException
+     */
     public function getTotalUsersCount()
     {
         return $this->analyticsHelper->getTotalUsersCount($this->getAnalyticsParams());
     }
 
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
     public function getUsersCountByDates()
     {
         return $this->analyticsHelper->getUsersCountByDates($this->getAnalyticsParams());
     }
 
+    /**
+     * @return int|string
+     * @throws NoSuchEntityException
+     */
     public function getTotalResultRates()
     {
         return $this->analyticsHelper->getTotalResultRates($this->getAnalyticsParams());
     }
 
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
     public function getResultRateByDates()
     {
         return $this->analyticsHelper->getResultRateByDates($this->getAnalyticsParams());
@@ -138,36 +162,54 @@ class Overview implements ArgumentInterface
 
     /**
      * Click Analytics
-     *
+     * @return false|mixed
      * @throws NoSuchEntityException
-     *
-     * @return mixed
      */
     public function getClickThroughRate()
     {
         return $this->analyticsHelper->getClickThroughRate($this->getAnalyticsParams());
     }
 
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
     public function getClickThroughRateByDates()
     {
         return $this->analyticsHelper->getClickThroughRateByDates($this->getAnalyticsParams());
     }
 
+    /**
+     * @return false|mixed
+     * @throws NoSuchEntityException
+     */
     public function getConversionRate()
     {
         return $this->analyticsHelper->getConversionRate($this->getAnalyticsParams());
     }
 
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
     public function getConversionRateByDates()
     {
         return $this->analyticsHelper->getConversionRateByDates($this->getAnalyticsParams());
     }
 
+    /**
+     * @return false|mixed
+     * @throws NoSuchEntityException
+     */
     public function getClickPosition()
     {
         return $this->analyticsHelper->getAverageClickPosition($this->getAnalyticsParams());
     }
 
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
     public function getClickPositionByDates()
     {
         return $this->analyticsHelper->getAverageClickPositionByDates($this->getAnalyticsParams());
@@ -175,8 +217,7 @@ class Overview implements ArgumentInterface
 
     /**
      * Get aggregated Daily data from separate calls
-     *
-     * @return array
+     * @return array|mixed
      */
     public function getDailySearchData()
     {
@@ -213,7 +254,6 @@ class Overview implements ArgumentInterface
      * @param $array
      * @param $date
      * @param $valueKey
-     *
      * @return string
      */
     private function getDateValue($array, $date, $valueKey)
@@ -230,19 +270,22 @@ class Overview implements ArgumentInterface
         return $value;
     }
 
+    /**
+     * @return array|mixed
+     * @throws NoSuchEntityException
+     */
     public function getTopSearches()
     {
         $topSearches = $this->analyticsHelper->getTopSearches(
             $this->getAnalyticsParams(['limit' => self::LIMIT_RESULTS])
         );
 
-        return isset($topSearches['searches']) ? $topSearches['searches'] : [];
+        return $topSearches['searches'] ?? [];
     }
 
     /**
-     * @throws LocalizedException
-     *
-     * @return array
+     * @return array|mixed
+     * @throws NoSuchEntityException
      */
     public function getPopularResults()
     {
@@ -292,9 +335,8 @@ class Overview implements ArgumentInterface
     }
 
     /**
+     * @return array|mixed
      * @throws NoSuchEntityException
-     *
-     * @return array
      */
     public function getNoResultSearches()
     {
@@ -306,8 +348,6 @@ class Overview implements ArgumentInterface
     }
 
     /**
-     * @throws NoSuchEntityException
-     *
      * @return bool
      */
     public function checkIsValidDateRange()
@@ -353,9 +393,8 @@ class Overview implements ArgumentInterface
     }
 
     /**
-     * @throws NoSuchEntityException
-     *
      * @return array
+     * @throws NoSuchEntityException
      */
     public function getSections()
     {
@@ -364,7 +403,6 @@ class Overview implements ArgumentInterface
 
     /**
      * @param $search
-     *
      * @return array
      */
     public function getTypeEditUrl($search)
@@ -415,7 +453,6 @@ class Overview implements ArgumentInterface
 
     /**
      * @param $message
-     *
      * @return string
      */
     public function getTooltipHtml($message)
@@ -424,9 +461,8 @@ class Overview implements ArgumentInterface
     }
 
     /**
+     * @return StoreInterface|null
      * @throws NoSuchEntityException
-     *
-     * @return StoreInterface|null|string
      */
     public function getStore()
     {
@@ -438,7 +474,7 @@ class Overview implements ArgumentInterface
     }
 
     /**
-     * @return bool|int
+     * @return bool
      */
     public function isAnalyticsApiEnabled()
     {
@@ -446,7 +482,7 @@ class Overview implements ArgumentInterface
     }
 
     /**
-     * @return bool|int
+     * @return bool
      */
     public function isClickAnalyticsEnabled()
     {
@@ -455,7 +491,6 @@ class Overview implements ArgumentInterface
 
     /**
      * @return string
-     * @throws NoSuchEntityException
      */
     public function getMessagesHtml()
     {
