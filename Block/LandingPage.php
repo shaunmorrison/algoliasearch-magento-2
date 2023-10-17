@@ -9,6 +9,7 @@ use Magento\CatalogSearch\Block\Result;
 use Magento\CatalogSearch\Helper\Data;
 use Magento\Cms\Model\Template\FilterProvider;
 use Magento\Search\Model\QueryFactory;
+use Magento\Framework\View\Element\Template\Context;
 
 /**
  * @method int getPageId()
@@ -25,7 +26,7 @@ class LandingPage extends Result
     protected $landingPageFactory;
 
     /**
-     * @param \Magento\Framework\View\Element\Template\Context $context
+     * @param Context $context
      * @param LayerResolver $layerResolver
      * @param Data $catalogSearchData
      * @param QueryFactory $queryFactory
@@ -35,7 +36,7 @@ class LandingPage extends Result
      * @param array $data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
+        Context $context,
         LayerResolver $layerResolver,
         Data $catalogSearchData,
         QueryFactory $queryFactory,
@@ -144,6 +145,6 @@ class LandingPage extends Result
      */
     public function getIdentities()
     {
-        return [\Algolia\AlgoliaSearch\Model\LandingPage::CACHE_TAG . '_' . $this->getPage()->getId()];
+        return [LandingPageModel::CACHE_TAG . '_' . $this->getPage()->getId()];
     }
 }
