@@ -146,8 +146,8 @@ class Category implements \Magento\Framework\Indexer\ActionInterface, \Magento\F
      * @param int $storeId
      * @param int $categoriesPerPage
      *
-     * @throws Magento\Framework\Exception\LocalizedException
-     * @throws Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     private function processFullReindex($storeId, $categoriesPerPage)
     {
