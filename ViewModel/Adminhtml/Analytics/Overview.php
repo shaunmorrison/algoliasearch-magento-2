@@ -5,11 +5,15 @@ namespace Algolia\AlgoliaSearch\ViewModel\Adminhtml\Analytics;
 use Algolia\AlgoliaSearch\DataProvider\Analytics\IndexEntityDataProvider;
 use Algolia\AlgoliaSearch\Helper\AnalyticsHelper;
 use Algolia\AlgoliaSearch\ViewModel\Adminhtml\BackendView;
+use Magento\Backend\Block\Template;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\View\Element\Block\ArgumentInterface;
 use Magento\Store\Api\Data\StoreInterface;
+use Magento\Framework\View\Element\Messages;
+use Magento\Store\Model\ScopeInterface;
 
-class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterface
+class Overview implements ArgumentInterface
 {
     public const LIMIT_RESULTS = 5;
 
@@ -57,7 +61,7 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
     public function getTimeZone()
     {
         return $this->backendView->getDateTime()->getConfigTimezone(
-            \Magento\Store\Model\ScopeInterface::SCOPE_STORE,
+            ScopeInterface::SCOPE_STORE,
             $this->getStore()->getId()
         );
     }
@@ -402,7 +406,7 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
      */
     public function getDailyChartHtml()
     {
-        $block = $this->getBackendView()->getLayout()->createBlock(\Magento\Backend\Block\Template::class);
+        $block = $this->getBackendView()->getLayout()->createBlock(Template::class);
         $block->setTemplate('Algolia_AlgoliaSearch::analytics/graph.phtml');
         $block->setData('analytics', $this->getDailySearchData());
 
@@ -450,15 +454,13 @@ class Overview implements \Magento\Framework\View\Element\Block\ArgumentInterfac
     }
 
     /**
-     * Messages rendered HTML getter.
-     *
      * @return string
+     * @throws NoSuchEntityException
      */
     public function getMessagesHtml()
     {
-        /** @var $messagesBlock \Magento\Framework\View\Element\Messages */
-        $messagesBlock = $this->getBackendView()->getLayout()
-            ->createBlock(\Magento\Framework\View\Element\Messages::class);
+        /** @var $messagesBlock Messages */
+        $messagesBlock = $this->getBackendView()->getLayout()->createBlock(Messages::class);
 
         if (!$this->checkIsValidDateRange() && $this->isAnalyticsApiEnabled()) {
             $noticeHtml = __('The selected date is out of your analytics retention window (%1 days),
