@@ -22,10 +22,7 @@ class UrlBuilder
 
     /**
      * Set store id
-     *
      * @param int $storeId
-
-     *
      * @return void
      */
     public function setScope($storeId)
@@ -37,9 +34,6 @@ class UrlBuilder
      * Get action url
      *
      * @param string $routePath
-     * @param string $scope
-     * @param string $store
-     *
      * @return string
      */
     public function getUrl($routePath)
