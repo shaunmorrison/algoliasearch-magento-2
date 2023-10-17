@@ -107,9 +107,6 @@ class ProductHelper
      */
     protected $compositeTypes;
 
-    /**
-     * @var
-     */
     protected $productAttributes;
 
     /**
