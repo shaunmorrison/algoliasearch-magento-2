@@ -31,7 +31,7 @@ class DefaultRenderer extends Template implements FilterRendererInterface
      * Constructor.
      *
      * @param Template\Context $context
-     * @param CatalogHelper ConfigHelper
+     * @param ConfigHelper $configHelper
      * @param array $data
      */
     public function __construct(Template\Context $context, ConfigHelper $configHelper, array $data = [])
