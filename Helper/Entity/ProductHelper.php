@@ -792,7 +792,7 @@ class ProductHelper
      * For a given product extract category data including category names, parent paths and all category tree IDs
      *
      * @param Product $product
-     * @return array|array[]
+     * @return array
      * @throws \Magento\Framework\Exception\LocalizedException
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
@@ -850,6 +850,7 @@ class ProductHelper
      * Flatten non hierarchical paths for merchandising
      *
      * @param array $paths
+     * @param int $storeId
      * @return array
      */
     protected function flattenCategoryPaths(array $paths, int $storeId): array
@@ -1245,9 +1246,7 @@ class ProductHelper
             }
         }
 
-        $searchableAttributes = array_values(array_unique($searchableAttributes));
-
-        return $searchableAttributes;
+        return array_values(array_unique($searchableAttributes));
     }
 
     /**
@@ -1453,7 +1452,7 @@ class ProductHelper
     }
 
     /**
-     * Check if product can be index on Algolia
+     * Check if product can be indexed into Algolia
      * @param $product
      * @param $storeId
      * @param $isChildProduct

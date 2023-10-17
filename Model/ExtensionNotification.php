@@ -32,6 +32,9 @@ class ExtensionNotification
     /** @var Client */
     private $guzzleClient;
 
+    /**
+     * @var null
+     */
     private $repoData = null;
 
     /**
@@ -60,6 +63,7 @@ class ExtensionNotification
      * Check the version using a one day cache and return the data if there's a new version
      *
      * @return array|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function checkVersion()
     {
@@ -83,11 +87,11 @@ class ExtensionNotification
         $notificationData = null;
         $cachedLastCheck = $this->cacheManager->load('algoliasearch_notification_lastcheck');
 
-        if ($cachedLastCheck !== false) {
-            $notificationData = $this->serializer->unserialize($cachedLastCheck, true);
+        if ($cachedLastCheck) {
+            $notificationData = $this->serializer->unserialize($cachedLastCheck);
         }
 
-        if ($notificationData === null || !is_array($notificationData)) {
+        if (!is_array($notificationData)) {
             $notificationData = [
                 'time' => 0,
                 'is_new' => false,
@@ -116,18 +120,19 @@ class ExtensionNotification
         return $this;
     }
 
+    /**
+     * @return array|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     private function checkExtensionVersion()
     {
-        $newVersion = null;
-
         try {
             $versionFromRepository = $this->getLatestVersionFromRepository();
             $versionName = $versionFromRepository['name'];
             $versionUrl = $versionFromRepository['html_url'];
         } catch (\Exception $e) {
             $this->logger->log(LogLevel::INFO, $e->getMessage());
-
-            return $newVersion;
+            return null;
         }
 
         $newVersion = [
@@ -151,6 +156,11 @@ class ExtensionNotification
         return null;
     }
 
+    /**
+     * @return array|bool|float|int|string|null
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws \Exception
+     */
     private function getLatestVersionFromRepository()
     {
         if ($this->repoData === null) {
