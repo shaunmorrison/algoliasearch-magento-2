@@ -3,6 +3,7 @@
 namespace Algolia\AlgoliaSearch\Model\ResourceModel\QueueArchive\Grid;
 
 use Algolia\AlgoliaSearch\Model\ResourceModel\QueueArchive\Collection as QueueArchiveCollection;
+use Magento\Framework\Api\ExtensibleDataInterface;
 use Magento\Framework\Api\Search\AggregationInterface;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Api\SearchCriteriaInterface;
@@ -22,25 +23,27 @@ class Collection extends QueueArchiveCollection implements SearchResultInterface
      * @param LoggerInterface $logger
      * @param FetchStrategyInterface $fetchStrategy
      * @param ManagerInterface $eventManager
-     * @param $mainTable
-     * @param $eventPrefix
-     * @param $eventObject
-     * @param $resourceModel
-     * @param $model
-     * @param $connection
+     * @param mixed|null $mainTable
+     * @param AbstractDb $eventPrefix
+     * @param mixed $eventObject
+     * @param mixed $resourceModel
+     * @param string $model
+     * @param null $connection
      * @param AbstractDb|null $resource
+     *
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         EntityFactoryInterface $entityFactory,
         LoggerInterface $logger,
         FetchStrategyInterface $fetchStrategy,
         ManagerInterface $eventManager,
-        $mainTable,
-        $eventPrefix,
-        $eventObject,
-        $resourceModel,
-        $model = 'Magento\Framework\View\Element\UiComponent\DataProvider\Document',
-        $connection = null,
+                               $mainTable,
+                               $eventPrefix,
+                               $eventObject,
+                               $resourceModel,
+                               $model = 'Magento\Framework\View\Element\UiComponent\DataProvider\Document',
+                               $connection = null,
         AbstractDb $resource = null
     ) {
         parent::__construct(
@@ -80,7 +83,10 @@ class Collection extends QueueArchiveCollection implements SearchResultInterface
 
     /**
      * @param SearchCriteriaInterface|null $searchCriteria
-     * @return $this|Collection
+     *
+     * @return $this
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function setSearchCriteria(SearchCriteriaInterface $searchCriteria = null)
     {
@@ -94,8 +100,11 @@ class Collection extends QueueArchiveCollection implements SearchResultInterface
     }
 
     /**
-     * @param $totalCount
-     * @return $this|Collection
+     * @param int $totalCount
+     *
+     * @return $this
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function setTotalCount($totalCount)
     {
@@ -103,8 +112,11 @@ class Collection extends QueueArchiveCollection implements SearchResultInterface
     }
 
     /**
-     * @param array|null $items
-     * @return $this|Collection
+     * @param ExtensibleDataInterface[] $items
+     *
+     * @return $this
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function setItems(array $items = null)
     {
