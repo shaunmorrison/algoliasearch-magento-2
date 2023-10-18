@@ -52,7 +52,6 @@ class WishlistProductAddAfter implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        /** @var Order $order */
         $items = $observer->getEvent()->getItems();
         /** @var Item $firstItem */
         $firstItem = $items[0];
