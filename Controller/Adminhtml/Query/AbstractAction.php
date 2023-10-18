@@ -3,12 +3,14 @@
 namespace Algolia\AlgoliaSearch\Controller\Adminhtml\Query;
 
 use Algolia\AlgoliaSearch\Helper\MerchandisingHelper;
+use Algolia\AlgoliaSearch\Model\Query;
 use Algolia\AlgoliaSearch\Model\QueryFactory;
+use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Registry;
 use Magento\Store\Model\StoreManagerInterface;
 
-abstract class AbstractAction extends \Magento\Backend\App\Action
+abstract class AbstractAction extends Action
 {
     /** @var Registry */
     protected $coreRegistry;
@@ -50,12 +52,12 @@ abstract class AbstractAction extends \Magento\Backend\App\Action
         return $this->_authorization->isAllowed('Algolia_AlgoliaSearch::manage');
     }
 
-    /** @return \Algolia\AlgoliaSearch\Model\Query */
+    /** @return Query */
     protected function initQuery()
     {
         $queryId = (int) $this->getRequest()->getParam('id');
 
-        /** @var \Algolia\AlgoliaSearch\Model\Query $queryFactory */
+        /** @var Query $queryFactory */
         $query = $this->queryFactory->create();
 
         if ($queryId) {
