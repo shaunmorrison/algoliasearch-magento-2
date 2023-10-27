@@ -151,7 +151,7 @@ abstract class ProductWithChildren extends ProductWithoutChildren
     protected function setFinalGroupPrices($field, $currencyCode, $min, $max, $dashedFormat, $product, $subproducts, $withTax)
     {
         if (count($subproducts) > 0) {
-            $array = [];
+            $groupPriceList = [];
             /** @var Group $group */
             foreach ($this->groups as $group) {
                 $groupId = (int) $group->getData('customer_group_id');
@@ -159,20 +159,18 @@ abstract class ProductWithChildren extends ProductWithoutChildren
                     $subProduct->setData('customer_group_id', $groupId);
                     $subProduct->setData('website_id', $subProduct->getStore()->getWebsiteId());
                     $price     = $this->getTaxPrice($product, $subProduct->getPriceModel()->getFinalPrice(1, $subProduct), $withTax);
-                    $array[$groupId][] = $price;
+                    $groupPriceList[$groupId]['min'] = min($min, $price);
+                    $groupPriceList[$groupId]['max'] = max($max, $price);
                     $subProduct->setData('customer_group_id', null);
                 }
             }
+
             $minArray = [];
-            foreach ($array as $key => $value) {
-                $minArray[$key]['price'] = min($value);
-                $price = min($value);
-                $formattedPrice = $this->formatPrice($price, $currencyCode);
-                $minArray[$key]['formatted'] = $formattedPrice;
+            foreach ($groupPriceList as $key => $value) {
+                $minArray[$key]['price'] = $value['min'];
+                $minArray[$key]['formatted'] = $this->getDashedPriceFormat($value['min'], $value['max'], $currencyCode);
                 if ($currencyCode !== $this->baseCurrencyCode) {
-                    $min = $this->convertPrice($price, $currencyCode);
-                    $formattedPrice = $this->formatPrice($min, $currencyCode);
-                    $minArray[$key]['formatted'] = strval($formattedPrice);
+                    $minArray[$key]['formatted'] = $this->getDashedPriceFormat($value['min'], $value['max'], $currencyCode);
                 }
             }
             /** @var Group $group */
