@@ -26,6 +26,9 @@ abstract class ProductWithChildren extends ProductWithoutChildren
         $this->handleOriginalPrice($field, $currencyCode, $min, $max, $minOriginal, $maxOriginal);
         if (!$this->customData[$field][$currencyCode]['default']) {
             $this->handleZeroDefaultPrice($field, $currencyCode, $min, $max);
+            # need to rehandle specialPrice
+            $specialPrice = $this->getSpecialPrice($product, $currencyCode, $withTax);
+            $this->addSpecialPrices($specialPrice, $field, $currencyCode);
         }
         if ($this->areCustomersGroupsEnabled) {
             $this->setFinalGroupPrices($field, $currencyCode, $min, $max, $dashedFormat, $product, $subProducts, $withTax);
@@ -48,8 +51,7 @@ abstract class ProductWithChildren extends ProductWithoutChildren
         if (count($subProducts) > 0) {
             /** @var Product $subProduct */
             foreach ($subProducts as $subProduct) {
-                $specialPrice = $this->getSpecialPrice($subProduct, $currencyCode, $withTax, $subProducts);
-                $price     = $specialPrice[0] ?? $this->getTaxPrice($product, $subProduct->getFinalPrice(), $withTax);
+                $price     = $this->getTaxPrice($product, $subProduct->getFinalPrice(), $withTax);
                 $basePrice = $this->getTaxPrice($product, $subProduct->getPrice(), $withTax);
                 $min = min($min, $price);
                 $original = min($original, $basePrice);
