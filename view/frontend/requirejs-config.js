@@ -26,10 +26,6 @@ var config = {
         'recommendJs'     : 'Algolia_AlgoliaSearch/internals/recommend-js.min',
         'rangeSlider'     : 'Algolia_AlgoliaSearch/navigation/range-slider-widget',
     },
-    deps  : [
-        'algoliaInstantSearch',
-        'algoliaInsights'
-    ],
     config: {
         mixins: {
             'Magento_Catalog/js/catalog-add-to-cart': {
